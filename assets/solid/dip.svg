@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="200" viewBox="0 0 560 200">
+  <rect width="560" height="200" fill="#F1F5F9"/>
+  <style>
+    .box { fill:#ffffff; stroke:#CBD5E1; stroke-width:2; rx:8; }
+    .title { font-family:Segoe UI, Roboto, Arial; font-size:16px; fill:#0F172A; }
+    .arrow { stroke:#64748B; stroke-width:2; marker-end:url(#ah); }
+  </style>
+  <defs>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+  <rect class="box" x="60" y="70" width="180" height="70"/>
+  <text class="title" x="150" y="110" text-anchor="middle">PedidoService</text>
+  <rect class="box" x="320" y="30" width="180" height="70"/>
+  <text class="title" x="410" y="70" text-anchor="middle">PedidoRepository (interface)</text>
+  <rect class="box" x="320" y="120" width="180" height="70"/>
+  <text class="title" x="410" y="160" text-anchor="middle">Memória / Arquivo / JPA</text>
+  <line class="arrow" x1="240" y1="105" x2="320" y2="65"/>
+  <line class="arrow" x1="240" y1="105" x2="320" y2="155"/>
+  <text x="280" y="190" font-size="13" fill="#334155" text-anchor="middle" font-family="Segoe UI, Roboto">Serviço depende da abstração; implementação é intercambiável</text>
+</svg>

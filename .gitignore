@@ -1,0 +1,5 @@
+# Ignore zip archives
+*.zip
+
+# Ignore MaterialApoio folders anywhere
+MaterialApoio/
