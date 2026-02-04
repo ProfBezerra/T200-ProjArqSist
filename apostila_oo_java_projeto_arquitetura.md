@@ -504,8 +504,11 @@ Responda às questões a seguir sem consultar o material. O objetivo é verifica
 O que é Orientação a Objetos?
 
 A) Um paradigma baseado apenas em funções.
+
 B) Um paradigma baseado em objetos que possuem estado e comportamento.
+
 C) Um framework de desenvolvimento.
+
 D) Uma linguagem de programação específica.
 
 ---
@@ -514,8 +517,11 @@ D) Uma linguagem de programação específica.
 Qual a diferença entre classe e objeto?
 
 A) Classe é um objeto abstrato.
+
 B) Objeto é um molde.
+
 C) Classe é um molde e objeto é uma instância.
+
 D) Não existe diferença.
 
 ---
@@ -524,8 +530,11 @@ D) Não existe diferença.
 O que é encapsulamento?
 
 A) Herança de atributos.
+
 B) Ocultar detalhes internos e expor apenas o necessário.
+
 C) Criar muitas classes.
+
 D) Usar apenas métodos públicos.
 
 ---
@@ -534,8 +543,11 @@ D) Usar apenas métodos públicos.
 Qual alternativa representa corretamente o conceito de herança?
 
 A) Relação "tem um".
+
 B) Relação "usa um".
+
 C) Relação "é um".
+
 D) Relação "depende de".
 
 ---
@@ -544,8 +556,11 @@ D) Relação "depende de".
 O que é polimorfismo?
 
 A) Capacidade de uma classe ter muitos atributos.
+
 B) Capacidade de diferentes objetos responderem à mesma mensagem.
+
 C) Capacidade de esconder dados.
+
 D) Capacidade de herdar múltiplas classes.
 
 ---
@@ -554,8 +569,11 @@ D) Capacidade de herdar múltiplas classes.
 O que caracteriza **baixo acoplamento**?
 
 A) Muitas dependências entre classes.
+
 B) Classes altamente dependentes.
+
 C) Poucas dependências e maior independência.
+
 D) Uso excessivo de herança.
 
 ---
@@ -564,8 +582,11 @@ D) Uso excessivo de herança.
 O que caracteriza **alta coesão**?
 
 A) Classe com muitas responsabilidades.
+
 B) Classe com responsabilidades bem definidas e relacionadas.
+
 C) Classe que depende de muitas outras.
+
 D) Classe com muitos métodos públicos.
 
 ---
@@ -574,8 +595,11 @@ D) Classe com muitos métodos públicos.
 Qual é a combinação desejável em sistemas bem projetados?
 
 A) Alto acoplamento e alta coesão.
+
 B) Baixo acoplamento e baixa coesão.
+
 C) Alto acoplamento e baixa coesão.
+
 D) Baixo acoplamento e alta coesão.
 
 ---
@@ -584,8 +608,11 @@ D) Baixo acoplamento e alta coesão.
 Qual prática ajuda a reduzir acoplamento?
 
 A) Depender de classes concretas.
+
 B) Usar variáveis globais.
+
 C) Programar contra interfaces.
+
 D) Concentrar lógica em uma única classe.
 
 ---
@@ -594,8 +621,11 @@ D) Concentrar lógica em uma única classe.
 Por que acoplamento e coesão são importantes para arquitetura?
 
 A) Porque melhoram a performance.
+
 B) Porque reduzem o número de linhas de código.
+
 C) Porque facilitam manutenção, testes e evolução do sistema.
+
 D) Porque eliminam a necessidade de documentação.
 
 ---
