@@ -36,11 +36,12 @@ public class ReferenciasDemo {
 
     // p recebe o valor da referencia de 'a'; alterar estado de p afeta o mesmo objeto de a
     private static void ajustarPreco(Produto p) {
-        // altera estado do objeto referenciado
-        p.setPreco(5.5);
+        // p inicialmente aponta para o MESMO objeto recebido (mesma referencia de 'a')
+        System.out.println("[ajustarPreco] p referencia o mesmo objeto do chamador; ajustando preco para 5.5");
+        p.setPreco(5.5); // altera estado do objeto compartilhado
 
-        // reatribuicao local: passa a apontar para um NOVO objeto (nao afeta a/b no chamador)
+        // reatribuicao local: p passa a apontar para um NOVO objeto (nao afeta a/b no chamador)
         p = new Produto("Uva", 8.0);
-        // esta alteracao fica somente no escopo local de p
+        System.out.println("[ajustarPreco] p foi reatribuido para novo objeto (Uva, 8.0); isso NAO muda a/b no chamador");
     }
 }
