@@ -95,7 +95,7 @@ function updateAllConnectors() {
   // c -> obj2
   drawConnector("c", "obj2", "conn-c-obj2");
   // p pode apontar para obj1 ou obj3 conforme o passo
-  if (step <= 6) {
+  if (step <= 7) {
     drawConnector("p", "obj1", "conn-p-obj1");
     removeConnector("conn-p-obj3");
   } else {
@@ -144,8 +144,18 @@ function nextStep() {
       break;
 
     case 7:
+      // p altera o preço do mesmo objeto referenciado por a/b
+      document.getElementById("preco1").innerText = "5.5";
+      info.innerText = "p.setPreco(5.5) no MESMO objeto de a/b. Obj1 atualiza para 5.5.";
+      const obj1 = document.getElementById("obj1");
+      obj1.classList.remove("flash");
+      void obj1.offsetWidth;
+      obj1.classList.add("flash");
+      break;
+
+    case 8:
       document.getElementById("obj3").classList.remove("hidden");
-      info.innerText = "Reatribuição local: p → Uva(8.0). a permanece em Banana(6.0).";
+      info.innerText = "Reatribuição local: p → Uva(8.0). a/b continuam em Banana(5.5).";
       break;
 
     default:
