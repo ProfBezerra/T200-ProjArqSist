@@ -106,41 +106,57 @@ function updateAllConnectors() {
 
 function nextStep() {
   const info = document.getElementById("info");
+  const codeLines = document.querySelectorAll('#code span');
+  // remove destaques prévios
+  codeLines.forEach(el => el.classList.remove('code-hl'));
+  const addHL = (...lines) => {
+    lines.forEach(n => {
+      const el = document.querySelector(`#code span[data-line="${n}"]`);
+      if (el) el.classList.add('code-hl');
+    });
+  };
 
   switch (step) {
     case 0:
       document.getElementById("a").classList.remove("hidden");
       document.getElementById("obj1").classList.remove("hidden");
       info.innerText = "Produto a criado. Objeto Banana(5.0) alocado na Heap.";
+      addHL(1);
       break;
 
     case 1:
       document.getElementById("b").classList.remove("hidden");
       info.innerText = "Produto b = a. a e b apontam para o MESMO objeto.";
+      addHL(2);
       break;
 
     case 2:
       info.innerText = "a == b → true (mesma referência).";
+      addHL(3);
       break;
 
     case 3:
       document.getElementById("preco1").innerText = "6.0";
       info.innerText = "b.setPreco(6.0). O objeto muda e a também enxerga 6.0.";
+      addHL(4);
       break;
 
     case 4:
       document.getElementById("c").classList.remove("hidden");
       document.getElementById("obj2").classList.remove("hidden");
       info.innerText = "Produto c criado. Novo objeto Banana(5.0), referência diferente.";
+      addHL(5);
       break;
 
     case 5:
       info.innerText = "a == c → false. a.equals(c) depende da implementação.";
+      addHL(6);
       break;
 
     case 6:
       document.getElementById("p").classList.remove("hidden");
       info.innerText = "ajustarPreco(a): p aponta para o MESMO objeto de a (Obj1).";
+      addHL(7);
       break;
 
     case 7:
@@ -151,11 +167,13 @@ function nextStep() {
       obj1.classList.remove("flash");
       void obj1.offsetWidth;
       obj1.classList.add("flash");
+      addHL(8,9);
       break;
 
     case 8:
       document.getElementById("obj3").classList.remove("hidden");
       info.innerText = "Reatribuição local: p → Uva(8.0). a/b continuam em Banana(5.5).";
+      addHL(8,10);
       break;
 
     default:

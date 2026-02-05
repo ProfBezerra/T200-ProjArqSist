@@ -74,3 +74,33 @@ body {
 .flash {
   animation: flashBg 0.8s ease-in-out 2;
 }
+
+/* Painel de código (efeito debug) */
+.code-panel {
+  width: 90%;
+  margin: 10px auto 20px;
+  text-align: left;
+  border: 2px solid #333;
+  padding: 10px;
+}
+
+#code {
+  background: #1e1e1e;
+  color: #ddd;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+#code span {
+  display: block;
+  white-space: pre;
+}
+
+.code-hl {
+  background: rgba(255, 235, 59, 0.25);
+}
+
+.code-hint {
+  font-size: 0.9em;
+  color: #666;
+}
