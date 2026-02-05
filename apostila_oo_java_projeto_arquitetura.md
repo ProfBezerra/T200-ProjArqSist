@@ -2,7 +2,7 @@
 
 ![OO em Java](assets/common/oo-banner.svg)
 
-**Disciplina:** Projeto e Arquitetura de Sistemas  
+**Disciplina:** Projeto e Arquitetura de Sistemas
 **Objetivo:** Fornecer base conceitual sólida de Orientação a Objetos (OO) e introduzir o projeto “Feira Livre”, destacando as características de OO aplicadas ao domínio (encapsulamento, abstração, composição, herança e polimorfismo), além de acoplamento e coesão como fundamentos da arquitetura de software.
 
 ---
@@ -14,6 +14,7 @@ A Orientação a Objetos (OO) é um paradigma de programação baseado na ideia 
 Diferente da programação procedural, onde o foco está em funções e processos, na OO o foco está em **modelar o domínio do problema** por meio de classes e objetos.
 
 ### Por que usar OO?
+
 - Facilita a modelagem de problemas complexos
 - Estimula reutilização de código
 - Favorece manutenção e evolução
@@ -21,14 +22,17 @@ Diferente da programação procedural, onde o foco está em funções e processo
 
 ---
 
-## 2. Classe e Objeto
+## 2. Classe, Objeto e Referência
 
 - **Classe:** é um molde (blueprint) que define as características de um tipo de objeto.
 - **Objeto:** é uma instância concreta de uma classe.
+- **Referência:** o “endereço”/ponteiro lógico que aponta para um objeto.
 
 Exemplo conceitual (domínio da feira):
+
 - Classe: `Feirante`
 - Objetos: João, Maria, Ana
+- Referência: joao, maria,  ana
 
 Em Java:
 
@@ -38,11 +42,103 @@ public class Feirante {
 }
 ```
 
+Exemplo de criação de objetos (instanciação):
+
+```java
+public class Feirante {
+    private String nome;
+
+    public Feirante(String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+}
+
+// Criando objetos (instâncias) da classe Feirante
+Feirante joao = new Feirante("João");
+Feirante maria = new Feirante("Maria");
+Feirante ana = new Feirante("Ana");
+
+System.out.println(joao.getNome()); // "João"
+```
+
+### Referência em Java (JDK 21)
+
+- **Objeto:** entidade alocada no heap com estado e comportamento.
+- **Referência:** o “endereço”/ponteiro lógico que aponta para um objeto.
+  - Variáveis em Java guardam **referências**, não os objetos em si.
+  - Atribuição copia a referência (duas variáveis podem apontar para o mesmo objeto).
+- **`null`:** ausência de referência; acessar membros com `null` causa `NullPointerException`.
+- **Comparações:**
+  - `==` compara se duas referências apontam para o **mesmo** objeto.
+  - `equals()` compara **conteúdo/igualdade lógica** (se a classe sobrescrever adequadamente).
+- **Parâmetros em métodos:** Java é sempre “pass-by-value”; o **valor passado é a referência**. Assim, o método pode alterar o estado do objeto referenciado, mas **reapontar** a referência local não muda a referência do chamador.
+
+Exemplo ilustrativo:
+
+```java
+
+Produto a = new Produto("Banana", 5.0);
+Produto b = a;              // b recebe a MESMA referência de a
+
+System.out.println(a == b); // true (mesmo objeto)
+
+// Alterar via b reflete em a, pois é o mesmo objeto
+// (supondo um setPreco válido)
+// b.setPreco(6.0);
+// System.out.println(a.getPreco()); // 6.0
+
+// equals() pode ser diferente de == caso a classe compare conteúdo
+Produto c = new Produto("Banana", 5.0);
+System.out.println(a == c);      // false (referências diferentes)
+System.out.println(a.equals(c)); // true/false depende da implementação de equals()
+
+// Parâmetro: valor passado é a referência
+ajustarPreco(a);
+
+void ajustarPreco(Produto p) {
+        // p referencia o MESMO objeto que a
+        // p.setPreco(5.5); // afeta o objeto compartilhado
+
+        // p = new Produto("Uva", 8.0); // reatribuir p NÃO muda a referência do chamador
+}
+```
+
+#### Diagrama: Stack vs Heap e Referências
+
+```mermaid
+graph LR
+    subgraph Heap
+        O[(#1 - Banana, 5.0 )]
+        P[(#2 - Banana, 5.0)]
+    end
+
+    subgraph Stack
+        A[variável a]
+        B[variável b]
+        C[variável c]
+    end
+
+    A -->|referência| O
+    B -->|referência| O
+    C -->|referência| P
+
+    %% Observações:
+    %% - a e b apontam para o MESMO objeto (Produto #1)
+    %% - c aponta para outro objeto (Produto #2)
+```
+
+Este diagrama mostra que variáveis (`a`, `b`, `c`) guardam **referências** na pilha (Stack), enquanto os **objetos** vivem no Heap. Quando duas variáveis apontam para o mesmo nó no Heap, operações via qualquer uma delas afetam o mesmo objeto.
+
 ---
 
 ## 3. Estrutura de uma Classe em Java
 
 Uma classe em Java normalmente contém:
+
 - Atributos (campos)
 - Construtores
 - Métodos
@@ -72,11 +168,13 @@ public class Produto {
 Encapsulamento é o princípio de **ocultar os detalhes internos** de uma classe e expor apenas o que é necessário.
 
 Em Java, isso é feito por meio dos modificadores de acesso:
+
 - `private`
 - `protected`
 - `public`
 
 Benefícios:
+
 - Reduz acoplamento
 - Aumenta segurança
 - Facilita manutenção
@@ -125,6 +223,7 @@ public class Produto {
 Abstração consiste em **focar no essencial** e ignorar detalhes irrelevantes para o contexto.
 
 Exemplo:
+
 - Um `Produto` tem nome e preço
 - Não importa como o preço é calculado internamente
 
@@ -186,6 +285,7 @@ public interface Calculavel {
 ```
 
 Elas são fundamentais para:
+
 - Baixo acoplamento
 - Inversão de dependência
 - Arquiteturas flexíveis
@@ -226,6 +326,7 @@ public class PedidoService {
 - **Composição:** relação "tem um"
 
 Boa prática:
+
 > Preferir composição à herança.
 
 A composição gera sistemas mais flexíveis e evolutivos.
@@ -242,10 +343,12 @@ Acoplamento representa o **nível de dependência entre classes ou módulos** de
 - **Baixo acoplamento:** poucas dependências, módulos mais independentes.
 
 Exemplo (feira):
+
 - Um `PedidoService` que depende diretamente de `MySQLConnection` → alto acoplamento.
 - Um `PedidoService` que depende de uma interface `PedidoRepository` → baixo acoplamento.
 
 Benefícios do baixo acoplamento:
+
 - Facilita manutenção
 - Facilita testes
 - Permite evolução da arquitetura
@@ -260,10 +363,12 @@ Coesão representa o **grau de relacionamento entre as responsabilidades de uma 
 - **Baixa coesão:** classe faz muitas coisas diferentes e sem relação clara.
 
 Exemplo (feira):
+
 - Classe `Pedido` apenas com regras de pedido → alta coesão.
 - Classe `SistemaFeira` com login, pedido, relatório e pagamento → baixa coesão.
 
 Benefícios da alta coesão:
+
 - Código mais legível
 - Menor complexidade
 - Melhor reutilização
@@ -294,6 +399,7 @@ Esses erros impactam diretamente a arquitetura do sistema.
 ## 12. OO aplicada ao Projeto Feira Livre
 
 #### Diagrama de Classes – Entidades (Feira Livre)
+
 Representação das principais entidades de domínio: `Produto`, `ProdutoOrganico`, `PedidoItem` e `Pedido`.
 
 ```mermaid
@@ -330,33 +436,37 @@ classDiagram
 Nesta seção, destacamos como as características de OO aparecem no projeto console “Feira Livre”.
 
 ### Encapsulamento
+
 - `Produto` concentra dados e validações (ex.: preço não negativo).
 - Regras específicas (ex.: desconto) ficam dentro da classe responsável.
 - Referência: [feira-livre-java/src/feira/Produto.java](feira-livre-java/src/feira/Produto.java)
 
 ### Abstração
+
 - Classes expõem operações essenciais ao domínio, como `subtotal()` e `total()`.
 - O cálculo interno é ocultado, fornecendo uma interface simples de uso.
 - Referências: [feira-livre-java/src/feira/PedidoItem.java](feira-livre-java/src/feira/PedidoItem.java), [feira-livre-java/src/feira/Pedido.java](feira-livre-java/src/feira/Pedido.java)
 
 ### Composição
+
 - `Pedido` agrega vários `PedidoItem`; relação “tem um”.
 - Cada `PedidoItem` associa um `Produto` e uma quantidade.
 - Referências: [feira-livre-java/src/feira/Pedido.java](feira-livre-java/src/feira/Pedido.java), [feira-livre-java/src/feira/PedidoItem.java](feira-livre-java/src/feira/PedidoItem.java)
 
 ### Herança e Polimorfismo
+
 - Subtipos podem especializar comportamento, como `ProdutoOrganico` alterando `getPreco()`.
 - O código usa o tipo base (`Produto`) e o comportamento concreto é escolhido em tempo de execução.
 - Referência: [feira-livre-java/src/feira/ProdutoOrganico.java](feira-livre-java/src/feira/ProdutoOrganico.java)
 
 ### Coesão e Acoplamento
+
 - Alta coesão: `Pedido` calcula seu próprio `total()`; `PedidoItem` seu `subtotal()`.
 - Baixo acoplamento: `PedidoService` depende de um contrato (`PedidoRepository`) para persistir.
 - Referências: [feira-livre-java/src/feira/PedidoService.java](feira-livre-java/src/feira/PedidoService.java), [feira-livre-java/src/feira/PedidoRepository.java](feira-livre-java/src/feira/PedidoRepository.java), [feira-livre-java/src/feira/PedidoRepositoryMemoria.java](feira-livre-java/src/feira/PedidoRepositoryMemoria.java)
 
- 
-
 ### Fluxo de Finalização
+
 - `Main` aciona `PedidoService.finalizar(pedido)`.
 - O serviço calcula `total()` no `Pedido` e persiste via `Repository`.
 - O total retorna para exibição ao usuário.
@@ -382,11 +492,13 @@ A qualidade da arquitetura depende da qualidade da modelagem OO.
 A UML (Unified Modeling Language – Linguagem de Modelagem Unificada) é um conjunto de notações para representar sistemas de forma padronizada. Ela complementa OO e arquitetura, ajudando a comunicar modelos e decisões.
 
 ### Diagramas mais úteis na disciplina
+
 - Diagrama de Classes: estrutura estática (classes, atributos, métodos, relacionamentos).
 - Diagrama de Sequência: interação temporal entre objetos (mensagens e ordem).
 - Casos de Uso: visão funcional (atores e objetivos do sistema).
 
 ### Notações essenciais (Diagrama de Classes)
+
 - Classe: retângulo com nome; membros por visibilidade (`+` público, `-` privado, `#` protegido).
 - Herança (generalização): seta com triângulo oco apontando para a superclasse.
 - Interface: estereótipo «interface»; implementação com linha tracejada e triângulo.
@@ -394,12 +506,15 @@ A UML (Unified Modeling Language – Linguagem de Modelagem Unificada) é um con
 - Agregação/Composição: losango oco/cheio no lado do "todo".
 
 ### Mapeamento UML → Código (Java)
+
 - Classe → `class`; atributos → campos; operações → métodos.
 - Herança → `extends`; Interface → `interface`; Implementação → `implements`.
 - Visibilidade: `+` → `public`, `-` → `private`, `#` → `protected`.
 
 ### Exemplo simples (Feira)
+
 Relacionamentos principais:
+
 - `Pedido` compõe `PedidoItem` (composição), associa-se a `Produto`.
 - `ProdutoOrganico` herda de `Produto` (generalização).
 - `PedidoService` depende de `PedidoRepository` (contrato/interface).
@@ -448,6 +563,7 @@ classDiagram
 ```
 
 ### Diagrama de Sequência – exemplo (Fluxo de Finalização de Pedido)
+
 Representa a interação temporal entre objetos da aplicação console:
 
 ```mermaid
@@ -471,6 +587,7 @@ sequenceDiagram
 Observação: em uma aplicação web (Spring), `Main` seria substituída por um `Controller`, mas a dinâmica entre `Service` e `Repository` permanece.
 
 ### Quando usar UML
+
 - Para comunicar modelo de domínio, regras e decisões arquiteturais entre equipes.
 - Em checkpoints: incluir pelo menos um diagrama de classes e um de sequência.
 
@@ -479,12 +596,14 @@ Para uma visão de arquitetura de alto nível, consulte também o guia de C4: ve
 ## 15. Estudo de Caso Conceitual – Feira Livre
 
 Exemplo de entidades:
+
 - Feirante
 - Produto
 - Banca
 - Pedido
 
 Questões arquiteturais:
+
 - Quem calcula o total do pedido?
 - Onde ficam as regras de preço?
 - Quem valida estoque?
@@ -496,11 +615,13 @@ Essas perguntas são resolvidas com boa OO.
 ## 16. Quiz de Revisão – Orientação a Objetos, Acoplamento e Coesão
 
 ### Instruções
+
 Responda às questões a seguir sem consultar o material. O objetivo é verificar a compreensão conceitual.
 
 ---
 
 ### Questão 1
+
 O que é Orientação a Objetos?
 
 A) Um paradigma baseado apenas em funções.
@@ -514,6 +635,7 @@ D) Uma linguagem de programação específica.
 ---
 
 ### Questão 2
+
 Qual a diferença entre classe e objeto?
 
 A) Classe é um objeto abstrato.
@@ -527,6 +649,7 @@ D) Não existe diferença.
 ---
 
 ### Questão 3
+
 O que é encapsulamento?
 
 A) Herança de atributos.
@@ -540,6 +663,7 @@ D) Usar apenas métodos públicos.
 ---
 
 ### Questão 4
+
 Qual alternativa representa corretamente o conceito de herança?
 
 A) Relação "tem um".
@@ -553,6 +677,7 @@ D) Relação "depende de".
 ---
 
 ### Questão 5
+
 O que é polimorfismo?
 
 A) Capacidade de uma classe ter muitos atributos.
@@ -566,6 +691,7 @@ D) Capacidade de herdar múltiplas classes.
 ---
 
 ### Questão 6
+
 O que caracteriza **baixo acoplamento**?
 
 A) Muitas dependências entre classes.
@@ -579,6 +705,7 @@ D) Uso excessivo de herança.
 ---
 
 ### Questão 7
+
 O que caracteriza **alta coesão**?
 
 A) Classe com muitas responsabilidades.
@@ -592,6 +719,7 @@ D) Classe com muitos métodos públicos.
 ---
 
 ### Questão 8
+
 Qual é a combinação desejável em sistemas bem projetados?
 
 A) Alto acoplamento e alta coesão.
@@ -605,6 +733,7 @@ D) Baixo acoplamento e alta coesão.
 ---
 
 ### Questão 9
+
 Qual prática ajuda a reduzir acoplamento?
 
 A) Depender de classes concretas.
@@ -618,6 +747,7 @@ D) Concentrar lógica em uma única classe.
 ---
 
 ### Questão 10
+
 Por que acoplamento e coesão são importantes para arquitetura?
 
 A) Porque melhoram a performance.
@@ -647,7 +777,6 @@ D) Porque eliminam a necessidade de documentação.
 
 ## 18. Conclusão
 
-
 Orientação a Objetos não é sobre sintaxe, mas sobre:
 
 - Modelar corretamente o domínio
@@ -662,11 +791,9 @@ Ela é o **alicerce de toda a disciplina de Projeto e Arquitetura de Sistemas**.
 ## 19. Bibliografia Recomendada
 
 - LARMAN, Craig. *Utilizando UML e Padrões*.
-    - UML — Unified Modeling Language (Linguagem de Modelagem Unificada)
+  - UML — Unified Modeling Language (Linguagem de Modelagem Unificada)
 - GAMMA et al. *Design Patterns*.
 - MARTIN, Robert C. *Arquitetura Limpa*.
 - FOWLER, Martin. *UML Essencial*.
 
 ---
-
-
