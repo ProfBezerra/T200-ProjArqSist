@@ -95,7 +95,7 @@ function updateAllConnectors() {
   // c -> obj2
   drawConnector("c", "obj2", "conn-c-obj2");
   // p pode apontar para obj1 ou obj3 conforme o passo
-  if (step <= 7) {
+  if (step <= 8) {
     drawConnector("p", "obj1", "conn-p-obj1");
     removeConnector("conn-p-obj3");
   } else {
