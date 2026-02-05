@@ -133,6 +133,8 @@ graph LR
 
 Este diagrama mostra que variáveis (`a`, `b`, `c`) guardam **referências** na pilha (Stack), enquanto os **objetos** vivem no Heap. Quando duas variáveis apontam para o mesmo nó no Heap, operações via qualquer uma delas afetam o mesmo objeto.
 
+Veja também a demonstração interativa: [animacao-java-referencias/index.html](animacao-java-referencias/index.html).
+
 ---
 
 ## 3. Estrutura de uma Classe em Java
