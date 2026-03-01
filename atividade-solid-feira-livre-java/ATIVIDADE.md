@@ -235,6 +235,53 @@ Subtipo de entrega quebra o comportamento esperado do tipo base.
 - Chamar `FinalizadorPedidoService`.
 - Demonstrar cálculo de prazo com entrega normal e expressa.
 
+## Diagrama final (depois dos ajustes)
+
+```mermaid
+graph TD
+  A[SolucaoMain] --> B[FinalizadorPedidoService]
+
+  B --> C[PedidoRepository]
+  C --> D[PedidoRepositoryMemoria]
+
+  B --> E[CalculadoraDesconto]
+  E --> E1[PoliticaDesconto]
+  E1 --> E2[SemDesconto]
+  E1 --> E3[DescontoClienteFiel]
+  E1 --> E4[DescontoQueimaEstoque]
+  E1 --> E5[DescontoDomingo]
+
+  B --> F[ServicoPagamento]
+  F --> F1[ProcessadorPagamento]
+  F1 --> F2[PagamentoPix]
+  F1 --> F3[PagamentoCartao]
+  F1 --> F4[PagamentoBoleto]
+
+  B --> G[ImpressoraCupom]
+  G --> G1[ImpressoraTermica]
+
+  B --> H[NotificadorPedido]
+  H --> H1[NotificadorWhatsApp]
+
+  B --> I[ExportadorRelatorioPedido]
+  I --> I1[ExportadorCsvPedido]
+
+  A --> J[CalculadoraPrazoEntrega]
+  J --> J1[EntregaNormal]
+  J --> J2[EntregaExpressa]
+
+  A --> K[Pedido]
+  K --> K1[PedidoItem]
+  K1 --> K2[Produto]
+```
+
+Leitura do diagrama final:
+
+- `SolucaoMain` monta as dependências (injeção).
+- `FinalizadorPedidoService` depende de **abstrações**, não de concretos.
+- Desconto e pagamento seguem estratégia (extensível sem mexer no orquestrador).
+- Entrega usa contrato único (`CalculadoraPrazoEntrega`) com implementações intercambiáveis.
+
 ---
 
 ## Ordem de execução recomendada (em aula)
@@ -258,6 +305,32 @@ javac -d out (Get-ChildItem -Path src -Recurse -Filter *.java | ForEach-Object {
 java -cp out feira.solucao.SolucaoMain
 ```
 
+## Entrega da equipe (obrigatória)
+
+A equipe deve entregar a atividade em um **repositório Git da equipe**.
+
+### O que deve existir no repositório
+
+- Código original (`feira.problemasolid`) preservado.
+- Solução em `src/feira/solucao/`.
+- Este roteiro `ATIVIDADE.md`.
+- `README.md` atualizado com instruções de execução.
+
+### Organização mínima de commits
+
+- Pelo menos 1 commit por etapa principal:
+  - SRP
+  - OCP
+  - ISP
+  - DIP
+  - LSP
+
+### Informações da entrega
+
+- Link do repositório da equipe.
+- Nomes completos dos integrantes no `README.md`.
+- Identificação da turma no `README.md`.
+
 ## Checklist final
 
 - [ ] Refatoração feita em `feira.solucao`.
@@ -267,3 +340,4 @@ java -cp out feira.solucao.SolucaoMain
 - [ ] Dependências injetadas por abstrações.
 - [ ] Substituição de entrega funcionando sem quebra.
 - [ ] Projeto compila e executa.
+- [ ] Ajuste entregue em repositório Git da equipe.
