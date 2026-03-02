@@ -1,5 +1,8 @@
 package feira.gabarito.domain;
 
+/**
+ * Entidade de domínio para produto da feira.
+ */
 public class Produto {
     private final String nome;
     private final double preco;

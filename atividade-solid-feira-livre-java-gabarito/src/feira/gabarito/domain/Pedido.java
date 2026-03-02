@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Agregado principal do domínio de vendas da feira.
+ */
 public class Pedido {
     private final String cliente;
     private final List<PedidoItem> itens;

@@ -1,5 +1,8 @@
 package feira.gabarito.pagamento;
 
+/**
+ * Implementação de pagamento via boleto.
+ */
 public class PagamentoBoleto implements ProcessadorPagamento {
     @Override
     public String codigo() {

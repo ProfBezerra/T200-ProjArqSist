@@ -1,5 +1,8 @@
 package feira.problemasolid;
 
+/**
+ * Item do pedido com produto e quantidade.
+ */
 public class PedidoItem {
     private final Produto produto;
     private final int quantidade;

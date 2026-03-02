@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Serviço que seleciona e aplica a política de desconto por código.
+ */
 public class CalculadoraDesconto {
     private final Map<String, PoliticaDesconto> politicasPorCodigo;
 

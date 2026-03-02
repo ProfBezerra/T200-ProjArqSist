@@ -1,5 +1,11 @@
 package feira.problemasolid;
 
+/**
+ * Implementação de pagamento PIX para a atividade.
+ *
+ * Lança UnsupportedOperationException em vários métodos por causa de
+ * uma interface grande demais (violação de ISP).
+ */
 public class PagamentoPix implements PagamentoGateway {
     @Override
     public void pagarPix(double valor) {

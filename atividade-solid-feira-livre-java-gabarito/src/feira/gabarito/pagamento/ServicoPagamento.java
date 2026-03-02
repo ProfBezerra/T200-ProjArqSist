@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Serviço que resolve o processador de pagamento por código.
+ */
 public class ServicoPagamento {
     private final Map<String, ProcessadorPagamento> processadoresPorCodigo;
 

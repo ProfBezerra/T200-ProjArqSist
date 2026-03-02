@@ -3,6 +3,9 @@ package feira.gabarito.relatorio;
 import feira.gabarito.domain.Pedido;
 import feira.gabarito.domain.PedidoItem;
 
+/**
+ * Implementação de exportação de relatório em CSV.
+ */
 public class ExportadorCsvPedido implements ExportadorRelatorioPedido {
     @Override
     public String exportar(Pedido pedido, double totalLiquido) {

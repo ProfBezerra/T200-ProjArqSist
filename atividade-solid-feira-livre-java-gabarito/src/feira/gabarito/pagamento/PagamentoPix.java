@@ -1,5 +1,8 @@
 package feira.gabarito.pagamento;
 
+/**
+ * Implementação de pagamento via PIX.
+ */
 public class PagamentoPix implements ProcessadorPagamento {
     @Override
     public String codigo() {

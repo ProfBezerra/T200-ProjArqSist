@@ -1,5 +1,11 @@
 package feira.problemasolid;
 
+/**
+ * Classe de entrada da atividade.
+ *
+ * Este fluxo executa os cenários que evidenciam os problemas de design
+ * no pacote `problemasolid` para que os alunos refatorem em seguida.
+ */
 public class AtividadeMain {
     public static void main(String[] args) {
         ProcessadorPedidoRuim processador = new ProcessadorPedidoRuim();

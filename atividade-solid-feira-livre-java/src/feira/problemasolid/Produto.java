@@ -1,5 +1,8 @@
 package feira.problemasolid;
 
+/**
+ * Entidade de domínio simples para representar um produto da feira.
+ */
 public class Produto {
     private final String nome;
     private final double preco;

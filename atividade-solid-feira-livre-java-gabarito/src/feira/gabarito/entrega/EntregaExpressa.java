@@ -1,5 +1,8 @@
 package feira.gabarito.entrega;
 
+/**
+ * Implementação de prazo para entrega expressa.
+ */
 public class EntregaExpressa implements CalculadoraPrazoEntrega {
     @Override
     public String tipo() {

@@ -8,6 +8,11 @@ import feira.gabarito.pagamento.ServicoPagamento;
 import feira.gabarito.relatorio.ExportadorRelatorioPedido;
 import feira.gabarito.repository.PedidoRepository;
 
+/**
+ * Serviço de orquestração da finalização do pedido.
+ *
+ * Demonstra SRP + DIP ao depender de abstrações de cada responsabilidade.
+ */
 public class FinalizadorPedidoService {
     private final PedidoRepository pedidoRepository;
     private final CalculadoraDesconto calculadoraDesconto;

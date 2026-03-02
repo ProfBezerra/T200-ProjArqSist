@@ -3,6 +3,9 @@ package feira.gabarito.cupom;
 import feira.gabarito.domain.Pedido;
 import feira.gabarito.domain.PedidoItem;
 
+/**
+ * Implementação de impressão de cupom em modo textual.
+ */
 public class ImpressoraTermica implements ImpressoraCupom {
     @Override
     public void imprimir(Pedido pedido, double totalLiquido) {

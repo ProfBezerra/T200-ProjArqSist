@@ -1,5 +1,8 @@
 package feira.gabarito.desconto;
 
+/**
+ * Estratégia de desconto para cliente fiel.
+ */
 public class DescontoClienteFiel implements PoliticaDesconto {
     @Override
     public String codigo() {

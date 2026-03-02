@@ -1,5 +1,8 @@
 package feira.gabarito.domain;
 
+/**
+ * Item do pedido composto por produto e quantidade.
+ */
 public class PedidoItem {
     private final Produto produto;
     private final int quantidade;

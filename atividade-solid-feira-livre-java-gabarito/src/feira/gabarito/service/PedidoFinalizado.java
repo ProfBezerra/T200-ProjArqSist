@@ -1,5 +1,8 @@
 package feira.gabarito.service;
 
+/**
+ * DTO de saída da finalização de pedido.
+ */
 public class PedidoFinalizado {
     private final double totalBruto;
     private final double totalLiquido;

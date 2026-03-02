@@ -1,5 +1,13 @@
 package feira.problemasolid;
 
+/**
+ * Classe intencionalmente "ruim" para a atividade de refatoração SOLID.
+ *
+ * Violações presentes:
+ * - SRP: concentra cálculo, pagamento, persistência, impressão, notificação e relatório.
+ * - OCP: usa if/else para desconto e forma de pagamento.
+ * - DIP: depende de implementações concretas e instancia tudo internamente.
+ */
 public class ProcessadorPedidoRuim {
     private final PedidoRepositoryMemoria repository = new PedidoRepositoryMemoria();
     private final ImpressoraTermica impressora = new ImpressoraTermica();
@@ -42,6 +50,8 @@ public class ProcessadorPedidoRuim {
     }
 
     public void rotinaAdministrativa() {
+        // Exemplo usado para mostrar ISP quebrado: nem todo meio de pagamento
+        // deveria ser obrigado a suportar relatório administrativo.
         pagamento.gerarRelatorioFechamento();
     }
 

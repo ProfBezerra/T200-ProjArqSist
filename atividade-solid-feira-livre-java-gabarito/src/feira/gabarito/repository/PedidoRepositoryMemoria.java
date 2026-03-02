@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Implementação em memória de `PedidoRepository` para fins didáticos.
+ */
 public class PedidoRepositoryMemoria implements PedidoRepository {
     private final List<Pedido> pedidos = new ArrayList<>();
 

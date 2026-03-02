@@ -1,5 +1,8 @@
 package feira.problemasolid;
 
+/**
+ * Componente responsável por imprimir o cupom do pedido.
+ */
 public class ImpressoraTermica {
     public void imprimirCupom(Pedido pedido, double total) {
         System.out.println("=== CUPOM FISCAL ===");

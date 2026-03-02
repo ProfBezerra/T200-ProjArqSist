@@ -1,5 +1,11 @@
 package feira.gabarito;
 
+/**
+ * Classe de execução do gabarito.
+ *
+ * Aqui é feita a composição das dependências (injeção manual) e a execução
+ * do fluxo completo de pedido usando a arquitetura refatorada.
+ */
 import feira.gabarito.cupom.ImpressoraCupom;
 import feira.gabarito.cupom.ImpressoraTermica;
 import feira.gabarito.desconto.CalculadoraDesconto;
