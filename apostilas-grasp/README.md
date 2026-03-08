@@ -14,13 +14,15 @@ Conteúdo:
 - `pure-fabrication.md`: Pure Fabrication
 - `indirection.md`: Indirection
 - `protected-variations.md`: Protected Variations
- - `grasp-grouping.md`: agrupamento prático dos padrões GRASP
+- `grasp-grouping.md`: agrupamento prático dos padrões GRASP
 
 Exemplo Java: `src/feira/grasp/` demonstra `Creator` e `Controller` em um mini-domínio de pedidos.
 
 Uso
+
 1. Navegue pelos arquivos Markdown para estudar cada princípio.
 2. Abra `src/feira/grasp/` para ver o exemplo Java.
 
 Referências
+
 - Craig Larman — "Applying UML and Patterns"

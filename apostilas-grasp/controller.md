@@ -29,24 +29,24 @@ O diagrama abaixo ilustra como um `PedidoController` coordena a criação e pers
 
 ```mermaid
 sequenceDiagram
-	participant Usuario
-	participant PedidoController
-	participant PedidoService
-	participant PedidoRepository
-	participant Pedido
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant PedidoRepository
+  participant Pedido
 
-	Usuario->>PedidoController: novoPedido(dados)
-	PedidoController->>PedidoService: criarPedido(dados)
-	activate PedidoService
-	PedidoService->>Pedido: new Pedido(dados)
-	activate Pedido
-	PedidoService->>PedidoRepository: salvar(pedido)
-	activate PedidoRepository
-	PedidoRepository-->>PedidoService: ok
-	deactivate PedidoRepository
-	PedidoService-->>PedidoController: pedidoCriado
-	deactivate PedidoService
-	PedidoController-->>Usuario: confirmarCriacao()
+  Usuario->>PedidoController: novoPedido(dados)
+  PedidoController->>PedidoService: criarPedido(dados)
+  activate PedidoService
+  PedidoService->>Pedido: new Pedido(dados)
+  activate Pedido
+  PedidoService->>PedidoRepository: salvar(pedido)
+  activate PedidoRepository
+  PedidoRepository-->>PedidoService: ok
+  deactivate PedidoRepository
+  PedidoService-->>PedidoController: pedidoCriado
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmarCriacao()
 ```
 
 Exemplo evolutivo

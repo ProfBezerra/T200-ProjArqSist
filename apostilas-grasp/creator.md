@@ -41,12 +41,12 @@ Se a criação do `PedidoItem` é direta e ligada ao estado interno do pedido, o
 
 ```java
 public class Pedido {
-	private final List<PedidoItem> itens = new ArrayList<>();
+  private final List<PedidoItem> itens = new ArrayList<>();
 
-	public void addItem(Produto produto, int quantidade) {
-		PedidoItem item = new PedidoItem(produto, quantidade); // Pedido cria o item
-		itens.add(item);
-	}
+  public void addItem(Produto produto, int quantidade) {
+    PedidoItem item = new PedidoItem(produto, quantidade); // Pedido cria o item
+    itens.add(item);
+  }
 }
 ```
 
@@ -59,10 +59,10 @@ O diagrama abaixo mostra a interação típica quando o `PedidoService` cria um 
 
 ```mermaid
 sequenceDiagram
-	participant Usuario
-	participant PedidoController
-	participant PedidoService
-	participant Pedido
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant Pedido
 
   Usuario->>PedidoController: adicionarItem(produto, quantidade)
   PedidoController->>PedidoService: adicionarItem(pedidoId, produto, quantidade)

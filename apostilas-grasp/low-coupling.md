@@ -1,105 +1,106 @@
-# Low Coupling (Baixo Acoplamento)
+﻿# Low Coupling (Baixo Acoplamento)
 
-**Definição**: projetar classes de modo a minimizar dependências entre elas, reduzindo impacto de mudanças.
+**DefiniÃ§Ã£o**: projetar classes de modo a minimizar dependÃªncias entre elas, reduzindo impacto de mudanÃ§as.
 
-**Problema**: Como minimizar o impacto de mudanças e promover a reutilização?
+**Problema**: Como minimizar o impacto de mudanÃ§as e promover a reutilizaÃ§Ã£o?
 
-**Solução**: Atribua responsabilidades para manter as dependências entre classes o mais baixas possível.
+**SoluÃ§Ã£o**: Atribua responsabilidades para manter as dependÃªncias entre classes o mais baixas possÃ­vel.
 
 Vantagens:
 
-- Facilita manutenção e evolução
+- Facilita manutenÃ§Ã£o e evoluÃ§Ã£o
 - Melhora testabilidade
 
-Estratégias:
+EstratÃ©gias:
 
 - Separar responsabilidades claras
-- Usar interfaces/abstrações
+- Usar interfaces/abstraÃ§Ãµes
 - Aplicar Indirection quando apropriado
 
-Relação com SOLID
+RelaÃ§Ã£o com SOLID
 
-- **DIP:** reduzir acoplamento frequentemente exige dependência de abstrações ao invés de classes concretas.
+- **DIP:** reduzir acoplamento frequentemente exige dependÃªncia de abstraÃ§Ãµes ao invÃ©s de classes concretas.
 - **ISP:** dividir interfaces grandes reduz acoplamento entre clientes e provedores.
-- **SRP:** clareza nas responsabilidades diminui dependências desnecessárias.
+- **SRP:** clareza nas responsabilidades diminui dependÃªncias desnecessÃ¡rias.
 
 Exemplo evolutivo (Feira Livre)
-Ao evoluir, extraímos `PedidoRepository` e programamos `PedidoService` para depender de uma interface `PedidoRepository` em vez de uma implementação concreta. Isto é `Low Coupling` aplicado:
+Ao evoluir, extraÃ­mos `PedidoRepository` e programamos `PedidoService` para depender de uma interface `PedidoRepository` em vez de uma implementaÃ§Ã£o concreta. Isto Ã© `Low Coupling` aplicado:
 
 ```java
 public interface PedidoRepository { void salvar(Pedido p); }
-public class PedidoRepositoryMemoria implements PedidoRepository { /* implementação */ }
+public class PedidoRepositoryMemoria implements PedidoRepository { /* implementaÃ§Ã£o */ }
 
 public class PedidoService {
-	private final PedidoRepository repo;
-	public PedidoService(PedidoRepository repo) { this.repo = repo; }
+  private final PedidoRepository repo;
+  public PedidoService(PedidoRepository repo) { this.repo = repo; }
 }
 ```
 
-Referência: conceito de `PedidoRepository` em `diagrams/class-v2.mmd`.
+ReferÃªncia: conceito de `PedidoRepository` em `diagrams/class-v2.mmd`.
 
 Diagramas (Low Coupling)
 
-1) Diagrama de classes — mostra como `PedidoService` depende da abstração `PedidoRepository`, que pode ter uma implementação `PedidoRepositoryMemoria`:
+1) Diagrama de classes â€” mostra como `PedidoService` depende da abstraÃ§Ã£o `PedidoRepository`, que pode ter uma implementaÃ§Ã£o `PedidoRepositoryMemoria`:
 
 ```mermaid
-%% Diagrama de classes (versão simplificada)
+%% Diagrama de classes (versÃ£o simplificada)
 classDiagram
-	class Produto {
-		- nome: String
-		- preco: double
-	}
+  class Produto {
+    - nome: String
+    - preco: double
+  }
 
-	class PedidoItem {
-		- produto: Produto
-		- quantidade: int
-	}
+  class PedidoItem {
+    - produto: Produto
+    - quantidade: int
+  }
 
-	class Pedido {
-		- itens: List~PedidoItem~
-	}
+  class Pedido {
+    - itens: List~PedidoItem~
+  }
 
-	class PedidoService {
-		- repo: PedidoRepository
-	}
+  class PedidoService {
+    - repo: PedidoRepository
+  }
 
-	class PedidoRepository
-	class PedidoRepositoryMemoria
+  class PedidoRepository
+  class PedidoRepositoryMemoria
 
-	Produto "1" -- "*" PedidoItem
-	Pedido "1" -- "*" PedidoItem
-	PedidoService --> Pedido
-	PedidoService ..> PedidoRepository : depende de
-	PedidoRepository <|-- PedidoRepositoryMemoria
+  Produto "1" -- "*" PedidoItem
+  Pedido "1" -- "*" PedidoItem
+  PedidoService --> Pedido
+  PedidoService ..> PedidoRepository : depende de
+  PedidoRepository <|-- PedidoRepositoryMemoria
 ```
 
-Arquivo externo para edição: `diagrams/low-coupling-class.mmd`.
+Arquivo externo para ediÃ§Ã£o: `diagrams/low-coupling-class.mmd`.
 
-2) Diagrama de sequência — fluxo típico quando o `PedidoService` delega persistência para a abstração `PedidoRepository`, que por sua vez é implementada por `PedidoRepositoryMemoria`:
+2) Diagrama de sequÃªncia â€” fluxo tÃ­pico quando o `PedidoService` delega persistÃªncia para a abstraÃ§Ã£o `PedidoRepository`, que por sua vez Ã© implementada por `PedidoRepositoryMemoria`:
 
 ```mermaid
 sequenceDiagram
-	participant Usuario
-	participant PedidoController
-	participant PedidoService
-	participant Pedido
-	participant PedidoRepository
-	participant PedidoRepositoryMemoria
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant Pedido
+  participant PedidoRepository
+  participant PedidoRepositoryMemoria
 
-	Usuario->>PedidoController: novoPedido(dados)
-	PedidoController->>PedidoService: criarPedido(dados)
-	activate PedidoService
-	PedidoService->>Pedido: new Pedido(dados)
-	activate Pedido
-	PedidoService->>PedidoRepository: salvar(pedido)
-	activate PedidoRepository
-	PedidoRepository->>PedidoRepositoryMemoria: armazenar(pedido)
-	PedidoRepositoryMemoria-->>PedidoRepository: ok
-	deactivate PedidoRepository
-	PedidoService-->>PedidoController: pedidoCriado
-	deactivate PedidoService
-	PedidoController-->>Usuario: confirmarCriacao()
+  Usuario->>PedidoController: novoPedido(dados)
+  PedidoController->>PedidoService: criarPedido(dados)
+  activate PedidoService
+  PedidoService->>Pedido: new Pedido(dados)
+  activate Pedido
+  PedidoService->>PedidoRepository: salvar(pedido)
+  activate PedidoRepository
+  PedidoRepository->>PedidoRepositoryMemoria: armazenar(pedido)
+  PedidoRepositoryMemoria-->>PedidoRepository: ok
+  deactivate PedidoRepository
+  PedidoService-->>PedidoController: pedidoCriado
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmarCriacao()
 
 ```
 
-Arquivo externo para edição: `diagrams/low-coupling-sequence.mmd`.
+Arquivo externo para ediÃ§Ã£o: `diagrams/low-coupling-sequence.mmd`.
+

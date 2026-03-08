@@ -11,7 +11,7 @@ Estratégia:
 - Encapsular variações atrás de interfaces
 - Usar indirection e pure fabrication para isolar mudanças
 
-Exemplo: definir uma interface `ServicoPagamento` para isolar diferentes implementações (Pix, Cartão, Boleto).
+Exemplo: definir uma interface `PagamentoGateway` para isolar diferentes implementações (Pix, Cartão, Boleto).
 
 Relação com SOLID
 
@@ -20,107 +20,116 @@ Relação com SOLID
 
 ## Exemplo evolutivo (Feira Livre)
 
-Ao aplicar `Protected Variations` no domínio da feira, definimos uma interface `ServicoPagamento` e implementações concretas para cada método de pagamento. O `PedidoService` depende da abstração, protegendo-se de mudanças nas implementações.
+Ao aplicar `Protected Variations` no domínio da feira, definimos uma interface `PagamentoGateway` e implementações concretas para o provedor de pagamento. O `PedidoService` depende da abstração, protegendo-se de mudanças nas implementações.
 
 Trecho ilustrativo:
 
 ```java
-public interface ServicoPagamento { boolean processar(PagamentoInfo info); }
-public class ServicoPagamentoPix implements ServicoPagamento { /* ... */ }
+public interface PagamentoGateway { boolean pagar(Pedido pedido, PagamentoInfo info); }
+public class FakePagamentoGateway implements PagamentoGateway { /* ... */ }
 ```
 
 Referência: este padrão trabalha bem com `Indirection` e `Pure Fabrication`.
 
 Exemplos de código
 
-1) `ServicoPagamento` — interface estável para proteger variações:
+1) `PagamentoGateway` — interface estável para proteger variações:
 
 ```java
 package feira.grasp.payment;
 
 import feira.grasp.payment.PagamentoInfo;
+import feira.grasp.Pedido;
 
-public interface ServicoPagamento {
-		boolean processar(PagamentoInfo info);
+public interface PagamentoGateway {
+  boolean pagar(Pedido pedido, PagamentoInfo info);
 }
 ```
 
-2) Implementação para Pix (exemplo simplificado):
+1) Implementação fake (exemplo simplificado para aula):
 
 ```java
 package feira.grasp.payment;
 
-public class ServicoPagamentoPix implements ServicoPagamento {
-		@Override
-		public boolean processar(PagamentoInfo info) {
-				// implementação simplificada: simula chamada ao provedor Pix
-				System.out.println("[Pix] processando pagamento: " + info.getReferencia());
-				return true;
-		}
+import feira.grasp.Pedido;
+
+public class FakePagamentoGateway implements PagamentoGateway {
+  @Override
+  public boolean pagar(Pedido pedido, PagamentoInfo info) {
+    return pedido != null
+        && info != null
+        && info.getTipo() != null
+        && !info.getTipo().isBlank()
+        && info.getReferencia() != null
+        && !info.getReferencia().isBlank();
+  }
 }
 ```
 
-3) Uso no `PedidoService` — protegendo variações:
+1) Uso no `PedidoController` + `PagamentoFactory` — protegendo variações:
 
 ```java
-// dentro de PedidoService
-private final ServicoPagamento servicoPagamento;
-
-public PedidoService(ServicoPagamento servicoPagamento) {
-		this.servicoPagamento = servicoPagamento;
-}
-
-public boolean processarPagamento(Pedido pedido, PagamentoInfo info) {
-		return servicoPagamento.processar(info);
+// dentro de PedidoController
+public boolean pagar(Pedido pedido, FormaPagamento forma, PagamentoInfo info) {
+  PagamentoGateway gateway = PagamentoFactory.criar(forma);
+  return service.pagarPedido(pedido, gateway, info);
 }
 ```
 
 Diagramas
 
-1) Diagrama de classes — `ServicoPagamento` e implementações:
+1) Diagrama de classes — `PagamentoGateway` e implementação:
 
 ```mermaid
 classDiagram
-	class Pedido {
-		- id: String
-		- itens: List~PedidoItem~
-	}
+  class Pedido {
+    - id: String
+    - itens: List~PedidoItem~
+  }
 
-	interface ServicoPagamento
-	class ServicoPagamentoPix
-	class PedidoService
+  interface PagamentoGateway
+  class FakePagamentoGateway
+  class PedidoService
+  class PedidoController
+  class PagamentoFactory
 
-	PedidoService --> ServicoPagamento : usa
-	ServicoPagamento <|-- ServicoPagamentoPix
-	Pedido "1" -- "*" PedidoItem
+  PedidoController --> PagamentoFactory : seleciona
+  PedidoController --> PedidoService : delega
+  PedidoService --> PagamentoGateway : usa
+  PagamentoGateway <|-- FakePagamentoGateway
+  Pedido "1" -- "*" PedidoItem
 ```
 
 Arquivo externo para edição: `diagrams/protected-variations-class.mmd`.
 
-2) Diagrama de sequência — fluxo de processamento via `ServicoPagamento`:
+1) Diagrama de sequência — fluxo de processamento via `PagamentoGateway`:
 
 ```mermaid
 sequenceDiagram
-	participant Usuario
-	participant PedidoController
-	participant PedidoService
-	participant ServicoPagamento
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant PagamentoFactory
+  participant PagamentoGateway
 
-	Usuario->>PedidoController: solicitarPagamento(pedidoId)
-	PedidoController->>PedidoService: processarPagamento(pedido, info)
-	activate PedidoService
-	PedidoService->>ServicoPagamento: processar(info)
-	activate ServicoPagamento
-	ServicoPagamento-->>PedidoService: ok
-	deactivate ServicoPagamento
-	PedidoService-->>PedidoController: confirmado
-	deactivate PedidoService
-	PedidoController-->>Usuario: resposta
+  Usuario->>PedidoController: pagar(pedido, forma, info)
+  PedidoController->>PagamentoFactory: criar(forma)
+  PagamentoFactory-->>PedidoController: gateway
+  PedidoController->>PedidoService: pagarPedido(pedido, gateway, info)
+  activate PedidoService
+  PedidoService->>PagamentoGateway: pagar(pedido, info)
+  activate PagamentoGateway
+  PagamentoGateway-->>PedidoService: ok
+  deactivate PagamentoGateway
+  PedidoService-->>PedidoController: confirmado
+  deactivate PedidoService
+  PedidoController-->>Usuario: resposta
 ```
 
 Arquivo externo para edição: `diagrams/protected-variations-sequence.mmd`.
 
 Notas pedagógicas
 
-- Mostre como trocar implementações (Pix, Cartão, Boleto) sem alterar `PedidoService`.
-- Explique que `ServicoPagamento` é um ponto de estabilidade (protected variation) que deve permanecer estável.
+- Mostre como trocar implementações de `PagamentoGateway` sem alterar `PedidoService`.
+- Explique que `PagamentoGateway` é um ponto de estabilidade (protected variation) que deve permanecer estável.
+- Destaque que `FormaPagamento` + `PagamentoFactory` concentram a variação fora da regra de negócio.

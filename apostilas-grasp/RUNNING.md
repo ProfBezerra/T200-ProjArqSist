@@ -15,13 +15,13 @@ Opção A — (recomendado) com Git Bash / WSL / Linux shell
 cd apostilas-grasp
 ```
 
-2. Compilar todos os .java do exemplo GRASP:
+1. Compilar todos os .java do exemplo GRASP:
 
 ```bash
-javac -d out src/feira/grasp/*.java
+find src -name "*.java" -print0 | xargs -0 javac -d out
 ```
 
-3. Executar a aplicação demo:
+1. Executar a aplicação demo:
 
 ```bash
 java -cp out feira.grasp.MainGrasp
@@ -35,14 +35,14 @@ Opção B — PowerShell (Windows)
 Set-Location -Path apostilas-grasp
 ```
 
-2. Colete os arquivos .java e compile:
+1. Colete os arquivos .java e compile:
 
 ```powershell
 $files = Get-ChildItem -Path src -Filter *.java -Recurse | ForEach-Object { $_.FullName }
 javac -d out $files
 ```
 
-3. Execute:
+1. Execute:
 
 ```powershell
 java -cp out feira.grasp.MainGrasp
