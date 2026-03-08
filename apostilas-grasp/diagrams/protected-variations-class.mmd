@@ -1,0 +1,13 @@
+classDiagram
+  class Pedido {
+    - id: String
+    - itens: List~PedidoItem~
+  }
+
+  interface ServicoPagamento
+  class ServicoPagamentoPix
+  class PedidoService
+
+  PedidoService --> ServicoPagamento : usa
+  ServicoPagamento <|-- ServicoPagamentoPix
+  Pedido "1" -- "*" PedidoItem

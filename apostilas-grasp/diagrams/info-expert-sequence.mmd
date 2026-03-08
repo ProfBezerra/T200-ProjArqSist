@@ -1,0 +1,14 @@
+sequenceDiagram
+  participant Usuario
+  participant Pedido
+  participant PedidoItem
+  participant Produto
+
+  Usuario->>Pedido: calcularTotal()
+  loop para cada item
+    Pedido->>PedidoItem: subtotal()
+    PedidoItem->>Produto: getPreco()
+    Produto-->>PedidoItem: preco
+    PedidoItem-->>Pedido: subtotal(valor)
+  end
+  Pedido-->>Usuario: total

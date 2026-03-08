@@ -1,0 +1,22 @@
+classDiagram
+  class Produto {
+    +String nome
+    +double preco
+    +getNome()
+    +getPreco()
+  }
+
+  class PedidoItem {
+    - Produto produto
+    - int quantidade
+    + subtotal()
+  }
+
+  class Pedido {
+    - List~PedidoItem~ itens
+    + addItem(PedidoItem)
+    + calcularTotal()
+  }
+
+  Produto "1" -- "*" PedidoItem : contem
+  Pedido "1" -- "*" PedidoItem : possui

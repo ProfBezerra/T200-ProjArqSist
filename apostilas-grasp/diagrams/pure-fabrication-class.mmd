@@ -1,0 +1,13 @@
+classDiagram
+  class Pedido {
+    - id: String
+    - itens: List~PedidoItem~
+  }
+
+  interface PedidoRepository
+  class PedidoRepositoryMemoria
+  class PedidoService
+
+  PedidoService --> PedidoRepository : usa
+  PedidoRepository <|-- PedidoRepositoryMemoria
+  Pedido "1" -- "*" PedidoItem

@@ -1,0 +1,24 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant Pedido
+  participant PedidoItem
+  participant Produto
+
+  Usuario->>PedidoController: adicionarItem(produto, quantidade)
+  PedidoController->>PedidoService: adicionarItem(pedidoId, produto, quantidade)
+  activate PedidoService
+  PedidoService->>Pedido: addItem(produto, quantidade)
+  activate Pedido
+  Pedido->>PedidoItem: new PedidoItem(produto, quantidade)
+  activate PedidoItem
+  PedidoItem->>Produto: getPreco()
+  Produto-->>PedidoItem: preco
+  PedidoItem-->>Pedido: instanciaItem
+  Pedido->>Pedido: itens.add(instanciaItem)
+  deactivate PedidoItem
+  deactivate Pedido
+  PedidoService-->>PedidoController: ok
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmado

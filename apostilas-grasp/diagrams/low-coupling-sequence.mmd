@@ -1,0 +1,21 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant Pedido
+  participant PedidoRepository
+  participant PedidoRepositoryMemoria
+
+  Usuario->>PedidoController: novoPedido(dados)
+  PedidoController->>PedidoService: criarPedido(dados)
+  activate PedidoService
+  PedidoService->>Pedido: new Pedido(dados)
+  activate Pedido
+  PedidoService->>PedidoRepository: salvar(pedido)
+  activate PedidoRepository
+  PedidoRepository->>PedidoRepositoryMemoria: armazenar(pedido)
+  PedidoRepositoryMemoria-->>PedidoRepository: ok
+  deactivate PedidoRepository
+  PedidoService-->>PedidoController: pedidoCriado
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmarCriacao()

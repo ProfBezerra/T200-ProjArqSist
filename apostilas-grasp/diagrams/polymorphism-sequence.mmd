@@ -1,0 +1,17 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant Desconto
+  participant Pedido
+
+  Usuario->>PedidoController: aplicarDesconto(pedidoId, tipo)
+  PedidoController->>PedidoService: aplicarDesconto(pedidoId, desconto)
+  activate PedidoService
+  PedidoService->>Desconto: aplicar(pedido)
+  activate Desconto
+  Desconto-->>PedidoService: valorDesconto
+  deactivate Desconto
+  PedidoService-->>PedidoController: descontoAplicado
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmado

@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant PedidoRepository
+
+  Usuario->>PedidoController: criarPedido(dados)
+  PedidoController->>PedidoService: criarPedido(dados)
+  activate PedidoService
+  PedidoService->>PedidoRepository: salvar(pedido)
+  activate PedidoRepository
+  PedidoRepository-->>PedidoService: ok
+  deactivate PedidoRepository
+  PedidoService-->>PedidoController: confirmado
+  deactivate PedidoService
+  PedidoController-->>Usuario: resposta

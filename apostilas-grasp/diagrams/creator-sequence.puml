@@ -1,0 +1,20 @@
+@startuml
+participant Usuario
+participant PedidoController
+participant PedidoService
+participant Pedido
+
+Usuario -> PedidoController: solicitaCriarPedido()
+PedidoController -> PedidoService: criarPedido()
+activate PedidoService
+PedidoService -> Pedido: new Pedido()
+activate Pedido
+Pedido --> PedidoService: instanciaPedido
+deactivate Pedido
+PedidoService -> Pedido: addItem(produto, qtd)
+PedidoService -> Pedido: calcularTotal()
+PedidoService --> PedidoController: pedidoCriado / resumo
+deactivate PedidoService
+PedidoController --> Usuario: mostrarResumo()
+
+@enduml
