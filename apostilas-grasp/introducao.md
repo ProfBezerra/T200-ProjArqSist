@@ -1,10 +1,10 @@
 # Guia Didático dos Princípios GRASP: Atribuição de Responsabilidades em Design de Software
 
-Este guia destina-se a docentes e estudantes de Engenharia de Software, servindo como base para a transposição didática dos conceitos de Design Orientado a Objetos. O acrônimo GRASP significa General Responsibility Assignment Software Patterns (ou Princípios). É fundamental que o educador enfatize que o GRASP não é uma tecnologia, framework ou uma notação UML, mas sim um "conjunto de ferramentas mentais" e um auxílio à aprendizagem.
+Este guia destina-se a docentes e estudantes de Engenharia de Software, servindo como base para a transposição didática dos conceitos de Design Orientado a Objetos (OOD). O acrônimo GRASP significa General Responsibility Assignment Software Patterns (ou Princípios). É fundamental que o educador enfatize que o GRASP não é uma tecnologia, framework ou uma notação UML, mas sim um "conjunto de ferramentas mentais" e um auxílio à aprendizagem.
 
 Como afirma Craig Larman:
 
-"A ferramenta crucial de projeto para desenvolvimento de software é uma mente bem educada em princípios de projeto. Não é UML ou qualquer outra tecnologia."
+"*A ferramenta crucial de projeto para desenvolvimento de software é uma mente bem educada em princípios de projeto. Não é UML ou qualquer outra tecnologia*."
 
 O foco, portanto, reside no raciocínio crítico para decidir qual objeto deve assumir qual tarefa no ecossistema de software.
 
@@ -101,14 +101,15 @@ Arquivo externo para edição: `diagrams/class-v2-payment.mmd`.
 Princípios estudados nesta apostila:
 
 1. [Information Expert](info-expert.md)
-1. [Creator](creator.md)
-1. [Controller](controller.md)
-1. [Low Coupling](low-coupling.md)
-1. [High Cohesion](high-cohesion.md)
-1. [Polymorphism](polymorphism.md)
-1. [Pure Fabrication](pure-fabrication.md)
-1. [Indirection](indirection.md)
-1. [Protected Variations](protected-variations.md)
+2. [Creator](creator.md)
+3. 
+4. [Controller](controller.md)
+5. [Low Coupling](low-coupling.md)
+6. [High Cohesion](high-cohesion.md)
+7. [Polymorphism](polymorphism.md)
+8. [Pure Fabrication](pure-fabrication.md)
+9. [Indirection](indirection.md)
+10. [Protected Variations](protected-variations.md)
 
 ## Agrupamento dos padrões GRASP
 
@@ -142,7 +143,6 @@ Mapeamento rápido para SOLID
 - **Atribuição de Responsabilidades:** ligado principalmente a `SRP` (definir responsabilidades claras) e `OCP` (organizar para extensão).
 - **Organização estrutural / design para mudança:** fortemente relacionado a `DIP` e `ISP` para reduzir acoplamento e criar abstrações estáveis.
 - **Técnicas de implementação / apoio:** `Polymorphism` mapeia para `OCP`/`LSP`; `Pure Fabrication` apoia `SRP` e `DIP`.
-
 
 ## **Tabela Comparativa: GRASP vs. SOLID**
 
