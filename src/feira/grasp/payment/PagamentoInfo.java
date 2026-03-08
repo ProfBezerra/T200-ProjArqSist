@@ -1,5 +1,10 @@
 package feira.grasp.payment;
 
+/**
+ * DTO simples com informações de pagamento.
+ *
+ * Uso: transporta dados entre controller/service/gateway sem conter lógica de negócio.
+ */
 public class PagamentoInfo {
     private final String metodo;
     private final String referencia;

@@ -80,19 +80,35 @@ classDiagram
 
 Arquivos externos para edição: `diagrams/class-v1-fixed.mmd`.
 
+Versão 2 — incluir fluxo de pagamento (indirection / protected variations)
+
+```mermaid
+classDiagram
+  class PedidoService
+  class PedidoController
+  interface PagamentoGateway
+  class PagamentoInfo
+  class FakePagamentoGateway
+
+  PedidoService --> PagamentoGateway : usa
+  PagamentoGateway <|-- FakePagamentoGateway
+```
+
+Arquivo externo para edição: `diagrams/class-v2-payment.mmd`.
+
 ## Os 9 Princípios GRASP:
 
 Princípios estudados nesta apostila:
 
-- [Information Expert](info-expert.md)
-- [Creator](creator.md)
-- [Controller](controller.md)
-- [Low Coupling](low-coupling.md)
-- [High Cohesion](high-cohesion.md)
-- [Polymorphism](polymorphism.md)
-- [Pure Fabrication](pure-fabrication.md)
-- [Indirection](indirection.md)
-- [Protected Variations](protected-variations.md)
+1. [Information Expert](info-expert.md)
+1. [Creator](creator.md)
+1. [Controller](controller.md)
+1. [Low Coupling](low-coupling.md)
+1. [High Cohesion](high-cohesion.md)
+1. [Polymorphism](polymorphism.md)
+1. [Pure Fabrication](pure-fabrication.md)
+1. [Indirection](indirection.md)
+1. [Protected Variations](protected-variations.md)
 
 ## Agrupamento dos padrões GRASP
 

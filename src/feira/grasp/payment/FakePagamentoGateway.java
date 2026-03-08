@@ -2,6 +2,10 @@ package feira.grasp.payment;
 
 import feira.grasp.Pedido;
 
+/**
+ * Implementação de teste de gateway de pagamento.
+ * Usada para demonstração / desenvolvimento (Pure Fabrication - adapter/fake).
+ */
 public class FakePagamentoGateway implements PagamentoGateway {
     @Override
     public boolean pagar(Pedido pedido, PagamentoInfo info) {
