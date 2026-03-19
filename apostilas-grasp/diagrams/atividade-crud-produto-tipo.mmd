@@ -1,0 +1,62 @@
+classDiagram
+  class TipoProduto {
+    +Long id
+    +String nome
+    +String descricao
+    +validarNome()
+  }
+
+  class Produto {
+    +Long id
+    +String nome
+    +Double preco
+    +Integer estoque
+    +TipoProduto tipo
+    +alterarPreco(novoPreco)
+    +alterarTipo(novoTipo)
+    +validarEstado()
+  }
+
+  class ProdutoRepository {
+    <<interface>>
+    +salvar(produto)
+    +buscarPorId(id)
+    +listarTodos()
+    +removerPorId(id)
+  }
+
+  class TipoProdutoRepository {
+    <<interface>>
+    +salvar(tipo)
+    +buscarPorId(id)
+    +buscarPorNome(nome)
+    +listarTodos()
+    +removerPorId(id)
+  }
+
+  class ProdutoService {
+    +criarProduto(request)
+    +atualizarProduto(id, request)
+    +removerProduto(id)
+    +listarProdutos()
+  }
+
+  class TipoProdutoService {
+    +criarTipo(request)
+    +removerTipo(id)
+    +listarTipos()
+  }
+
+  class ProdutoController {
+    +cadastrarProduto(...)
+    +editarProduto(...)
+    +excluirProduto(...)
+    +listarProdutos()
+  }
+
+  TipoProduto "1" <-- "0..*" Produto : classifica
+  ProdutoService --> ProdutoRepository : depende de
+  ProdutoService --> TipoProdutoRepository : depende de
+  TipoProdutoService --> TipoProdutoRepository : depende de
+  ProdutoController --> ProdutoService : delega
+  ProdutoController --> TipoProdutoService : delega

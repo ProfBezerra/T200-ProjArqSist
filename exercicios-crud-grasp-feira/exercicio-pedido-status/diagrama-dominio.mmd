@@ -1,0 +1,16 @@
+classDiagram
+  class StatusPedido {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Pedido {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +StatusPedido statusPedido
+  }
+
+  StatusPedido "1" <-- "0..*" Pedido : classifica

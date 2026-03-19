@@ -5,6 +5,7 @@ Este repositório contém uma apostila introdutória sobre os padrões GRASP (Ge
 Conteúdo:
 
 - `introducao.md`: visão geral do GRASP
+- `atividade-crud-grasp-produto.md`: atividade prática de CRUD aplicando GRASP (Produto e TipoProduto)
 - `info-expert.md`: Information Expert
 - `creator.md`: Creator
 - `controller.md`: Controller

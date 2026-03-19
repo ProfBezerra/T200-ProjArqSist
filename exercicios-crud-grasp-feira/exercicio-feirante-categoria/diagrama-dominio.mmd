@@ -1,0 +1,16 @@
+classDiagram
+  class CategoriaFeirante {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Feirante {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +CategoriaFeirante categoriaFeirante
+  }
+
+  CategoriaFeirante "1" <-- "0..*" Feirante : classifica

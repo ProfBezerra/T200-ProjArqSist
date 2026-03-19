@@ -1,0 +1,16 @@
+classDiagram
+  class TipoFornecedor {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Fornecedor {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +TipoFornecedor tipoFornecedor
+  }
+
+  TipoFornecedor "1" <-- "0..*" Fornecedor : classifica

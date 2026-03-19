@@ -1,0 +1,16 @@
+classDiagram
+  class TipoEntrega {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Entrega {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +TipoEntrega tipoEntrega
+  }
+
+  TipoEntrega "1" <-- "0..*" Entrega : classifica

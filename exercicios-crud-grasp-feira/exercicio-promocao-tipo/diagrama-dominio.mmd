@@ -1,0 +1,16 @@
+classDiagram
+  class TipoPromocao {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Promocao {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +TipoPromocao tipoPromocao
+  }
+
+  TipoPromocao "1" <-- "0..*" Promocao : classifica

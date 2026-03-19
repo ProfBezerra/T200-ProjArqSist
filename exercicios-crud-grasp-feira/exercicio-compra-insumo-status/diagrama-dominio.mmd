@@ -1,0 +1,16 @@
+classDiagram
+  class StatusCompra {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class CompraInsumo {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +StatusCompra statusCompra
+  }
+
+  StatusCompra "1" <-- "0..*" CompraInsumo : classifica

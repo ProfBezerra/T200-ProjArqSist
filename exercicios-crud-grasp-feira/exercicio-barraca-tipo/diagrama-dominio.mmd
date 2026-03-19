@@ -1,0 +1,16 @@
+classDiagram
+  class TipoBarraca {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Barraca {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +TipoBarraca tipoBarraca
+  }
+
+  TipoBarraca "1" <-- "0..*" Barraca : classifica

@@ -1,0 +1,16 @@
+classDiagram
+  class CategoriaProduto {
+    +Long id
+    +String nome
+    +String descricao
+  }
+
+  class Produto {
+    +Long id
+    +String nome
+    +String descricao
+    +Boolean ativo
+    +CategoriaProduto categoriaProduto
+  }
+
+  CategoriaProduto "1" <-- "0..*" Produto : classifica
