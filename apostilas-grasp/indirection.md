@@ -1,27 +1,27 @@
-﻿# Indirection
+# Indirection
 
-**DefiniÃ§Ã£o**: colocar um objeto intermediÃ¡rio para mediar entre duas entidades, reduzindo acoplamento e responsabilidades diretas.
+**Definição**: colocar um objeto intermediário para mediar entre duas entidades, reduzindo acoplamento e responsabilidades diretas.
 
 **Problema**: Como evitar o acoplamento direto entre dois ou mais elementos?
 
-**SoluÃ§Ã£o**: Atribua a responsabilidade de mediaÃ§Ã£o a um objeto intermediÃ¡rio.
+**Solução**: Atribua a responsabilidade de mediação a um objeto intermediário.
 
 Quando usar:
 
-- Para interpor dependÃªncias entre mÃ³dulos que nÃ£o devem conhecer detalhes um do outro
-- Para reduzir dependÃªncias cÃ­clicas
+- Para interpor dependências entre módulos que não devem conhecer detalhes um do outro
+- Para reduzir dependências cíclicas
 
-Exemplo: um `Gateway` entre serviÃ§o de pagamentos e domÃ­nio para isolar API externa.
+Exemplo: um `Gateway` entre serviço de pagamentos e domínio para isolar API externa.
 
-RelaÃ§Ã£o com SOLID
+Relação com SOLID
 
-- **DIP:** indirection ajuda a depender de abstraÃ§Ãµes e isolar mudanÃ§as em implementaÃ§Ãµes especÃ­ficas.
-- **OCP:** ao interpor intermediÃ¡rios, vocÃª protege partes do sistema contra mudanÃ§as externas.
+- **DIP:** indirection ajuda a depender de abstrações e isolar mudanças em implementações específicas.
+- **OCP:** ao interpor intermediários, você protege partes do sistema contra mudanças externas.
 
 ## Exemplo evolutivo (Feira Livre)
 
 
-Se decidirmos integrar mÃºltiplos serviÃ§os de pagamento, inserimos um `PagamentoGateway` que faz indirection entre `PedidoService` e provedores externos. Assim, `PedidoService` nÃ£o conhece detalhes das APIs externas.
+Se decidirmos integrar múltiplos serviços de pagamento, inserimos um `PagamentoGateway` que faz indirection entre `PedidoService` e provedores externos. Assim, `PedidoService` não conhece detalhes das APIs externas.
 
 Trecho ilustrativo (interface):
 
@@ -29,11 +29,11 @@ Trecho ilustrativo (interface):
 public interface PagamentoGateway { boolean pagar(Pedido p, PagamentoInfo info); }
 ```
 
-ReferÃªncia: padrÃ£o Indirection protege o domÃ­nio das variaÃ§Ãµes de provedores.
+Referência: padrão Indirection protege o domínio das variações de provedores.
 
-Exemplos de cÃ³digo
+Exemplos de código
 
-1) `PagamentoGateway` â€” interface que isola provedores externos
+1) `PagamentoGateway` — interface que isola provedores externos
 
 ```java
 package feira.grasp.payment;
@@ -45,7 +45,7 @@ public interface PagamentoGateway {
 }
 ```
 
-2) `PagamentoInfo` â€” pequeno DTO com dados de pagamento
+2) `PagamentoInfo` — pequeno DTO com dados de pagamento
 
 ```java
 package feira.grasp.payment;
@@ -74,14 +74,14 @@ import feira.grasp.Pedido;
 public class FakePagamentoGateway implements PagamentoGateway {
   @Override
   public boolean pagar(Pedido pedido, PagamentoInfo info) {
-    // implementaÃ§Ã£o de teste: sempre aprova
+    // implementação de teste: sempre aprova
     System.out.println("[FakePagamento] processando pagamento: " + info.getMetodo());
     return true;
   }
 }
 ```
 
-4) Uso em `PedidoService` â€” indirection: `PedidoService` depende da abstraÃ§Ã£o `PagamentoGateway`
+4) Uso em `PedidoService` — indirection: `PedidoService` depende da abstração `PagamentoGateway`
 
 ```java
 // dentro de PedidoService
@@ -98,7 +98,7 @@ public boolean pagarPedido(Pedido pedido, PagamentoInfo info) {
 
 Diagramas
 
-1) Diagrama de classes â€” interface `PagamentoGateway` e adaptadores:
+1) Diagrama de classes — interface `PagamentoGateway` e adaptadores:
 
 ```mermaid
 classDiagram
@@ -116,9 +116,9 @@ classDiagram
   Pedido "1" -- "*" PedidoItem
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/indirection-class.mmd`.
+Arquivo externo para edição: `diagrams/indirection-class.mmd`.
 
-2) Diagrama de sequÃªncia â€” fluxo de pagamento via indirection:
+2) Diagrama de sequência — fluxo de pagamento via indirection:
 
 ```mermaid
 sequenceDiagram
@@ -139,10 +139,10 @@ sequenceDiagram
   PedidoController-->>Usuario: confirmado
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/indirection-sequence.mmd`.
+Arquivo externo para edição: `diagrams/indirection-sequence.mmd`.
 
-Notas pedagÃ³gicas
+Notas pedagógicas
 
-- Explique que a interface `PagamentoGateway` Ã© a abstraÃ§Ã£o que permite inserir/adaptar mÃºltiplos provedores sem alterar `PedidoService`.
-- Mostre variaÃ§Ãµes: adaptadores para Stripe, PayPal, ou mocks de teste â€” todos implementam a mesma interface.
+- Explique que a interface `PagamentoGateway` é a abstração que permite inserir/adaptar múltiplos provedores sem alterar `PedidoService`.
+- Mostre variações: adaptadores para Stripe, PayPal, ou mocks de teste — todos implementam a mesma interface.
 

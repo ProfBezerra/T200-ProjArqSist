@@ -1,36 +1,36 @@
-﻿# Polymorphism
+# Polymorphism
 
-**DefiniÃ§Ã£o**: usar polimorfismo em vez de condicionais para variar comportamento com base no tipo de objeto.
+**Definição**: usar polimorfismo em vez de condicionais para variar comportamento com base no tipo de objeto.
 
-**Problema**: Como tratar comportamentos que variam conforme o tipo sem usar ramificaÃ§Ãµes explÃ­citas (if/switch)?
+**Problema**: Como tratar comportamentos que variam conforme o tipo sem usar ramificações explícitas (if/switch)?
 
-**SoluÃ§Ã£o**: Atribua o comportamento variÃ¡vel ao tipo para o qual a variaÃ§Ã£o ocorre, utilizando operaÃ§Ãµes polimÃ³rficas
+**Solução**: Atribua o comportamento variável ao tipo para o qual a variação ocorre, utilizando operações polimórficas
 
 Quando aplicar:
 
-- Quando o comportamento varia por tipo e vocÃª quer evitar `if/else` espalhados.
+- Quando o comportamento varia por tipo e você quer evitar `if/else` espalhados.
 
-Exemplo: diferentes estratÃ©gias de desconto implementando uma interface `Desconto`.
+Exemplo: diferentes estratégias de desconto implementando uma interface `Desconto`.
 
-RelaÃ§Ã£o com SOLID
+Relação com SOLID
 
-- **OCP:** polimorfismo permite estender comportamentos (novas estratÃ©gias) sem modificar o cÃ³digo cliente.
-- **LSP:** ao usar hierarquias de tipos, garanta que substituiÃ§Ãµes nÃ£o quebrem contratos esperados.
+- **OCP:** polimorfismo permite estender comportamentos (novas estratégias) sem modificar o código cliente.
+- **LSP:** ao usar hierarquias de tipos, garanta que substituições não quebrem contratos esperados.
 
 ## Exemplo evolutivo (Feira Livre)
 
-Quando o cÃ¡lculo de preÃ§o comeÃ§a a variar (descontos por fidelidade, promoÃ§Ãµes), extraimos uma interface `Desconto` e criamos implementaÃ§Ãµes:
+Quando o cálculo de preço começa a variar (descontos por fidelidade, promoções), extraimos uma interface `Desconto` e criamos implementações:
 
 ```java
 public interface Desconto { double aplicar(Pedido p); }
 public class DescontoClienteFiel implements Desconto { /* ... */ }
 ```
 
-`Pedido` pode aceitar uma polÃ­tica de desconto externa, aplicando polimorfismo em vez de `if/else`.
+`Pedido` pode aceitar uma política de desconto externa, aplicando polimorfismo em vez de `if/else`.
 
-Trechos de cÃ³digo (exemplos simples)
+Trechos de código (exemplos simples)
 
-1) `Desconto` â€” interface e implementaÃ§Ãµes:
+1) `Desconto` — interface e implementações:
 
 ```java
 public interface Desconto {
@@ -53,7 +53,7 @@ public class DescontoPromocional implements Desconto {
 }
 ```
 
-2) `Pedido` aceita uma polÃ­tica de desconto externa:
+2) `Pedido` aceita uma política de desconto externa:
 
 ```java
 public class Pedido {
@@ -74,7 +74,7 @@ public class Pedido {
 
 Diagramas (Polymorphism)
 
-1) Diagrama de classes â€” mostra a interface `Desconto` e suas implementaÃ§Ãµes, alÃ©m da associaÃ§Ã£o com `Pedido`:
+1) Diagrama de classes — mostra a interface `Desconto` e suas implementações, além da associação com `Pedido`:
 
 ```mermaid
 classDiagram
@@ -105,13 +105,13 @@ classDiagram
 
   Desconto <|.. DescontoClienteFiel
   Desconto <|.. DescontoPromocional
-  Pedido o-- Desconto : composiÃ§Ã£o/estratÃ©gia
-    Pedido "1" *-- "1..*" PedidoItem : contÃ©m
+  Pedido o-- Desconto : composição/estratégia
+    Pedido "1" *-- "1..*" PedidoItem : contém
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/polymorphism-class-clean.mmd`.
+Arquivo externo para edição: `diagrams/polymorphism-class-clean.mmd`.
 
-2) Diagrama de sequÃªncia â€” fluxo de aplicaÃ§Ã£o de desconto via estratÃ©gia:
+2) Diagrama de sequência — fluxo de aplicação de desconto via estratégia:
 
 ```mermaid
 sequenceDiagram
@@ -133,5 +133,5 @@ sequenceDiagram
   PedidoController-->>Usuario: confirmado
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/polymorphism-sequence.mmd`.
+Arquivo externo para edição: `diagrams/polymorphism-sequence.mmd`.
 

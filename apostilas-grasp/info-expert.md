@@ -1,36 +1,36 @@
-﻿# Information Expert
+# Information Expert
 
-DefiniÃ§Ã£o: atribuir responsabilidade Ã  classe que possui a informaÃ§Ã£o necessÃ¡ria para cumpri-la.
+Definição: atribuir responsabilidade à classe que possui a informação necessária para cumpri-la.
 
-* **Problema:** Qual Ã© o princÃ­pio bÃ¡sico para atribuir responsabilidades aos objetos?
-* **SoluÃ§Ã£o:** Atribua a responsabilidade Ã  classe que possui a informaÃ§Ã£o necessÃ¡ria para cumpri-la.
+* **Problema:** Qual é o princípio básico para atribuir responsabilidades aos objetos?
+* **Solução:** Atribua a responsabilidade à classe que possui a informação necessária para cumpri-la.
 
 Quando aplicar:
 
-- A classe jÃ¡ contÃ©m (ou pode acessar facilmente) os dados necessÃ¡rios.
+- A classe já contém (ou pode acessar facilmente) os dados necessários.
 - Evitar mover dados entre classes apenas para cumprir uma responsabilidade.
 
-Exemplo: em um pedido, o cÃ¡lculo do total Ã© responsabilidade do `Pedido`, porque ele conhece seus itens.
+Exemplo: em um pedido, o cálculo do total é responsabilidade do `Pedido`, porque ele conhece seus itens.
 
 Dicas:
 
-- Prefira colocar comportamento onde estÃ£o os dados.
-- Use com moderaÃ§Ã£o quando violaÃ§Ãµes de encapsulamento surgirem.
+- Prefira colocar comportamento onde estão os dados.
+- Use com moderação quando violações de encapsulamento surgirem.
 
-RelaÃ§Ã£o com SOLID
+Relação com SOLID
 
-- **SRP (Single Responsibility):** colocar comportamento no `Information Expert` ajuda a manter responsabilidades Ãºnicas em classes.
-- **OCP (Open/Closed):** ao manter lÃ³gica relacionada aos dados na mesma classe, vocÃª facilita estender comportamento sem alterar outras classes.
+- **SRP (Single Responsibility):** colocar comportamento no `Information Expert` ajuda a manter responsabilidades únicas em classes.
+- **OCP (Open/Closed):** ao manter lógica relacionada aos dados na mesma classe, você facilita estender comportamento sem alterar outras classes.
 
 ## Exemplo evolutivo (Feira Livre)
 
-No nosso exemplo, o mÃ©todo `calcularTotal()` permanece em `Pedido` â€” um caso clÃ¡ssico de `Information Expert`. Ã€ medida que adicionamos lÃ³gica (ex.: desconto por item), comece mantendo o cÃ¡lculo no `Pedido` e extraia polÃ­ticas (por exemplo, estratÃ©gias de desconto) quando crescer a complexidade.
+No nosso exemplo, o método `calcularTotal()` permanece em `Pedido` — um caso clássico de `Information Expert`. À medida que adicionamos lógica (ex.: desconto por item), comece mantendo o cálculo no `Pedido` e extraia políticas (por exemplo, estratégias de desconto) quando crescer a complexidade.
 
-ReferÃªncia de cÃ³digo: `src/feira/grasp/Pedido.java` contÃ©m a responsabilidade de calcular o total.
+Referência de código: `src/feira/grasp/Pedido.java` contém a responsabilidade de calcular o total.
 
 Diagramas (Information Expert)
 
-1) Diagrama de classes â€” mostra onde a responsabilidade de cÃ¡lculo estÃ¡ localizada:
+1) Diagrama de classes — mostra onde a responsabilidade de cálculo está localizada:
 
 ```mermaid
 classDiagram
@@ -57,9 +57,9 @@ classDiagram
   Pedido "1" -- "*" PedidoItem : possui
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/info-expert-class.mmd`.
+Arquivo externo para edição: `diagrams/info-expert-class.mmd`.
 
-2) Diagrama de sequÃªncia â€” fluxo do cÃ¡lculo do total:
+2) Diagrama de sequência — fluxo do cálculo do total:
 
 ```mermaid
 sequenceDiagram
@@ -78,5 +78,5 @@ sequenceDiagram
   Pedido-->>Usuario: total
 ```
 
-Arquivo externo para ediÃ§Ã£o: `diagrams/info-expert-sequence.mmd`.
+Arquivo externo para edição: `diagrams/info-expert-sequence.mmd`.
 
