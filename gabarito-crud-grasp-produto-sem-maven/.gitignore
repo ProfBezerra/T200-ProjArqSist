@@ -1,0 +1,21 @@
+# Compilados Java
+out/
+*.class
+
+# Dados gerados em tempo de execução
+data/produtos.json
+data/tipos-produto.json
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+.settings/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
