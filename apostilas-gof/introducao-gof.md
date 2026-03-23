@@ -35,39 +35,39 @@ Padroes desta apostila organizados por grupo:
 
 - Criacionais:
 
-  - [Factory Method](gof-factory-method.md)
-  - [Builder](gof-builder.md)
-  - [Abstract Factory](gof-abstract-factory.md)
+  - [Factory Method](factory-method/APOSTILA.md)
+  - [Builder](builder/APOSTILA.md)
+  - [Abstract Factory](abstract-factory/APOSTILA.md)
 - Estruturais:
 
-  - [Adapter](gof-adapter.md)
-  - [Decorator](gof-decorator.md)
-  - [Facade](gof-facade.md)
+  - [Adapter](adapter/APOSTILA.md)
+  - [Decorator](decorator/APOSTILA.md)
+  - [Facade](facade/APOSTILA.md)
 - Comportamentais:
 
-  - [Strategy](gof-strategy.md)
-  - [Observer](gof-observer.md)
-  - [Command](gof-command.md)
+  - [Strategy](strategy/APOSTILA.md)
+  - [Observer](observer/APOSTILA.md)
+  - [Command](command/APOSTILA.md)
 
 Ordem de estudo por categoria pura:
 
-1. Criacionais: [Factory Method](gof-factory-method.md), [Builder](gof-builder.md), [Abstract Factory](gof-abstract-factory.md)
-2. Estruturais: [Adapter](gof-adapter.md), [Decorator](gof-decorator.md), [Facade](gof-facade.md)
-3. Comportamentais: [Strategy](gof-strategy.md), [Observer](gof-observer.md), [Command](gof-command.md)
+1. Criacionais: [Factory Method](factory-method/APOSTILA.md), [Builder](builder/APOSTILA.md), [Abstract Factory](abstract-factory/APOSTILA.md)
+2. Estruturais: [Adapter](adapter/APOSTILA.md), [Decorator](decorator/APOSTILA.md), [Facade](facade/APOSTILA.md)
+3. Comportamentais: [Strategy](strategy/APOSTILA.md), [Observer](observer/APOSTILA.md), [Command](command/APOSTILA.md)
 
 Resumo rapido para decisao:
 
 | Grupo          | Padrao                                   | Problema tipico                                              | Quando usar                                                                        |
 | -------------- | ---------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| Criacional     | [Abstract Factory](gof-abstract-factory.md) | Criar familias de objetos relacionados e consistentes        | Quando voce precisa variar "kits" de objetos por canal, ambiente ou contexto       |
-| Criacional     | [Builder](gof-builder.md)                   | Montagem de objeto complexo com muitos campos opcionais      | Quando construtor longo e confuso comeca a prejudicar legibilidade                 |
-| Criacional     | [Factory Method](gof-factory-method.md)     | Criacao de objetos com regras que variam por tipo            | Quando voce quer remover if/switch de instanciacao e facilitar novos tipos         |
-| Estrutural     | [Adapter](gof-adapter.md)                   | Interfaces incompativeis entre sistema interno e API externa | Quando precisa integrar servicos legados ou terceiros sem contaminar o dominio     |
-| Estrutural     | [Decorator](gof-decorator.md)               | Combinacao dinamica de comportamentos sem explodir heranca   | Quando precisa empilhar regras opcionais (taxa, desconto, adicional)               |
-| Estrutural     | [Facade](gof-facade.md)                     | Fluxo de uso complexo com muitos servicos                    | Quando quer expor uma API simples para casos de uso de alto nivel                  |
-| Comportamental | [Strategy](gof-strategy.md)                 | Variacao de algoritmo/regra de negocio                       | Quando quer trocar comportamento em tempo de execucao sem alterar o contexto       |
-| Comportamental | [Observer](gof-observer.md)                 | Notificar varios interessados apos mudanca de estado         | Quando eventos de dominio precisam acionar multiplos destinos de forma desacoplada |
-| Comportamental | [Command](gof-command.md)                   | Encapsular acoes para historico, fila e desfazer             | Quando precisa separar invocacao de execucao e manter trilha de comandos           |
+| Criacional     | [Abstract Factory](abstract-factory/APOSTILA.md) | Criar familias de objetos relacionados e consistentes        | Quando voce precisa variar "kits" de objetos por canal, ambiente ou contexto       |
+| Criacional     | [Builder](builder/APOSTILA.md)                   | Montagem de objeto complexo com muitos campos opcionais      | Quando construtor longo e confuso comeca a prejudicar legibilidade                 |
+| Criacional     | [Factory Method](factory-method/APOSTILA.md)     | Criacao de objetos com regras que variam por tipo            | Quando voce quer remover if/switch de instanciacao e facilitar novos tipos         |
+| Estrutural     | [Adapter](adapter/APOSTILA.md)                   | Interfaces incompativeis entre sistema interno e API externa | Quando precisa integrar servicos legados ou terceiros sem contaminar o dominio     |
+| Estrutural     | [Decorator](decorator/APOSTILA.md)               | Combinacao dinamica de comportamentos sem explodir heranca   | Quando precisa empilhar regras opcionais (taxa, desconto, adicional)               |
+| Estrutural     | [Facade](facade/APOSTILA.md)                     | Fluxo de uso complexo com muitos servicos                    | Quando quer expor uma API simples para casos de uso de alto nivel                  |
+| Comportamental | [Strategy](strategy/APOSTILA.md)                 | Variacao de algoritmo/regra de negocio                       | Quando quer trocar comportamento em tempo de execucao sem alterar o contexto       |
+| Comportamental | [Observer](observer/APOSTILA.md)                 | Notificar varios interessados apos mudanca de estado         | Quando eventos de dominio precisam acionar multiplos destinos de forma desacoplada |
+| Comportamental | [Command](command/APOSTILA.md)                   | Encapsular acoes para historico, fila e desfazer             | Quando precisa separar invocacao de execucao e manter trilha de comandos           |
 
 ## Dominio da Feira Livre (base da apostila)
 

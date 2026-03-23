@@ -9,16 +9,16 @@ Objetivo:
 
 ## Estrutura da apostila
 
-- `introducao-gof.md`: visão geral, categorias e estratégia de estudo
-- `gof-abstract-factory.md`: criação de famílias de objetos relacionados
-- `gof-builder.md`: construção passo a passo de objetos complexos
-- `gof-factory-method.md`: criação de objetos com variação controlada
-- `gof-strategy.md`: troca de regras de negócio em tempo de execução
-- `gof-observer.md`: propagação de eventos entre objetos
-- `gof-command.md`: encapsulamento de ações com histórico de execução
-- `gof-decorator.md`: extensão de comportamento sem herança rígida
-- `gof-adapter.md`: integração com APIs incompatíveis
-- `gof-facade.md`: simplificação de fluxos complexos
+- [introducao-gof.md](introducao-gof.md): visão geral, categorias e estratégia de estudo
+- [factory-method/APOSTILA.md](factory-method/APOSTILA.md): criação de objetos com variação controlada
+- [builder/APOSTILA.md](builder/APOSTILA.md): construção passo a passo de objetos complexos
+- [abstract-factory/APOSTILA.md](abstract-factory/APOSTILA.md): criação de famílias de objetos relacionados
+- [adapter/APOSTILA.md](adapter/APOSTILA.md): integração com APIs incompatíveis
+- [decorator/APOSTILA.md](decorator/APOSTILA.md): extensão de comportamento sem herança rígida
+- [facade/APOSTILA.md](facade/APOSTILA.md): simplificação de fluxos complexos
+- [strategy/APOSTILA.md](strategy/APOSTILA.md): troca de regras de negócio em tempo de execução
+- [observer/APOSTILA.md](observer/APOSTILA.md): propagação de eventos entre objetos
+- [command/APOSTILA.md](command/APOSTILA.md): encapsulamento de ações com histórico de execução
 
 ## Sugestão de ordem de estudo
 
@@ -54,3 +54,39 @@ Sequencia recomendada dentro de cada categoria:
 - GOF oferece soluções reutilizáveis para problemas recorrentes de design.
 
 Em resumo: GRASP define "quem faz", SOLID mede qualidade, GOF oferece estruturas clássicas para implementar.
+
+---
+
+## Código e exercícios por padrão
+
+Cada padrão possui uma pasta com código Java compilável e a resolução dos exercícios.
+
+| Padrão | Apostila | Código | Exercícios |
+|---|---|---|---|
+| Factory Method | [APOSTILA.md](factory-method/APOSTILA.md) | [MainFactoryMethod.java](factory-method/MainFactoryMethod.java) | [RESOLUCAO](factory-method/RESOLUCAO-EXERCICIOS.md) |
+| Builder | [APOSTILA.md](builder/APOSTILA.md) | [MainBuilder.java](builder/MainBuilder.java) | [RESOLUCAO](builder/RESOLUCAO-EXERCICIOS.md) |
+| Abstract Factory | [APOSTILA.md](abstract-factory/APOSTILA.md) | [MainAbstractFactory.java](abstract-factory/MainAbstractFactory.java) | [RESOLUCAO](abstract-factory/RESOLUCAO-EXERCICIOS.md) |
+| Adapter | [APOSTILA.md](adapter/APOSTILA.md) | [MainAdapter.java](adapter/MainAdapter.java) | [RESOLUCAO](adapter/RESOLUCAO-EXERCICIOS.md) |
+| Decorator | [APOSTILA.md](decorator/APOSTILA.md) | [MainDecorator.java](decorator/MainDecorator.java) | [RESOLUCAO](decorator/RESOLUCAO-EXERCICIOS.md) |
+| Facade | [APOSTILA.md](facade/APOSTILA.md) | [MainFacade.java](facade/MainFacade.java) | [RESOLUCAO](facade/RESOLUCAO-EXERCICIOS.md) |
+| Strategy | [APOSTILA.md](strategy/APOSTILA.md) | [MainStrategy.java](strategy/MainStrategy.java) | [RESOLUCAO](strategy/RESOLUCAO-EXERCICIOS.md) |
+| Observer | [APOSTILA.md](observer/APOSTILA.md) | [MainObserver.java](observer/MainObserver.java) | [RESOLUCAO](observer/RESOLUCAO-EXERCICIOS.md) |
+| Command | [APOSTILA.md](command/APOSTILA.md) | [MainCommand.java](command/MainCommand.java) | [RESOLUCAO](command/RESOLUCAO-EXERCICIOS.md) |
+
+### Como compilar e executar cada padrão
+
+Todos os arquivos são independentes — não precisam de Maven nem de configuração.
+
+```bash
+# Exemplo: Factory Method
+cd apostilas-gof/factory-method
+javac MainFactoryMethod.java
+java MainFactoryMethod
+
+# Exemplo: Strategy
+cd apostilas-gof/strategy
+javac MainStrategy.java
+java MainStrategy
+```
+
+O mesmo padrão se aplica a todos os 9 padrões: `javac Main*.java && java Main*`.
