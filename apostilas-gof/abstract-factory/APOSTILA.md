@@ -7,6 +7,7 @@ Abstract Factory fornece uma interface para criar familias de objetos relacionad
 ## Problema
 
 Na feira, um mesmo fluxo de venda pode mudar conforme o canal:
+
 - Canal presencial: etiqueta simples, comprovante impresso, notificacao local.
 - Canal online: etiqueta com QR, comprovante digital, notificacao por e-mail.
 
@@ -220,6 +221,7 @@ public class MainAbstractFactory {
 ```
 
 Saída esperada:
+
 ```
 === Canal Presencial ===
 ETQ-PRESENCIAL | Queijo Minas | R$ 22,00
@@ -233,11 +235,13 @@ ETQ-ONLINE-QR | Mel Silvestre | R$ 35,00 | qr://feira/mel-silvestre
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Creator: cada fabrica concreta cria objetos da familia correspondente ao contexto.
 - Protected Variations: encapsula variacoes de canal (presencial/online) em um ponto estavel.
 - Indirection: `VendaFactory` atua como intermediario entre aplicacao e classes concretas.
 
 SOLID:
+
 - OCP: novos canais entram com nova fabrica concreta sem mudar o cliente.
 - DIP: o servico depende da abstracao `VendaFactory` e das interfaces de produto.
 - SRP: o servico finaliza venda; as fabricas cuidam da criacao consistente da familia.
@@ -251,9 +255,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Misturar objetos de familias diferentes no mesmo fluxo sem controle.
 
 Risco:
+
 - Criar familias complexas quando apenas um objeto varia.
 
 ## Exercicios

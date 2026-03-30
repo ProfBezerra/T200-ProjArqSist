@@ -4,9 +4,35 @@
 
 Builder separa a construcao de um objeto complexo de sua representacao final, permitindo montar o objeto passo a passo.
 
+## Aplicabilidade
+
+Use o padrão Builder quando:
+
+* o algoritmo para criação de um objeto complexo deve ser independente das partes que compõem o objeto e de como elas são montadas.
+* o processo de construção deve permitir diferentes representações para o objeto que é construído.
+
+## Estrutura
+
+![1774807803219](image/APOSTILA/1774807803219.png)
+
+## Participantes
+
+* Builder
+  * especifica uma interface abstrata para criação de partes de um objeto-produto.
+* ConcreteBuilder
+  * constrói e monta partes do produto pela implementação da interface de Builder;
+  * define e mantém a representação que cria;
+  * fornece uma interface para recuperação do produto
+* Director
+  * constrói um objeto usando a interface de Builder.
+* Product
+  * representa o objeto complexo em construção. ConcreteBuilder constrói a representação interna do produto e define o processo pelo qual ele é montado;
+  * inclui classes que definem as partes constituintes, inclusive as interfaces para a montagem das partes no resultado final.
+
 ## Problema
 
 Um pedido da feira pode ter muitos campos opcionais:
+
 - cliente
 - itens
 - observacao
@@ -230,6 +256,7 @@ public class MainBuilder {
 ```
 
 Saída esperada:
+
 ```
 Pedido{cliente='Maria', itens=[Tomate (R$ 4,50), Batata (R$ 3,00), Cebola (R$ 2,80)], entrega=ENTREGA, cupom='FEIRA10', obs='Sem sacola plastica'}
 Pedido{cliente='Joao', itens=[Alface (R$ 2,00)], entrega=RETIRADA, cupom='', obs=''}
@@ -239,11 +266,13 @@ Erro esperado: Cliente obrigatorio
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Creator: o `Builder` assume responsabilidade de montar `Pedido` com consistencia.
 - High Cohesion: validacoes de construcao ficam concentradas em `build()`.
 - Low Coupling: cliente nao depende de construtores complexos nem detalhes internos de `Pedido`.
 
 SOLID:
+
 - SRP: `Pedido` representa estado; `Builder` concentra processo de construcao/validacao.
 - OCP: novos campos opcionais podem ser adicionados por novos metodos fluentes.
 - ISP: cliente usa apenas operacoes de montagem necessarias para o caso de uso.
@@ -257,9 +286,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Usar Builder para objetos triviais com 2 campos.
 
 Risco:
+
 - Duplicar regra de validacao no Builder e em outros pontos.
 
 ## Exercicios

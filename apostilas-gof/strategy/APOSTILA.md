@@ -13,6 +13,26 @@ A feira pode ter regras diferentes de desconto:
 
 Sem Strategy, o calculo vira um bloco com muitos `if/else`.
 
+## Anti-exemplo: `if` / `switch`
+
+Exemplo sem `Strategy` (bloco de condicionais):
+
+```java
+public double totalComDescontoSemStrategy(double subtotal, int qtd, String tipoDesconto) {
+    if ("FREQUENTE".equals(tipoDesconto)) {
+        return subtotal * 0.95;
+    } else if ("VOLUME".equals(tipoDesconto) && qtd >= 10) {
+        return subtotal * 0.90;
+    } else if ("FIM_SEMANA".equals(tipoDesconto)) {
+        return subtotal * 0.85;
+    } else {
+        return subtotal;
+    }
+}
+```
+
+Problemas: cresce com novas regras, difícil de testar e manter; viola o princípio Open/Closed (OCP).
+
 ## Solucao
 
 Definir uma interface de estrategia e implementacoes para cada regra.

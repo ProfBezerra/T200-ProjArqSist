@@ -1,12 +1,41 @@
 # GOF - Factory Method (Feira Livre)
 
-## Definicao
+## Intenção
 
 Factory Method define uma interface para criacao de objetos, permitindo que subclasses ou classes especializadas decidam qual tipo concreto instanciar.
 
+## Também conhecido como
+
+Virtual Constructor
+
+## Aplicabilidade
+
+Use o padrão Factory Method quando:
+
+* uma classe não pode antecipar a classe de objetos que deve criam;
+* uma classe quer que suas subclasses especifiquem os objetos que criam;
+* classes delegam responsabilidade para uma dentre várias subclasses auxiliares, e você quer localizar o conhecimento de qual subclasse auxiliar que é a delegada.
+
+## Estrutura
+
+![1774805569758](image/APOSTILA/1774805569758.png)
+
+
+## Participantes
+
+* Product (Document)
+  * define a interface de objetos que o método fábrica cria.
+* ConcreteProduct (MyDocument)
+  * implementa a interface de Product.
+* Creator (Application)
+  * Declara o método fábrica, o qual retorna um objeto do tipo Product. Creator pode também definir uma implementação por omissão do método factory que retorna por omissão um objeto ConcreteProduct.
+  * Pode chamar o método factory para criar um objeto Product.
+* ConcreteCreator (MyApplication)
+  * Redefine o método-fábrica  para retornar a uma instância de um ConcreteProduct.
+
 ## Problema
 
-No cadastro da feira, produtos de tipos diferentes exigem validacoes diferentes.
+No cadastro da feira, produtos de tipos diferentes exigem validações diferentes.
 Sem padrao, o codigo costuma ficar com varios `if/else` para decidir qual classe criar.
 
 ## Solucao
