@@ -55,20 +55,6 @@ Ordem de estudo por categoria pura:
 2. Estruturais: [Adapter](adapter/APOSTILA.md), [Decorator](decorator/APOSTILA.md), [Facade](facade/APOSTILA.md)
 3. Comportamentais: [Strategy](strategy/APOSTILA.md), [Observer](observer/APOSTILA.md), [Command](command/APOSTILA.md)
 
-### **Ordem Recomendada (Padrões Fundamentais)**
-
-**Esta sequência começa pelos padrões de criação mais básicos, passa pelos estruturais essenciais e termina com os comportamentais mais utilizados em sistemas orientados a objetos.**
-
-* **Factory Method (Criação):** É o ponto de partida ideal, pois define uma interface para criar um objeto, mas deixa as subclasses decidirem a classe a ser instanciada.
-* **Abstract Factory (Criação):** Apresentado em seguida por ser uma evolução natural, fornecendo uma interface para criar famílias de objetos relacionados sem especificar suas classes concretas
-* **Singleton (Criação):** Fecha o bloco de criação garantindo que uma classe tenha apenas uma instância e fornecendo um ponto de acesso global, sendo comumente usado para implementar as fábricas mencionadas anteriormente
-* **Adapter (Estrutural):** Inicia o bloco estrutural por sua simplicidade, permitindo que classes com interfaces incompatíveis trabalhem juntas.
-* **Composite (Estrutural):** Essencial para representar hierarquias do tipo partes-todo, permitindo tratar objetos individuais e composições de maneira uniforme.
-* **Decorator (Estrutural):** Complementa o Composite ao mostrar como adicionar responsabilidades a um objeto dinamicamente, sendo uma alternativa flexível ao uso de subclasses.
-* **Strategy (Comportamental):** Abre o bloco comportamental definindo uma família de algoritmos e tornando-os intercambiáveis.
-* **Template Method (Comportamental):** Frequentemente comparado ao Strategy, ele define o esqueleto de um algoritmo em uma operação, postergando alguns passos para subclasses.
-* **Observer (Comportamental):** Finaliza a apresentação com um padrão crucial para o desacoplamento, definindo uma dependência onde, quando um objeto muda de estado, todos os seus dependentes são notificados.
-
 Resumo rapido para decisao:
 
 | Grupo          | Padrao                                        | Problema tipico                                              | Quando usar                                                                        |

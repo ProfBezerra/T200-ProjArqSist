@@ -20,7 +20,6 @@ Use o padrão Factory Method quando:
 
 ![1774805569758](image/APOSTILA/1774805569758.png)
 
-
 ## Participantes
 
 * Product (Document)

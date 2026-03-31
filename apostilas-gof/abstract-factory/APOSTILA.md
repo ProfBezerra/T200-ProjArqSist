@@ -4,6 +4,23 @@
 
 Abstract Factory fornece uma interface para criar familias de objetos relacionados sem expor classes concretas.
 
+## **Também conhecido como**
+
+Kit
+
+## **Aplicabilidade**
+
+Use o padrão Abstract Factory quando:
+
+* um sistema deve ser independente de como seus produtos são criados,compostos ou representados;
+* um sistema deve ser configurado como um produto de uma família de múltiplos produtos;
+* uma família de objetos-produto for projetada para ser usada em conjunto, e você necessita garantir esta restrição;
+* você quer fornecer uma biblioteca de classes de produtos e quer revelar somente suas interfaces, não suas implementações.
+
+## Estrututa
+
+![1774979581798](image/APOSTILA/1774979581798.png)
+
 ## Problema
 
 Na feira, um mesmo fluxo de venda pode mudar conforme o canal:
