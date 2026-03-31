@@ -36,8 +36,8 @@ Padroes desta apostila organizados por grupo:
 - Criacionais:
 
   - [Factory Method](factory-method/APOSTILA.md)
-  - [Builder](builder/APOSTILA.md)
   - [Abstract Factory](abstract-factory/APOSTILA.md)
+  - [Builder](builder/APOSTILA.md)
 - Estruturais:
 
   - [Adapter](adapter/APOSTILA.md)
