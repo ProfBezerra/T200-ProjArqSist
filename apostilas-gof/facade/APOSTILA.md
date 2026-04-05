@@ -4,9 +4,32 @@
 
 Facade fornece uma interface unificada e simples para um subsistema mais complexo.
 
+## Aplicabilidade
+
+Use o padrão Façade quando:
+
+* você desejar fornecer uma interface simples para um subsistema complexo. Os subsistemas se tornam mais complexos à medida que evoluem. A maioria dos padrões, quando aplicados, resulta em mais e menores classes. Isso torna o subsistema mais reutilizável e mais fácil de customizar, porém, também se torna mais difícil de usar para os clientes que não precisam customizá-lo. Uma fachada pode fornecer, por comportamento-padrão, uma visão simples do sistema, que é boa o suficiente para a maioria dos clientes. Somente os clientes que demandarem maior customização necessitarão olhar além da fachada;
+* existirem muitas dependências entre clientes e classes de implementação de uma abstração. Ao introduzir uma fachada para desacoplar o subsistema dos clientes e de outros subsistemas, estar-se-á promovendo a independência e portabilidade dos subsistemas.
+* você desejar estruturar seus subsistemas em camadas. Use uma fachada para definir o ponto de entrada para cada nível de subsistema. Se os subsistemas são independentes, você pode simplificar as dependências entre eles fazendo com que se comuniquem uns com os outros exclusivamente através das suas fachadas.
+
+**Estrutura**
+
+![1775414085785](image/APOSTILA/1775414085785.png)
+
+## Participantes
+
+* **Façade (Compiler)**
+  * conhece quais as classes do subsistema são responsáveis pelo atendimento de uma solicitação;
+  * delega solicitações de clientes a objetos apropriados do subsistema.
+* **Classes de subsistema (Scanner, Parser, ProgramNode, etc.)**
+  * implementam a funcionalidade do subsistema;
+  * encarregam-se do trabalho atribuído a elas pelo objeto Façade;
+  * não têm conhecimento da façade; isto é, não mantêm referências para a mesma.
+
 ## Problema
 
 Fechar pedido pode envolver varias etapas:
+
 - validar estoque
 - calcular total
 - reservar itens
@@ -201,6 +224,7 @@ public class MainFacade {
 ```
 
 Saída esperada:
+
 ```
 === Pedido normal ===
 [ESTOQUE] Validando disponibilidade para pedido PED-001
@@ -222,11 +246,13 @@ Saída esperada:
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Controller: a fachada pode atuar como coordenadora de caso de uso.
 - Indirection: reduz contato direto do cliente com varios subsistemas.
 - Low Coupling: camada de aplicacao passa a depender de uma interface simplificada.
 
 SOLID:
+
 - SRP: cliente executa caso de uso; fachada orquestra; servicos mantem regras especificas.
 - DIP: cliente depende da fachada/abstracao, nao de todos os servicos internos.
 - ISP: oferece interface enxuta para operacoes de alto nivel.
@@ -240,9 +266,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Facade virando "classe deus" com toda regra de negocio.
 
 Risco:
+
 - Esconder erros importantes sem retorno adequado.
 
 ## Exercicios
