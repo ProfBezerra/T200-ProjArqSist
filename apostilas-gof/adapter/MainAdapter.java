@@ -43,6 +43,21 @@ class ApiPagamentoExterna {
     }
 }
 
+class TradutorStatusPagamento {
+    static ResultadoPagamento traduzir(int status) {
+        switch (status) {
+            case 200:
+                return new ResultadoPagamento(true, 200, "Pagamento aprovado");
+            case 402:
+                return new ResultadoPagamento(false, 402, "Saldo insuficiente");
+            case 500:
+                return new ResultadoPagamento(false, 500, "Erro interno da API");
+            default:
+                return new ResultadoPagamento(false, status, "Resposta desconhecida");
+        }
+    }
+}
+
 // ── adapter principal ─────────────────────────────────────────────────────────
 
 class GatewayPagamentoAdapter implements GatewayPagamento {
@@ -55,12 +70,17 @@ class GatewayPagamentoAdapter implements GatewayPagamento {
     @Override
     public ResultadoPagamento cobrar(String pedidoId, double valor) {
         int status = apiExterna.efetuarCobranca(pedidoId, valor);
-        return switch (status) {
-            case 200 -> new ResultadoPagamento(true,  200, "Pagamento aprovado");
-            case 402 -> new ResultadoPagamento(false, 402, "Saldo insuficiente");
-            case 500 -> new ResultadoPagamento(false, 500, "Erro interno da API");
-            default  -> new ResultadoPagamento(false, status, "Resposta desconhecida");
-        };
+        return TradutorStatusPagamento.traduzir(status);
+    }
+}
+
+// ── adapter de classe: herda da API externa e adapta para o dominio ─────────
+
+class GatewayPagamentoClassAdapter extends ApiPagamentoExterna implements GatewayPagamento {
+    @Override
+    public ResultadoPagamento cobrar(String pedidoId, double valor) {
+        int status = efetuarCobranca(pedidoId, valor);
+        return TradutorStatusPagamento.traduzir(status);
     }
 }
 
@@ -110,16 +130,22 @@ class PagamentoService {
 
 public class MainAdapter {
     public static void main(String[] args) {
-        System.out.println("=== API Principal ===");
+        System.out.println("=== Adapter de Objeto ===");
         PagamentoService svc1 = new PagamentoService(
             new GatewayPagamentoAdapter(new ApiPagamentoExterna()));
         svc1.processar("PED-001", 145.90);
         svc1.processar("PED-002", 1500.00);
 
-        System.out.println("\n=== API Alternativa ===");
+        System.out.println("\n=== Adapter de Classe ===");
+        PagamentoService svcClasse = new PagamentoService(
+            new GatewayPagamentoClassAdapter());
+        svcClasse.processar("PED-003", 199.90);
+        svcClasse.processar("PED-004", -1.00);
+
+        System.out.println("\n=== Provedor Alternativo ===");
         PagamentoService svc2 = new PagamentoService(
             new GatewayAlternativoAdapter(new ApiPagamentoAlternativa()));
-        svc2.processar("PED-003", 299.00);
-        svc2.processar("PED-004", 750.00);
+        svc2.processar("PED-005", 299.00);
+        svc2.processar("PED-006", 750.00);
     }
 }
