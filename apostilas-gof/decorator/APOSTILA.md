@@ -4,9 +4,39 @@
 
 Decorator adiciona responsabilidades a objetos dinamicamente, sem alterar a classe original e sem depender de heranca extensa.
 
+## Também Conhecido Como
+
+Wrapper
+
+## Aplicabilidade
+
+Use Decorator:
+
+* para acrescentar responsabilidades a objetos individuais de forma dinâmica e transparente, ou seja, sem afetar outros objetos;
+* para responsabilidades que podem ser removidas;
+* quando a extensão através do uso de subclasses não é prática. Às vezes, um grande número de extensões independentes é possível e isso poderia produzir uma explosão de subclasses para suportar cada combinação. Ou a definição de uma classe pode estar oculta ou não estar disponível para a utilização de subclasses
+
+## Estrutura
+
+![1775412933043](image/APOSTILA/1775412933043.png)
+
+
+
+# Participantes
+
+* **Component (VisualComponent)**
+  * define a interface para objetos que podem ter responsabilidades acrescentadas aos mesmos dinamicamente.
+* **ConcreteComponent(TextView)**
+  * define um objeto para o qual responsabilidades adicionais podem ser atribuídas.
+* **Decorator**
+  * mantém uma referência para um objeto Component e define uma interface que segue a interface de component.
+* **ConcreteDecorator (BorderDecorator, ScrollDecorator)**
+  * acrescenta responsabilidades ao componente.
+
 ## Problema
 
 No fechamento do pedido, podem existir composicoes de acrescimos e descontos:
+
 - taxa de embalagem
 - desconto promocional
 - taxa de entrega especial
@@ -217,6 +247,7 @@ public class MainDecorator {
 ```
 
 Saída esperada:
+
 ```
 --- Sem adicional
     Composicao : Valor base
@@ -242,11 +273,13 @@ Saída esperada:
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Polymorphism: cada decorador altera comportamento via mesma interface.
 - Low Coupling: cliente depende de `CalculadorValorPedido`, nao de combinacoes concretas.
 - High Cohesion: cada decorador adiciona uma unica regra (taxa, desconto, etc.).
 
 SOLID:
+
 - OCP: novas regras entram por novos decoradores, sem editar os existentes.
 - SRP: cada decorador possui responsabilidade unica e focal.
 - DIP: composicao baseada em abstracao (`CalculadorValorPedido`).
@@ -260,9 +293,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Decoradores com estado global oculto.
 
 Risco:
+
 - Cadeias longas demais dificultando rastreabilidade.
 
 ## Exercicios
