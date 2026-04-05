@@ -49,14 +49,37 @@ Criar um builder para montar `Pedido` de forma legivel e segura.
 
 ```mermaid
 classDiagram
-    class Pedido {
+    class Cliente {
+        +solicitarConstrucao()
+    }
+    class Director {
+        +cestaSemanal(cliente) Product
+    }
+    class Builder {
+        <<interface>>
+        +cliente(cliente)
+        +adicionarItem(item)
+        +observacao(obs)
+        +tipoEntrega(tipo)
+        +cupom(cupom)
+        +build() Product
+    }
+    class ConcreteBuilder {
         -cliente: String
         -itens: List~String~
         -observacao: String
         -tipoEntrega: String
         -cupom: String
+        +build() Product
+    }
+    class Product {
+        <<Pedido>>
+    }
+    class PedidoDiretor {
+        +cestaSemanal(cliente) Pedido
     }
     class PedidoBuilder {
+        <<ConcreteBuilder>>
         +cliente(cliente) PedidoBuilder
         +adicionarItem(item) PedidoBuilder
         +observacao(obs) PedidoBuilder
@@ -64,9 +87,27 @@ classDiagram
         +cupom(cupom) PedidoBuilder
         +build() Pedido
     }
+    class Pedido {
+        -cliente: String
+        -itens: List~String~
+        -observacao: String
+        -tipoEntrega: String
+        -cupom: String
+    }
 
+    Cliente --> Director : pode usar
+    Cliente --> Builder : pode usar direto
+    Director --> Builder : define passos
+    ConcreteBuilder ..|> Builder
+    ConcreteBuilder --> Product : constroi
+
+    PedidoDiretor ..> PedidoBuilder : orquestra
     PedidoBuilder ..> Pedido : constroi
 ```
+
+No diagrama classico, o `Director` organiza a sequencia de montagem, o `Builder` define os passos, o `ConcreteBuilder` implementa esses passos e o `Product` e o objeto final. No codigo desta apostila, isso foi adaptado assim: `PedidoDiretor` faz o papel de `Director`, `Pedido.Builder` faz o papel de `ConcreteBuilder`, e `Pedido` e o `Product`.
+
+Neste material, o `Director` continua opcional. Em exemplos modernos com builder fluente, muitas vezes o proprio cliente encadeia os passos e acaba assumindo esse papel. Quando queremos encapsular uma receita de montagem reutilizavel, criamos um director explicito.
 
 ## Exemplo
 
@@ -144,6 +185,8 @@ Pedido pedido = new Pedido.Builder()
     .tipoEntrega("ENTREGA")
     .observacao("Sem sacola plastica")
     .build();
+
+Pedido cesta = PedidoDiretor.cestaSemanal("Ana");
 ```
 
 ## Código completo
@@ -219,6 +262,23 @@ class Pedido {
     }
 }
 
+// ── diretor: monta pedidos padrao ───────────────────────────────────────
+
+class PedidoDiretor {
+    static Pedido cestaSemanal(String cliente) {
+        return new Pedido.Builder()
+            .cliente(cliente)
+            .adicionarItem(new ItemPedido("Tomate", 4.50))
+            .adicionarItem(new ItemPedido("Alface", 2.00))
+            .adicionarItem(new ItemPedido("Batata", 3.00))
+            .adicionarItem(new ItemPedido("Cebola", 2.80))
+            .adicionarItem(new ItemPedido("Cenoura", 3.20))
+            .tipoEntrega("ENTREGA")
+            .observacao("Cesta semanal padrao")
+            .build();
+    }
+}
+
 // ── demonstracao ──────────────────────────────────────────────────────────
 
 public class MainBuilder {
@@ -243,6 +303,9 @@ public class MainBuilder {
 
         System.out.println(pedidoSimples);
 
+        Pedido cesta = PedidoDiretor.cestaSemanal("Ana");
+        System.out.println(cesta);
+
         // tentativa invalida (sem cliente) - captura excecao esperada
         try {
             new Pedido.Builder()
@@ -260,6 +323,7 @@ Saída esperada:
 ```
 Pedido{cliente='Maria', itens=[Tomate (R$ 4,50), Batata (R$ 3,00), Cebola (R$ 2,80)], entrega=ENTREGA, cupom='FEIRA10', obs='Sem sacola plastica'}
 Pedido{cliente='Joao', itens=[Alface (R$ 2,00)], entrega=RETIRADA, cupom='', obs=''}
+Pedido{cliente='Ana', itens=[Tomate (R$ 4,50), Alface (R$ 2,00), Batata (R$ 3,00), Cebola (R$ 2,80), Cenoura (R$ 3,20)], entrega=ENTREGA, cupom='', obs='Cesta semanal padrao'}
 Erro esperado: Cliente obrigatorio
 ```
 
@@ -296,8 +360,7 @@ Risco:
 ## Exercicios
 
 1. Incluir validacao de cupom no `build()`.
-2. Criar `PedidoDiretor` para montar um pedido padrao de cesta semanal.
-3. Escrever teste para validar erro quando nao houver itens.
+2. Escrever teste para validar erro quando nao houver itens.
 
 ## Checklist
 
