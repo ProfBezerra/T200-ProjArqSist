@@ -4,9 +4,38 @@
 
 Strategy encapsula algoritmos em classes separadas e permite trocar o comportamento em tempo de execucao.
 
+## Também conhecido como
+
+Policy
+
+## Aplicabilidade
+
+Use o padrão Strategy quando:
+
+* muitas classes relacionadas diferem somente no seu comportamento. As estratégias fornecem uma maneira de configurar uma classe com um dentre muitos comportamentos;
+* você necessita de variantes de um algoritmo. Por exemplo, pode definir algoritmos que refletem diferentes soluções de compromisso entre espaço/ tempo. As estratégias podem ser usadas quando essas variantes são implementadas como uma hierarquia de classes de algoritmos.
+* um algoritmo usa dados dos quais os clientes não deveriam ter conhecimento. Use o padrão Strategy para evitar a exposição das estruturas de dados complexas, específicas do algoritmo;
+* uma classe define muitos comportamentos, e estes aparecem em suas opera- ções como múltiplos comandos condicionais da linguagem. Em vez de usar muitos comandos condicionais, mova os ramos condicionais relacionados para a sua própria classe Strategy.
+
+## Estrutura
+
+![1775414976350](image/APOSTILA/1775414976350.png)
+
+## Participantes
+
+* **Strategy**(Compositor)
+  * define uma interface comum para todos os algoritmos suportados. Context usa esta interface para chamar o algoritmo definido por uma ConcreteStrategy.
+* **ConcreteStrategy (SimpleCompositor, TeXCompositor, ArrayCompositor)**
+  * implementa o algoritmo usando a interface de Strategy.
+* **Context (Composition)**
+  * é configurado com um objeto ConcreteStrategy;
+  * mantém uma referência para um objeto Strategy;
+  * pode definir uma interface que permite a Strategy acessar seus dados.
+
 ## Problema
 
 A feira pode ter regras diferentes de desconto:
+
 - desconto por cliente frequente
 - desconto por volume de itens
 - sem desconto
@@ -199,6 +228,7 @@ public class MainStrategy {
 ```
 
 Saída esperada:
+
 ```
 Regra: Sem desconto                      | Itens:  5 | Subtotal: R$  120,00 | Total: R$  120,00
 Regra: Cliente frequente (5%)            | Itens:  5 | Subtotal: R$  120,00 | Total: R$  114,00
@@ -210,11 +240,13 @@ Regra: Feira fim de semana (15%)         | Itens:  3 | Subtotal: R$  120,00 | To
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Polymorphism: variacoes de regra sao tratadas por classes concretas da mesma interface.
 - Protected Variations: mudancas em algoritmos de desconto ficam isoladas nas estrategias.
 - High Cohesion: cada classe de estrategia implementa uma regra de negocio especifica.
 
 SOLID:
+
 - OCP: novas regras entram como novas estrategias.
 - DIP: contexto depende de `RegraDesconto`, nao de implementacoes concretas.
 - SRP: contexto calcula fluxo; estrategia calcula regra.
@@ -228,9 +260,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Contexto que conhece detalhes internos de todas as estrategias.
 
 Risco:
+
 - Criar estrategia para regra que nunca muda.
 
 ## Exercicios

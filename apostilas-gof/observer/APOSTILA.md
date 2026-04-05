@@ -4,9 +4,41 @@
 
 Observer define uma dependencia um-para-muitos entre objetos. Quando o objeto observado muda de estado, todos os observadores cadastrados sao notificados.
 
+## Também conhecido como
+
+Dependents, Publish-Subscribe
+
+## Aplicabilidade
+
+Use o padrão Observer em qualquer uma das seguintes situações:
+
+* quando uma abstração tem dois aspectos, um dependente do outro. Encapsulando esses aspectos em objetos separados, permite-se variá-los e reutilizá-los independentemente;
+* quando uma mudança em um objeto exige mudanças em outros, e você não sabe quantos objetos necessitam ser mudados;
+* quando um objeto deveria ser capaz de notificar outros objetos sem fazer hipóteses, ou usar informações, sobre quem são esses objetos. Em outras palavras, você não quer que esses objetos sejam fortemente acoplados.
+
+## Estrutura
+
+![1775415335537](image/APOSTILA/1775415335537.png)
+
+## Participantes
+
+* **Subject**
+  * conhece os seus observadores. Um número qualquer de objetos Observer pode observar um subject.
+  * fornece uma interface para acrescentar e remover objetos, permitindo associar e desassociar objetos observer.
+* **Observer**
+  * define uma interface de atualização para objetos que deveriam ser notificados sobre mudanças em um Subject.
+* **ConcreteSubject**
+  * armazena estados de interesse para objetos ConcreteObserver.
+  * envia uma notificação para os seus observadores quando seu estado muda.
+* **ConcreteObserver**
+  * mantém uma referência para um objeto ConcreteSubject.
+  * armazena estados que deveriam permanecer consistentes com os do Subject.
+  * implementa a interface de atualização de Observer, para manter seu estado consistente com o do subject.
+
 ## Problema
 
 Quando o preco de um produto muda, a feira pode precisar:
+
 - atualizar painel interno
 - avisar cliente assinante
 - registrar log de auditoria
@@ -195,6 +227,7 @@ public class MainObserver {
 ```
 
 Saída esperada:
+
 ```
 === Aumento de preco ===
 [EMAIL -> maria@email.com] Tomate: R$ 4,50 -> R$ 5,80
@@ -216,11 +249,13 @@ Saída esperada:
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Low Coupling: observado nao depende de implementacoes concretas de notificacao.
 - Indirection: interface de observador intermedia origem do evento e consumidores.
 - Protected Variations: novos destinos de notificacao entram sem alterar o observado.
 
 SOLID:
+
 - OCP: adicionar novo observador nao exige mudar `Produto`.
 - DIP: `Produto` depende da abstracao `ObservadorPreco`.
 - SRP: `Produto` gerencia estado e evento; cada observador trata uma acao especifica.
@@ -234,9 +269,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Observer com efeito colateral oculto em excesso.
 
 Risco:
+
 - Ciclos de notificacao e ordem de execucao nao controlada.
 
 ## Exercicios
