@@ -4,9 +4,43 @@
 
 Command encapsula uma requisicao como objeto, permitindo parametrizar acoes, enfileirar execucoes e implementar desfazer/refazer.
 
+## Também conhecido como
+
+Action, Transaction
+
+## Aplicabilidade
+
+Use o padrão Command quando você deseja:
+
+* parametrizar objetos por uma ação a ser executada, da forma como os objetos MenuItem fizeram acima. Você pode expressar tal parametrização numa linguagem procedural através de uma função callback, ou seja, uma função que é registrada em algum lugar para ser chamada em um momento mais adiante. Os Commands são uma substituição orientada o objetos para callbacks;
+* especificar, enfileirar e executar solicitações em tempos diferentes. Um objeto Command pode ter um tempo de vida independente da solicitação orginal. Se o receptor de uma solicitação pode ser representado de uma maneira independente do espaço de endereçamento, então você pode transferir um objeto command para a solicitação para um processo diferente e lá atender a solicitação;
+* suportar desfazer operações. A operação Execute, de Command, pode armazenar estados para reverter seus efeitos no próprio comando. A interface de Command deve ter acrescentada uma operação Unexecute, que reverte os efeitos de uma chamada anterior de Execute. Os comandos executados são armazenados em uma lista histórica. O nível ilimitado de desfazer e refazer operações é obtido percorrendo esta lista para trás e para frente, chamando operações Unexecute e Execute, respectivamente;
+* suportar o registro (logging) de mudanças de maneira que possam ser reaplicadas no caso de uma queda de sistema. Ao aumentar a interface de Command com as operações carregar e armazenar, você pode manter um registro (log) persistente das mudanças. A recuperação de uma queda de sistema envolve a recarga dos comandos registrados a partir do disco e sua reexecução com a operação Execute.
+* estruturar um sistema em torno de operações de alto nível construídas sobre operações primitivas. Tal estrutura é comum em sistemas de informação que suportam **transações**. Uma transação encapsula um conjunto de mudanças nos dados. O padrão Command fornece uma maneira de modelar transações. Os Commands têm uma interface comum, permitindo invocar todas as transações da mesma maneira. O padrão também torna mais fácil estender o sistema com novas transações.
+
+## **Estrutura**
+
+![1775415643908](image/APOSTILA/1775415643908.png)
+
+
+## Participantes
+
+* **Command**
+  * declara uma interface para a execução de uma operação.
+* **ConcreteCommand (PasteCommand, OpenCommand)**
+  * define uma vinculação entre um objeto Receiver e uma ação;
+  * implementa Execute através da invocação da(s) correspondente(s) operação(ões) no Receiver.
+* **Client**(Application)
+  * cria um objeto ConcreteCommand e estabelece o seu receptor.
+* **Invoker (MenuItem)**
+  * solicita ao Command a execução da solicitação.
+* **Receiver (Document, Application)**
+  * sabe como executar as operações associadas a uma solicitação. Qualquer classe pode funcionar como um Receiver.
+
 ## Problema
 
 No caixa da feira, operacoes como:
+
 - adicionar item
 - remover item
 - aplicar desconto
@@ -262,6 +296,7 @@ public class MainCommand {
 ```
 
 Saída esperada:
+
 ```
 === Adicionando itens ===
   [CAIXA] + Tomate               R$ 4,50  (total provisorio: R$ 4,50)
@@ -292,11 +327,13 @@ Total final da caixa: R$ 8,30
 ## Relacao com GRASP e SOLID
 
 GRASP:
+
 - Controller: invocador coordena execucao de comandos sem conhecer regra interna.
 - Indirection: comando separa solicitacao da acao concreta no receptor.
 - High Cohesion: cada comando representa uma acao unica com sua reversao.
 
 SOLID:
+
 - OCP: novas acoes entram com novos comandos.
 - SRP: invocador controla historico; comando executa/desfaz; receptor aplica regra.
 - DIP: invocador depende da interface `Comando`.
@@ -310,9 +347,11 @@ SOLID:
 ## Riscos e anti-exemplo
 
 Anti-exemplo:
+
 - Criar comandos gigantes com regras demais.
 
 Risco:
+
 - Grande numero de classes sem padrao de organizacao.
 
 ## Exercicios
