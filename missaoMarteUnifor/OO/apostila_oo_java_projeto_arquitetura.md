@@ -799,3 +799,24 @@ Ela é o **alicerce de toda a disciplina de Projeto e Arquitetura de Sistemas**.
 - FOWLER, Martin. *UML Essencial*.
 
 ---
+
+## 20. Exemplo prático: Missão Marte — código fonte (console)
+
+Para facilitar a aplicação dos conceitos de OO apresentados nesta apostila, incluímos um exemplo prático minimalista em Java que implementa as entidades básicas do projeto Missão Marte (`Nave`, `Piloto`, `Professor`, `Engenheiro`, `Asteroide`, `Missao`) e um jogo em console com movimentação, embarque de passageiros e pontuação.
+
+Path do exemplo: `missaoMarteUnifor/oo-console`
+
+Instruções rápidas para compilar e executar (a partir da raiz do repositório):
+
+```bash
+javac -d out missaoMarteUnifor/oo-console/src/missao/*.java
+java -cp out missao.Main
+```
+
+O código é propositalmente simples para servir como ponto de partida para refatoração com SOLID, aplicação de GRASP e inclusão de padrões de projeto nas próximas semanas. Recomenda-se que as equipes:
+
+- Forkem/clone o exemplo como skeleton
+- Implementem testes unitários simples
+- Refatorarem usando interfaces para dependências
+- Adicionem logging (POA) e persistência mínima quando trabalharem em Spring Boot
+
