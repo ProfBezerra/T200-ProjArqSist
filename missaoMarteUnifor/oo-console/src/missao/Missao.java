@@ -13,6 +13,18 @@ public class Missao {
         this.nave = nave;
     }
 
+    public Nave getNave() {
+        return nave;
+    }
+
+    public java.util.List<Passageiro> getPassageiros() {
+        return passageiros;
+    }
+
+    public java.util.List<Asteroide> getAsteroides() {
+        return asteroides;
+    }
+
     public void addPassageiro(Passageiro p) { passageiros.add(p); }
     public void addAsteroide(Asteroide a) { asteroides.add(a); }
 

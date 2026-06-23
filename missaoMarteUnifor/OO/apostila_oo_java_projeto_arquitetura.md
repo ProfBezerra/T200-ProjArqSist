@@ -3,7 +3,7 @@
 ![OO em Java](assets/common/oo-banner.svg)
 
 **Disciplina:** Projeto e Arquitetura de Sistemas
-**Objetivo:** Fornecer base conceitual sólida de Orientação a Objetos (OO) e introduzir o projeto “Feira Livre”, destacando as características de OO aplicadas ao domínio (encapsulamento, abstração, composição, herança e polimorfismo), além de acoplamento e coesão como fundamentos da arquitetura de software.
+**Objetivo:** Fornecer base conceitual sólida de Orientação a Objetos (OO) e introduzir o projeto “Missão Marte Unifor”, destacando as características de OO aplicadas ao domínio (encapsulamento, abstração, composição, herança e polimorfismo), além de acoplamento e coesão como fundamentos da arquitetura de software.
 
 ---
 
@@ -28,41 +28,55 @@ Diferente da programação procedural, onde o foco está em funções e processo
 - **Objeto:** é uma instância concreta de uma classe.
 - **Referência:** o “endereço”/ponteiro lógico que aponta para um objeto.
 
-Exemplo conceitual (domínio da feira):
+Exemplo conceitual (domínio do jogo Missão Marte):
 
-- Classe: `Feirante`
-- Objetos: João, Maria, Ana
-- Referência: joao, maria,  ana
+- Classe: `Nave`
+- Objetos: A-1, B-2, C-3
+- Referência: naveA, naveB, naveC
 
 Em Java:
 
 ```java
-public class Feirante {
-    private String nome;
+public class Nave {
+    private String id;
+    private int x;
+    private int y;
 }
 ```
 
 Exemplo de criação de objetos (instanciação):
 
 ```java
-public class Feirante {
-    private String nome;
+public class Nave {
+    private String id;
+    private int x;
+    private int y;
 
-    public Feirante(String nome) {
-        this.nome = nome;
+    public Nave(String id) {
+        this.id = id;
+        this.x = 0;
+        this.y = 0;
     }
 
-    public String getNome() {
-        return nome;
+    public String getId() {
+        return id;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
 
-// Criando objetos (instâncias) da classe Feirante
-Feirante joao = new Feirante("João");
-Feirante maria = new Feirante("Maria");
-Feirante ana = new Feirante("Ana");
+// Criando objetos (instâncias) da classe Nave
+Nave naveA = new Nave("A-1");
+Nave naveB = naveA;
+Nave naveC = new Nave("B-2");
 
-System.out.println(joao.getNome()); // "João"
+System.out.println(naveA == naveB); // true (mesmo objeto)
 ```
 
 ### Referência em Java (JDK 21)
@@ -81,29 +95,29 @@ Exemplo ilustrativo:
 
 ```java
 
-Produto a = new Produto("Banana", 5.0);
-Produto b = a;              // b recebe a MESMA referência de a
+Nave a = new Nave("A-1");
+Nave b = a;              // b recebe a MESMA referência de a
 
 System.out.println(a == b); // true (mesmo objeto)
 
 // Alterar via b reflete em a, pois é o mesmo objeto
-// (supondo um setPreco válido)
-// b.setPreco(6.0);
-// System.out.println(a.getPreco()); // 6.0
+// (supondo um moveRight válido)
+// b.moveRight();
+// System.out.println(a.getX()); // 1
 
 // equals() pode ser diferente de == caso a classe compare conteúdo
-Produto c = new Produto("Banana", 5.0);
+Nave c = new Nave("B-2");
 System.out.println(a == c);      // false (referências diferentes)
 System.out.println(a.equals(c)); // true/false depende da implementação de equals()
 
 // Parâmetro: valor passado é a referência
-ajustarPreco(a);
+ajustarCoordenada(a);
 
-void ajustarPreco(Produto p) {
-        // p referencia o MESMO objeto que a
-        // p.setPreco(5.5); // afeta o objeto compartilhado
+void ajustarCoordenada(Nave n) {
+        // n referencia o MESMO objeto que a
+        // n.moveRight(); // afeta o objeto compartilhado
 
-        // p = new Produto("Uva", 8.0); // reatribuir p NÃO muda a referência do chamador
+        // n = new Nave("C-3"); // reatribuir n NÃO muda a referência do chamador
 }
 ```
 
@@ -127,8 +141,8 @@ graph LR
     C -->|referência| P
 
     %% Observações:
-    %% - a e b apontam para o MESMO objeto (Produto #1)
-    %% - c aponta para outro objeto (Produto #2)
+    %% - a e b apontam para o MESMO objeto (Nave #1)
+    %% - c aponta para outro objeto (Nave #2)
 ```
 
 Este diagrama mostra que variáveis (`a`, `b`, `c`) guardam **referências** na pilha (Stack), enquanto os **objetos** vivem no Heap. Quando duas variáveis apontam para o mesmo nó no Heap, operações via qualquer uma delas afetam o mesmo objeto.
@@ -148,17 +162,27 @@ Uma classe em Java normalmente contém:
 Exemplo:
 
 ```java
-public class Produto {
-    private String nome;
-    private double preco;
+public class Nave {
+    private String id;
+    private int x;
+    private int y;
 
-    public Produto(String nome, double preco) {
-        this.nome = nome;
-        this.preco = preco;
+    public Nave(String id) {
+        this.id = id;
+        this.x = 0;
+        this.y = 0;
     }
 
-    public double getPreco() {
-        return preco;
+    public String getId() {
+        return id;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
 ```
@@ -184,36 +208,32 @@ Benefícios:
 Exemplo em Java (encapsulamento com validação):
 
 ```java
-public class Produto {
-    private String nome;
-    private double preco;
+public class Nave {
+    private String id;
+    private int capacidade;
 
-    public Produto(String nome, double preco) {
-        this.nome = nome;
-        setPreco(preco);
+    public Nave(String id, int capacidade) {
+        this.id = id;
+        setCapacidade(capacidade);
     }
 
-    public String getNome() {
-        return nome;
+    public String getId() {
+        return id;
     }
 
-    public double getPreco() {
-        return preco;
+    public int getCapacidade() {
+        return capacidade;
     }
 
-    public void setPreco(double preco) {
-        if (preco < 0) {
-            throw new IllegalArgumentException("Preço não pode ser negativo");
+    public void setCapacidade(int capacidade) {
+        if (capacidade < 0) {
+            throw new IllegalArgumentException("Capacidade não pode ser negativa");
         }
-        this.preco = preco;
+        this.capacidade = capacidade;
     }
 
-    public double aplicarDesconto(double percentual) {
-        // Regra encapsulada: desconto máximo de 50%
-        if (percentual < 0 || percentual > 0.5) {
-            throw new IllegalArgumentException("Percentual inválido");
-        }
-        return this.preco * (1 - percentual);
+    public boolean podeEmbarcar(int passageirosAtuais) {
+        return passageirosAtuais < capacidade;
     }
 }
 ```
@@ -226,8 +246,8 @@ Abstração consiste em **focar no essencial** e ignorar detalhes irrelevantes p
 
 Exemplo:
 
-- Um `Produto` tem nome e preço
-- Não importa como o preço é calculado internamente
+- Uma `Nave` tem id e posição
+- Não importa como a movimentação é calculada internamente
 
 A abstração permite trabalhar com **modelos conceituais**, não com detalhes de implementação.
 
@@ -240,7 +260,10 @@ Herança é um mecanismo que permite que uma classe herde características de ou
 Exemplo:
 
 ```java
-public class ProdutoOrganico extends Produto {
+public class Professor extends Passageiro {
+    public Professor(String nome, int x, int y) {
+        super(nome, "Professor", x, y);
+    }
 }
 ```
 
@@ -255,21 +278,20 @@ A herança representa a relação **"é um"**.
 Polimorfismo permite que objetos diferentes respondam à mesma mensagem de formas distintas.
 
 ```java
-public class ProdutoOrganico extends Produto {
-    public ProdutoOrganico(String nome, double preco) {
-        super(nome, preco);
+public class Professor extends Passageiro {
+    public Professor(String nome, int x, int y) {
+        super(nome, "Professor", x, y);
     }
 
     @Override
-    public double getPreco() {
-        // Exemplo: produtos orgânicos têm 10% de desconto padrão
-        return super.getPreco() * 0.9;
+    public String getTipo() {
+        return "Professor";
     }
 }
 
 // Polimorfismo em ação
-Produto p = new ProdutoOrganico("Tomate", 10.0);
-System.out.println(p.getPreco()); // Usa o getPreco() da subclasse
+Passageiro p = new Professor("Dr. Silva", 0, 0);
+System.out.println(p.getTipo()); // Usa o getTipo() da subclasse
 ```
 
 O comportamento real depende do tipo concreto do objeto em tempo de execução.
@@ -295,27 +317,27 @@ Elas são fundamentais para:
 Exemplo de redução de acoplamento com interfaces:
 
 ```java
-public interface PedidoRepository {
-    void salvar(Pedido pedido);
+public interface MissaoRepository {
+    void salvar(Missao missao);
 }
 
-public class PedidoRepositoryMySQL implements PedidoRepository {
+public class MissaoRepositoryMemoria implements MissaoRepository {
     @Override
-    public void salvar(Pedido pedido) {
-        // Implementação concreta
+    public void salvar(Missao missao) {
+        // Implementação concreta em memória
     }
 }
 
-public class PedidoService {
-    private final PedidoRepository repository;
+public class MissaoService {
+    private final MissaoRepository repository;
 
-    public PedidoService(PedidoRepository repository) {
+    public MissaoService(MissaoRepository repository) {
         this.repository = repository; // Depende de uma abstração
     }
 
-    public void finalizar(Pedido pedido) {
+    public void iniciar(Missao missao) {
         // Regras de negócio
-        repository.salvar(pedido);
+        repository.salvar(missao);
     }
 }
 ```
@@ -344,10 +366,10 @@ Acoplamento representa o **nível de dependência entre classes ou módulos** de
 - **Alto acoplamento:** muitas dependências diretas, mudanças se propagam facilmente.
 - **Baixo acoplamento:** poucas dependências, módulos mais independentes.
 
-Exemplo (feira):
+Exemplo (jogo):
 
-- Um `PedidoService` que depende diretamente de `MySQLConnection` → alto acoplamento.
-- Um `PedidoService` que depende de uma interface `PedidoRepository` → baixo acoplamento.
+- Um `MissaoService` que depende diretamente de `MissaoRepositoryMemoria` → alto acoplamento.
+- Um `MissaoService` que depende de uma interface `MissaoRepository` → baixo acoplamento.
 
 Benefícios do baixo acoplamento:
 
@@ -364,10 +386,10 @@ Coesão representa o **grau de relacionamento entre as responsabilidades de uma 
 - **Alta coesão:** classe tem responsabilidades bem definidas e relacionadas.
 - **Baixa coesão:** classe faz muitas coisas diferentes e sem relação clara.
 
-Exemplo (feira):
+Exemplo (jogo):
 
-- Classe `Pedido` apenas com regras de pedido → alta coesão.
-- Classe `SistemaFeira` com login, pedido, relatório e pagamento → baixa coesão.
+- Classe `Missao` apenas com regras de missão → alta coesão.
+- Classe `SistemaMissao` com login, controle de nave, relatório e pontuação → baixa coesão.
 
 Benefícios da alta coesão:
 
@@ -398,80 +420,90 @@ Esses erros impactam diretamente a arquitetura do sistema.
 
 ---
 
-## 12. OO aplicada ao Projeto Feira Livre
+## 12. OO aplicada ao Projeto Missão Marte
 
-#### Diagrama de Classes – Entidades (Feira Livre)
+#### Diagrama de Classes – Entidades (Missão Marte)
 
-Representação das principais entidades de domínio: `Produto`, `ProdutoOrganico`, `PedidoItem` e `Pedido`.
+Representação das principais entidades de domínio: `Nave`, `Passageiro`, `Asteroide` e `Missao`.
 
 ```mermaid
 classDiagram
-    class Produto {
+    class Nave {
+        -id : String
+        -x : int
+        -y : int
+        -capacidade : int
+        -passageiros : List<Passageiro>
+        +moveUp() : void
+        +moveDown() : void
+        +moveLeft() : void
+        +moveRight() : void
+        +embarcar(p : Passageiro) : boolean
+    }
+
+    class Passageiro {
         -nome : String
-        -preco : double
-        +getNome() : String
-        +getPreco() : double
-        +setPreco(preco : double)
+        -tipo : String
+        -x : int
+        -y : int
     }
 
-    class ProdutoOrganico {
-        +getPreco() : double
-    }
-    ProdutoOrganico --|> Produto
-
-    class PedidoItem {
-        -produto : Produto
-        -quantidade : int
-        +subtotal() : double
+    class Asteroide {
+        -x : int
+        -y : int
+        +colideCom(n : Nave) : boolean
     }
 
-    class Pedido {
-        -itens : List<PedidoItem>
-        +adicionarItem(produto : Produto, qtd : int)
-        +total() : double
+    class Missao {
+        -nave : Nave
+        -passageiros : List<Passageiro>
+        -asteroides : List<Asteroide>
+        +run() : void
+        +embarcarPassageiroNaPosicao() : boolean
     }
 
-    Pedido "1" *-- "*" PedidoItem
-    PedidoItem --> Produto
+    Missao "1" *-- "*" Passageiro
+    Missao "1" *-- "*" Asteroide
+    Missao --> Nave
 ```
 
-Nesta seção, destacamos como as características de OO aparecem no projeto console “Feira Livre”.
+Nesta seção, destacamos como as características de OO aparecem no projeto console “Missão Marte”.
 
 ### Encapsulamento
 
-- `Produto` concentra dados e validações (ex.: preço não negativo).
-- Regras específicas (ex.: desconto) ficam dentro da classe responsável.
-- Referência: [feira-livre-java/src/feira/Produto.java](feira-livre-java/src/feira/Produto.java)
+- `Nave` concentra dados e validações (ex.: capacidade não negativa).
+- Regras específicas (ex.: embarque de passageiros) ficam dentro da classe responsável.
+- Referência: [missaoMarteUnifor/oo-console/src/missao/Nave.java](missaoMarteUnifor/oo-console/src/missao/Nave.java)
 
 ### Abstração
 
-- Classes expõem operações essenciais ao domínio, como `subtotal()` e `total()`.
+- Classes expõem operações essenciais ao domínio, como `moveUp()` e `embarcarPassageiroNaPosicao()`.
 - O cálculo interno é ocultado, fornecendo uma interface simples de uso.
-- Referências: [feira-livre-java/src/feira/PedidoItem.java](feira-livre-java/src/feira/PedidoItem.java), [feira-livre-java/src/feira/Pedido.java](feira-livre-java/src/feira/Pedido.java)
+- Referência: [missaoMarteUnifor/oo-console/src/missao/Missao.java](missaoMarteUnifor/oo-console/src/missao/Missao.java)
 
 ### Composição
 
-- `Pedido` agrega vários `PedidoItem`; relação “tem um”.
-- Cada `PedidoItem` associa um `Produto` e uma quantidade.
-- Referências: [feira-livre-java/src/feira/Pedido.java](feira-livre-java/src/feira/Pedido.java), [feira-livre-java/src/feira/PedidoItem.java](feira-livre-java/src/feira/PedidoItem.java)
+- `Missao` agrega `Nave`, `Passageiro` e `Asteroide`.
+- Cada `Missao` coordena várias entidades para cumprir o objetivo.
+- Referência: [missaoMarteUnifor/oo-console/src/missao/Missao.java](missaoMarteUnifor/oo-console/src/missao/Missao.java)
 
 ### Herança e Polimorfismo
 
-- Subtipos podem especializar comportamento, como `ProdutoOrganico` alterando `getPreco()`.
-- O código usa o tipo base (`Produto`) e o comportamento concreto é escolhido em tempo de execução.
-- Referência: [feira-livre-java/src/feira/ProdutoOrganico.java](feira-livre-java/src/feira/ProdutoOrganico.java)
+- Subtipos podem especializar comportamento, como `Professor` estendendo `Passageiro`.
+- O código usa o tipo base (`Passageiro`) e o comportamento concreto é escolhido em tempo de execução.
+- Referência: [missaoMarteUnifor/oo-console/src/missao/Professor.java](missaoMarteUnifor/oo-console/src/missao/Professor.java)
 
 ### Coesão e Acoplamento
 
-- Alta coesão: `Pedido` calcula seu próprio `total()`; `PedidoItem` seu `subtotal()`.
-- Baixo acoplamento: `PedidoService` depende de um contrato (`PedidoRepository`) para persistir.
-- Referências: [feira-livre-java/src/feira/PedidoService.java](feira-livre-java/src/feira/PedidoService.java), [feira-livre-java/src/feira/PedidoRepository.java](feira-livre-java/src/feira/PedidoRepository.java), [feira-livre-java/src/feira/PedidoRepositoryMemoria.java](feira-livre-java/src/feira/PedidoRepositoryMemoria.java)
+- Alta coesão: `Missao` gerencia passageiros e asteroides; `Nave` gerencia movimentação.
+- Baixo acoplamento: `MissaoService` depende de um contrato (`MissaoRepository`) para persistência.
+- Referência: [missaoMarteUnifor/oo-console/src/missao/Main.java](missaoMarteUnifor/oo-console/src/missao/Main.java)
 
 ### Fluxo de Finalização
 
-- `Main` aciona `PedidoService.finalizar(pedido)`.
-- O serviço calcula `total()` no `Pedido` e persiste via `Repository`.
-- O total retorna para exibição ao usuário.
+- `Main` aciona `Missao` para iniciar o jogo.
+- `Missao` monitora a `Nave`, verifica colisões e permite embarque.
+- O resultado é exibido ao usuário.
 
 ## 13. OO e Arquitetura de Software
 
@@ -513,58 +545,72 @@ A UML (Unified Modeling Language – Linguagem de Modelagem Unificada) é um con
 - Herança → `extends`; Interface → `interface`; Implementação → `implements`.
 - Visibilidade: `+` → `public`, `-` → `private`, `#` → `protected`.
 
-### Exemplo simples (Feira)
+### Exemplo simples (Missão Marte)
 
 Relacionamentos principais:
 
-- `Pedido` compõe `PedidoItem` (composição), associa-se a `Produto`.
-- `ProdutoOrganico` herda de `Produto` (generalização).
-- `PedidoService` depende de `PedidoRepository` (contrato/interface).
+- `Missao` compõe `Nave`, `Passageiro` e `Asteroide`.
+- `Professor` herda de `Passageiro` (generalização).
+- `MissaoService` depende de `MissaoRepository` (contrato/interface).
 
 Exemplo visual (Mermaid – requer suporte de preview):
 
 ```mermaid
 classDiagram
-        class Produto {
+        class Nave {
+            -id : String
+            -x : int
+            -y : int
+            -capacidade : int
+            +moveUp() : void
+            +moveDown() : void
+            +moveLeft() : void
+            +moveRight() : void
+            +embarcar(p : Passageiro) : boolean
+        }
+        class Passageiro {
             -nome : String
-            -preco : double
-            +getNome() : String
-            +getPreco() : double
+            -tipo : String
+            -x : int
+            -y : int
         }
-        class ProdutoOrganico {
-            +getPreco() : double
+        class Professor {
+            +getTipo() : String
         }
-        ProdutoOrganico --|> Produto
+        Professor --|> Passageiro
 
-        class PedidoItem {
-            -produto : Produto
-            -quantidade : int
-            +subtotal() : double
+        class Asteroide {
+            -x : int
+            -y : int
+            +colideCom(n : Nave) : boolean
         }
 
-        class Pedido {
-            -itens : List<PedidoItem>
-            +adicionarItem(produto, qtd)
-            +total() : double
+        class Missao {
+            -nave : Nave
+            -passageiros : List<Passageiro>
+            -asteroides : List<Asteroide>
+            +run() : void
+            +embarcarPassageiroNaPosicao() : boolean
         }
-        Pedido "1" *-- "*" PedidoItem
-        PedidoItem --> Produto
+        Missao "1" *-- "*" Passageiro
+        Missao "1" *-- "*" Asteroide
+        Missao --> Nave
 
-        class PedidoRepository {
+        class MissaoRepository {
             <<interface>>
-            +salvar(pedido)
+            +salvar(missao)
         }
-        class PedidoRepositoryMemoria
-        PedidoRepositoryMemoria ..|> PedidoRepository
+        class MissaoRepositoryMemoria
+        MissaoRepositoryMemoria ..|> MissaoRepository
 
-        class PedidoService {
-            -repository : PedidoRepository
-            +finalizar(pedido) : double
+        class MissaoService {
+            -repository : MissaoRepository
+            +iniciar(missao) : void
         }
-        PedidoService --> PedidoRepository
+        MissaoService --> MissaoRepository
 ```
 
-### Diagrama de Sequência – exemplo (Fluxo de Finalização de Pedido)
+### Diagrama de Sequência – exemplo (Fluxo de Início de Missão)
 
 Representa a interação temporal entre objetos da aplicação console:
 
@@ -572,18 +618,16 @@ Representa a interação temporal entre objetos da aplicação console:
 sequenceDiagram
     participant Usuario
     participant Main
-    participant PedidoService
-    participant Pedido
-    participant PedidoRepository as Repo
+    participant Missao
+    participant Nave
+    participant Asteroide
 
-    Usuario->>Main: Escolhe "Finalizar pedido"
-    Main->>PedidoService: finalizar(pedido)
-    PedidoService->>Pedido: total()
-    Pedido-->>PedidoService: valorTotal
-    PedidoService->>Repo: salvar(pedido)
-    Repo-->>PedidoService: ok
-    PedidoService-->>Main: retorna valorTotal
-    Main-->>Usuario: Exibe total e confirmação
+    Usuario->>Main: Escolhe "Iniciar missão"
+    Main->>Missao: run()
+    Missao->>Nave: move()/embarcarPassageiroNaPosicao()
+    Nave->>Asteroide: colideCom()
+    Missao-->>Main: encerra com resultado
+    Main-->>Usuario: Exibe pontuação e status
 ```
 
 Observação: em uma aplicação web (Spring), `Main` seria substituída por um `Controller`, mas a dinâmica entre `Service` e `Repository` permanece.
@@ -595,20 +639,20 @@ Observação: em uma aplicação web (Spring), `Main` seria substituída por um 
 
 Para uma visão de arquitetura de alto nível, consulte também o guia de C4: ver arquivo `C4-guidelines.md`.
 
-## 15. Estudo de Caso Conceitual – Feira Livre
+## 15. Estudo de Caso Conceitual – Missão Marte
 
 Exemplo de entidades:
 
-- Feirante
-- Produto
-- Banca
-- Pedido
+- Piloto
+- Nave
+- Passageiro
+- Asteroide
 
 Questões arquiteturais:
 
-- Quem calcula o total do pedido?
-- Onde ficam as regras de preço?
-- Quem valida estoque?
+- Quem calcula se a nave colidiu com um asteroide?
+- Onde ficam as regras de embarque e capacidade?
+- Quem valida a conclusão da missão?
 
 Essas perguntas são resolvidas com boa OO.
 
