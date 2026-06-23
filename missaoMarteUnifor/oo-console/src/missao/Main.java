@@ -14,36 +14,11 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-        Nave nave = new Nave("A-1", 3);
-        Missao missao = new Missao(nave);
-
         Random random = new Random();
         int minX = -5;
         int maxX = 5;
         int minY = -5;
         int maxY = 5;
-
-        while (missao.getPassageiros().size() < 3) {
-            int x = random.nextInt(maxX - minX + 1) + minX;
-            int y = random.nextInt(maxY - minY + 1) + minY;
-            if (x == nave.getX() && y == nave.getY()) continue;
-            if (posicaoOcupada(missao, x, y)) continue;
-            if (missao.getPassageiros().isEmpty()) {
-                missao.addPassageiro(new Professor("Dr. Silva", x, y));
-            } else if (missao.getPassageiros().size() == 1) {
-                missao.addPassageiro(new Engenheiro("Eng. Rosa", x, y));
-            } else {
-                missao.addPassageiro(new Professor("Dr. Lima", x, y));
-            }
-        }
-
-        while (missao.getAsteroides().size() < 2) {
-            int x = random.nextInt(maxX - minX + 1) + minX;
-            int y = random.nextInt(maxY - minY + 1) + minY;
-            if (x == nave.getX() && y == nave.getY()) continue;
-            if (posicaoOcupada(missao, x, y)) continue;
-            missao.addAsteroide(new Asteroide(x, y));
-        }
 
         Path rankingPath = Paths.get("ranking.json");
         List<RankingEntry> ranking = loadRanking(rankingPath);
@@ -92,74 +67,88 @@ public class Main {
         scanner.nextLine();
         System.out.println("================================================================");
 
-        int score = 20;
-        boolean running = true;
-        while (running) {
-            desenharMapa(missao, -5, 5, -5, 5, score, pilotoNome);
-            System.out.printf("Nave em (%d,%d) | Pontos: %d | Passageiros a bordo: %d | Passageiros restantes: %d\n",
-                    nave.getX(), nave.getY(), score, nave.getPassageiros().size(), missao.todosEmbarcados() ? 0 : missao.getPassageiros().size());
+        boolean playAgain = true;
+        while (playAgain) {
+            Missao missao = criarNovaMissao(random, minX, maxX, minY, maxY);
+            Nave nave = missao.getNave();
+            int score = 20;
+            boolean running = true;
 
-            if (missao.verificaColisao()) {
-                System.out.println("Colisão com asteroide! Missão abortada.");
-                break;
-            }
+            while (running) {
+                desenharMapa(missao, -5, 5, -5, 5, score, pilotoNome);
+                System.out.printf("Nave em (%d,%d) | Pontos: %d | Passageiros a bordo: %d | Passageiros restantes: %d\n",
+                        nave.getX(), nave.getY(), score, nave.getPassageiros().size(), missao.todosEmbarcados() ? 0 : missao.getPassageiros().size());
 
-            System.out.print("Para onde ir? ");
-            String line = scanner.nextLine().trim().toLowerCase();
-            if (line.isEmpty()) continue;
-            char cmd = line.charAt(0);
-            switch (cmd) {
-                case 'w': nave.moveUp(); score--; break;
-                case 's': nave.moveDown(); score--; break;
-                case 'a': nave.moveLeft(); score--; break;
-                case 'd': nave.moveRight(); score--; break;
-                case 'c': {
-                    Passageiro p = missao.passagemNaPosicao();
-                    if (p == null) {
-                        System.out.println("Nenhum passageiro nesta posição.");
-                    } else {
-                        boolean ok = missao.embarcarPassageiroNaPosicao();
-                        if (ok) {
-                            score += 10;
-                            System.out.println("Passageiro embarcado. +10 pontos!");
+                if (missao.verificaColisao()) {
+                    System.out.println("Colisão com asteroide! Missão abortada.");
+                    break;
+                }
+
+                System.out.print("Para onde ir? ");
+                String line = scanner.nextLine().trim().toLowerCase();
+                if (line.isEmpty()) continue;
+                char cmd = line.charAt(0);
+                switch (cmd) {
+                    case 'w': nave.moveUp(); score--; break;
+                    case 's': nave.moveDown(); score--; break;
+                    case 'a': nave.moveLeft(); score--; break;
+                    case 'd': nave.moveRight(); score--; break;
+                    case 'c': {
+                        Passageiro p = missao.passagemNaPosicao();
+                        if (p == null) {
+                            System.out.println("Nenhum passageiro nesta posição.");
                         } else {
-                            System.out.println("Nave cheia, não foi possível embarcar.");
+                            boolean ok = missao.embarcarPassageiroNaPosicao();
+                            if (ok) {
+                                score += 10;
+                                System.out.println("Passageiro embarcado. +10 pontos!");
+                            } else {
+                                System.out.println("Nave cheia, não foi possível embarcar.");
+                            }
                         }
+                        break;
+                    }
+                    case 'q': running = false; break;
+                    default: System.out.println("Comando desconhecido.");
+                }
+
+                if (score <= 0) {
+                    System.out.println("Pontuação zerada. Missão perdida.");
+                    break;
+                }
+
+                if (missao.todosEmbarcados()) {
+                    System.out.println("Todos os passageiros embarcados! Missão concluída com sucesso.");
+                    System.out.printf("Pontuação final: %d\n", score);
+                    if (score > 0 && isTopScore(ranking, score)) {
+                        ranking.add(new RankingEntry(pilotoNome, score));
+                        ranking = ranking.stream()
+                                .sorted(Comparator.comparingInt((RankingEntry e) -> e.score).reversed())
+                                .limit(5)
+                                .collect(Collectors.toList());
+                        saveRanking(rankingPath, ranking);
+                        System.out.println("Novo ranking salvo! Você está entre os 5 maiores pontuadores.");
                     }
                     break;
                 }
-                case 'q': running = false; break;
-                default: System.out.println("Comando desconhecido.");
             }
 
-            if (score <= 0) {
-                System.out.println("Pontuação zerada. Missão perdida.");
-                break;
+            if (!ranking.isEmpty()) {
+                System.out.println();
+                System.out.println("Ranking Top 5:");
+                printRanking(ranking);
+            } else {
+                System.out.println();
+                System.out.println("Ranking vazio. Seja o primeiro a marcar pontos!");
             }
 
-            if (missao.todosEmbarcados()) {
-                System.out.println("Todos os passageiros embarcados! Missão concluída com sucesso.");
-                System.out.printf("Pontuação final: %d\n", score);
-                if (score > 0 && isTopScore(ranking, score)) {
-                    ranking.add(new RankingEntry(pilotoNome, score));
-                    ranking = ranking.stream()
-                            .sorted(Comparator.comparingInt((RankingEntry e) -> e.score).reversed())
-                            .limit(5)
-                            .collect(Collectors.toList());
-                    saveRanking(rankingPath, ranking);
-                    System.out.println("Novo ranking salvo! Você está entre os 5 maiores pontuadores.");
-                }
-                break;
+            System.out.print("Deseja iniciar nova missão? (s/n): ");
+            String resposta = scanner.nextLine().trim().toLowerCase();
+            if (resposta.equals("s") || resposta.equals("sim")) {
+                System.out.println("Preparando nova missão...");
+            } else {
+                playAgain = false;
             }
-        }
-
-        if (!ranking.isEmpty()) {
-            System.out.println();
-            System.out.println("Ranking Top 5:");
-            printRanking(ranking);
-        } else {
-            System.out.println();
-            System.out.println("Ranking vazio. Seja o primeiro a marcar pontos!");
         }
 
         scanner.close();
@@ -171,6 +160,35 @@ public class Main {
         for (RankingEntry entry : ranking) {
             System.out.printf("%d. %s - %d pontos%n", position++, entry.name, entry.score);
         }
+    }
+
+    private static Missao criarNovaMissao(Random random, int minX, int maxX, int minY, int maxY) {
+        Nave nave = new Nave("A-1", 3);
+        Missao missao = new Missao(nave);
+
+        while (missao.getPassageiros().size() < 3) {
+            int x = random.nextInt(maxX - minX + 1) + minX;
+            int y = random.nextInt(maxY - minY + 1) + minY;
+            if (x == nave.getX() && y == nave.getY()) continue;
+            if (posicaoOcupada(missao, x, y)) continue;
+            if (missao.getPassageiros().isEmpty()) {
+                missao.addPassageiro(new Professor("Dr. Silva", x, y));
+            } else if (missao.getPassageiros().size() == 1) {
+                missao.addPassageiro(new Engenheiro("Eng. Rosa", x, y));
+            } else {
+                missao.addPassageiro(new Professor("Dr. Lima", x, y));
+            }
+        }
+
+        while (missao.getAsteroides().size() < 2) {
+            int x = random.nextInt(maxX - minX + 1) + minX;
+            int y = random.nextInt(maxY - minY + 1) + minY;
+            if (x == nave.getX() && y == nave.getY()) continue;
+            if (posicaoOcupada(missao, x, y)) continue;
+            missao.addAsteroide(new Asteroide(x, y));
+        }
+
+        return missao;
     }
 
     private static boolean posicaoOcupada(Missao missao, int x, int y) {
