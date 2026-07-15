@@ -1,8 +1,8 @@
 # Tutorial: Desenvolvimento do Jogo "Missão Marte Unifor" em Java
 
-**Disciplina:** Programação Orientada a Objetos (OO)  
-**Nível:** Iniciante/Intermediário  
-**Duração recomendada:** 6-8 horas (pode ser dividido em 3-4 aulas)  
+**Disciplina:** Programação Orientada a Objetos (OO)
+**Nível:** Iniciante/Intermediário
+**Duração recomendada:** 6-8 horas (pode ser dividido em 3-4 aulas)
 **Objetivo:** Aprender conceitos de OO através da implementação de um jogo interativo em console
 
 ---
@@ -33,11 +33,12 @@ Java é uma plataforma de desenvolvimento que permite escrever programas que rod
 ### JDK vs JRE
 
 - **JDK** é para programadores.
+
   - Contém o compilador `javac`.
   - Contém a `java` para executar programas.
   - Contém bibliotecas e ferramentas de desenvolvimento.
-
 - **JRE** é para execução.
+
   - Contém a JVM e bibliotecas de runtime.
   - Não contém o compilador.
 
@@ -100,12 +101,12 @@ Um jogo interativo em console chamado **Missão Marte Unifor** onde:
 
 Este projeto é ideal para aprender OO porque:
 
-✅ Envolve **múltiplas classes** com responsabilidades claras  
-✅ Demonstra **herança** (Professor e Engenheiro herdam de Passageiro)  
-✅ Explora **composição** (Missão contém Nave, Passageiros e Asteroides)  
-✅ Pratica **encapsulamento** (dados privados, acesso via métodos)  
-✅ Usa **polimorfismo** (diferentes tipos de passageiros)  
-✅ Aplica **persistência** (salva dados em arquivo)  
+✅ Envolve **múltiplas classes** com responsabilidades claras
+✅ Demonstra **herança** (Professor e Engenheiro herdam de Passageiro)
+✅ Explora **composição** (Missão contém Nave, Passageiros e Asteroides)
+✅ Pratica **encapsulamento** (dados privados, acesso via métodos)
+✅ Usa **polimorfismo** (diferentes tipos de passageiros)
+✅ Aplica **persistência** (salva dados em arquivo)
 
 ---
 
@@ -116,6 +117,7 @@ Este projeto é ideal para aprender OO porque:
 OO organiza código em **objetos** que representam entidades do mundo real.
 
 **Exemplo:**
+
 - Nave é um objeto com posição `(x, y)` e capacidade
 - Passageiro é um objeto com nome e tipo
 - Asteroide é um objeto com posição
@@ -123,13 +125,14 @@ OO organiza código em **objetos** que representam entidades do mundo real.
 ### 2. Pilares da OO
 
 #### 📦 Encapsulamento
+
 Esconder detalhes internos do objeto, expor apenas o necessário.
 
 ```java
 public class Nave {
     private int x;  // Privado: só a classe pode acessar
     private int y;
-    
+  
     public int getX() {  // Público: qualquer um pode chamar
         return x;
     }
@@ -137,6 +140,7 @@ public class Nave {
 ```
 
 #### 🧬 Herança
+
 Uma classe "especializada" herda de uma classe "base".
 
 ```java
@@ -146,6 +150,7 @@ public class Professor extends Passageiro {
 ```
 
 #### 🔄 Polimorfismo
+
 Objetos diferentes respondem a mesma mensagem de formas diferentes.
 
 ```java
@@ -155,6 +160,7 @@ Passageiro eng = new Engenheiro("Eng. Rosa", 3, 4);
 ```
 
 #### 🧩 Composição
+
 Um objeto é feito de outros objetos.
 
 ```java
@@ -203,7 +209,7 @@ missaoMarteUnifor/
 
 # Aula 1: Classes de Domínio
 
-**Duração:** ~1 hora  
+**Duração:** ~1 hora
 **Objetivo:** Entender como modelar entidades do jogo como classes Java
 
 ## 1.1 Conceito: O que é uma Classe?
@@ -221,6 +227,7 @@ Cada objeto tem seus próprios atributos, mas a estrutura é a mesma.
 ## 1.2 Primeira Classe: `Passageiro`
 
 ### Especificação
+
 - **Responsabilidade:** Representar um passageiro a ser resgatado
 - **Atributos:** nome, tipo, posição (x, y)
 - **Métodos:** getters para acessar os atributos
@@ -286,6 +293,7 @@ int posX = prof.getX();          // 2
 ## 1.3 Segunda Classe: `Asteroide`
 
 ### Especificação
+
 - **Responsabilidade:** Representar um obstáculo no mapa
 - **Atributos:** posição (x, y)
 - **Métodos:** getters + verificar colisão com nave
@@ -334,6 +342,7 @@ public boolean colideCom(Nave n) {
 ## 1.4 Terceira Classe: `Nave`
 
 ### Especificação
+
 - **Responsabilidade:** Representar a nave do jogador
 - **Atributos:** id, posição (x, y), capacidade, lista de passageiros
 - **Métodos:** getters + movimento + embarque
@@ -421,12 +430,14 @@ public class Nave {
 ## ✏️ Exercício 1.1: Criar classe `Cachorro`
 
 Crie uma classe `Cachorro` com:
+
 - Atributos: `nome`, `raca`, `idade`
 - Construtor que inicializa os três atributos
 - Getters para os três atributos
 - Método `falar()` que retorna uma String com "Au au!"
 
 **Solução esperada:**
+
 ```java
 public class Cachorro {
     private String nome;
@@ -453,7 +464,7 @@ public class Cachorro {
 
 # Aula 2: Herança e Polimorfismo
 
-**Duração:** ~1 hora  
+**Duração:** ~1 hora
 **Objetivo:** Entender como especializar classes através de herança
 
 ## 2.1 Conceito: Por que Herança?
@@ -501,7 +512,7 @@ package missao;
 
 public class Professor extends Passageiro {
     // Herda: nome, tipo, x, y de Passageiro
-    
+  
     public Professor(String nome, int x, int y) {
         // super() chama o construtor da classe pai
         super(nome, "Professor", x, y);
@@ -579,6 +590,7 @@ if (obj instanceof Engenheiro) {
 ## ✏️ Exercício 2.1: Estender `Cachorro`
 
 Crie duas classes que herdam de `Cachorro`:
+
 - `CachorroGrande` (com método `late()` retornando "AUUUUU!")
 - `Cachorropequeno` (com método `late()` retornando "au...")
 
@@ -588,7 +600,7 @@ Crie uma lista mista de cachorros e faça cada um latir polimorficamente.
 
 # Aula 3: Composição e Agregação
 
-**Duração:** ~1.5 horas  
+**Duração:** ~1.5 horas
 **Objetivo:** Entender como combinar objetos em estruturas maiores
 
 ## 3.1 Conceito: Composição
@@ -699,16 +711,17 @@ public class Missao {
 ### Novos conceitos
 
 1. **`List<Asteroide> asteroides = new ArrayList<>()`**
+
    - Cria uma lista vazia de asteroides
-
 2. **`for (Asteroide a : asteroides)`**
-   - Loop "for-each" que percorre cada elemento da lista
 
+   - Loop "for-each" que percorre cada elemento da lista
 3. **`Iterator<Passageiro> it = passageiros.iterator()`**
+
    - Permite iterar E remover elementos simultaneamente
    - Usar `it.remove()` é seguro dentro de um while com Iterator
-
 4. **Delegação**
+
    - `Missao` pede à `Nave` para embarcar: `nave.embarcar(p)`
    - Cada classe faz sua parte
 
@@ -743,7 +756,8 @@ if (p != null) {
 ## ✏️ Exercício 3.1: Classe `Time`
 
 Crie uma classe `Time` que:
-- Tem `nome` (String) e `jogadores` (List<Jogador>)
+
+- Tem `nome` (String) e `jogadores` (List<Jogador></jogador>)
 - Tem método `adicionarJogador(Jogador j)`
 - Tem método `listarJogadores()` que imprime todos
 - Tem método `totalGols()` que soma gols de todos os jogadores
@@ -754,7 +768,7 @@ Crie uma classe `Jogador` com `nome` e `gols` (int).
 
 # Aula 4: Lógica do Jogo e Interface
 
-**Duração:** ~2-3 horas  
+**Duração:** ~2-3 horas
 **Objetivo:** Implementar o loop principal do jogo e interface com usuário
 
 ## 4.1 Estrutura do `Main`
@@ -796,20 +810,20 @@ private static void desenharMapa(Missao missao, int minX, int maxX,
                                   int minY, int maxY, int score, String pilotoNome) {
     System.out.println();
     System.out.printf("Mapa (Pontos: %d) - Piloto: %s%n", score, pilotoNome);
-    
+  
     // Cabeçalho com coordenadas X
     System.out.print("    ");
     for (int x = minX; x <= maxX; x++) {
         System.out.printf(" %2d", x);
     }
     System.out.println();
-    
+  
     // Linhas do mapa
     for (int y = minY; y <= maxY; y++) {
         System.out.printf("%3d|", y);
         for (int x = minX; x <= maxX; x++) {
             char symbol = '.';  // Padrão: vazio
-            
+          
             // Verificar se há nave nesta posição
             if (missao.getNave().getX() == x && missao.getNave().getY() == y) {
                 symbol = 'N';
@@ -825,7 +839,7 @@ private static void desenharMapa(Missao missao, int minX, int maxX,
                         break;
                     }
                 }
-                
+              
                 // Verificar asteroides (se não achou passageiro)
                 if (symbol == '.') {
                     for (Asteroide a : missao.getAsteroides()) {
@@ -836,12 +850,12 @@ private static void desenharMapa(Missao missao, int minX, int maxX,
                     }
                 }
             }
-            
+          
             System.out.printf(" %2c", symbol);
         }
         System.out.println();
     }
-    
+  
     // Legenda
     System.out.println("N=Nave  P=Professor  E=Engenheiro  A=Asteroide  .=Vazio");
 }
@@ -853,18 +867,18 @@ private static void desenharMapa(Missao missao, int minX, int maxX,
 public static void main(String[] args) {
     Random random = new Random();
     int minX = -5, maxX = 5, minY = -5, maxY = 5;
-    
+  
     // Carregar ranking
     List<RankingEntry> ranking = loadRanking(Paths.get("ranking.json"));
-    
+  
     Scanner scanner = new Scanner(System.in);
     System.out.print("Digite o nome do piloto: ");
     String pilotoNome = scanner.nextLine();
-    
+  
     // Mostrar instruções
     System.out.println("Bem-vindo! Colete todos os passageiros sem bater em asteroides.");
     System.out.println("Comandos: w/a/s/d mover, c embarcar, q sair");
-    
+  
     boolean playAgain = true;
     while (playAgain) {
         // Criar nova missão
@@ -872,22 +886,22 @@ public static void main(String[] args) {
         Nave nave = missao.getNave();
         int score = 20;
         boolean running = true;
-        
+      
         // Loop de uma partida
         while (running) {
             desenharMapa(missao, minX, maxX, minY, maxY, score, pilotoNome);
-            
+          
             // Verificar colisão
             if (missao.verificaColisao()) {
                 System.out.println("Colisão! Missão abortada.");
                 break;
             }
-            
+          
             // Ler comando
             System.out.print("Comando: ");
             String input = scanner.nextLine().toLowerCase();
             if (input.isEmpty()) continue;
-            
+          
             char cmd = input.charAt(0);
             switch (cmd) {
                 case 'w': nave.moveUp(); score--; break;
@@ -904,13 +918,13 @@ public static void main(String[] args) {
                 }
                 case 'q': running = false; break;
             }
-            
+          
             // Verificar derrota por falta de pontos
             if (score <= 0) {
                 System.out.println("Pontuação zerada. Derrota!");
                 break;
             }
-            
+          
             // Verificar vitória (todos embarcados)
             if (missao.todosEmbarcados()) {
                 System.out.println("Sucesso! Todos embarcados. Pontuação: " + score);
@@ -921,16 +935,16 @@ public static void main(String[] args) {
                 break;
             }
         }
-        
+      
         // Mostrar ranking
         exibirRanking(ranking);
-        
+      
         // Perguntar se quer jogar de novo
         System.out.print("Nova missão? (s/n): ");
         String resp = scanner.nextLine().toLowerCase();
         playAgain = resp.equals("s") || resp.equals("sim");
     }
-    
+  
     scanner.close();
     System.out.println("Obrigado por jogar!");
 }
@@ -944,14 +958,14 @@ private static Missao criarNovaMissao(Random random, int minX, int maxX,
                                        int minY, int maxY) {
     Nave nave = new Nave("A-1", 3);
     Missao missao = new Missao(nave);
-    
+  
     // Adicionar 3 passageiros em posições aleatórias
     while (missao.getPassageiros().size() < 3) {
         int x = random.nextInt(maxX - minX + 1) + minX;
         int y = random.nextInt(maxY - minY + 1) + minY;
-        
+      
         if (posicaoOcupada(missao, x, y)) continue;
-        
+      
         if (missao.getPassageiros().isEmpty()) {
             missao.addPassageiro(new Professor("Dr. Silva", x, y));
         } else if (missao.getPassageiros().size() == 1) {
@@ -960,17 +974,17 @@ private static Missao criarNovaMissao(Random random, int minX, int maxX,
             missao.addPassageiro(new Professor("Dr. Lima", x, y));
         }
     }
-    
+  
     // Adicionar 2 asteroides
     while (missao.getAsteroides().size() < 2) {
         int x = random.nextInt(maxX - minX + 1) + minX;
         int y = random.nextInt(maxY - minY + 1) + minY;
-        
+      
         if (posicaoOcupada(missao, x, y)) continue;
-        
+      
         missao.addAsteroide(new Asteroide(x, y));
     }
-    
+  
     return missao;
 }
 
@@ -978,15 +992,15 @@ private static Missao criarNovaMissao(Random random, int minX, int maxX,
 private static boolean posicaoOcupada(Missao missao, int x, int y) {
     Nave n = missao.getNave();
     if (n.getX() == x && n.getY() == y) return true;
-    
+  
     for (Passageiro p : missao.getPassageiros()) {
         if (p.getX() == x && p.getY() == y) return true;
     }
-    
+  
     for (Asteroide a : missao.getAsteroides()) {
         if (a.getX() == x && a.getY() == y) return true;
     }
-    
+  
     return false;
 }
 ```
@@ -1002,6 +1016,7 @@ private static boolean posicaoOcupada(Missao missao, int x, int y) {
 **Enunciado:** A nave atualmente tem capacidade de 3 passageiros. Mude para 5 e recompile.
 
 **Passos:**
+
 1. Abra `Main.java`
 2. Procure a linha `new Nave("A-1", 3);`
 3. Troque para `new Nave("A-1", 5);`
@@ -1016,7 +1031,9 @@ private static boolean posicaoOcupada(Missao missao, int x, int y) {
 **Enunciado:** Crie uma classe `Astronauta` que herda de `Passageiro`.
 
 **Passos:**
+
 1. Crie `Astronauta.java` com:
+
 ```java
 package missao;
 
@@ -1035,10 +1052,12 @@ public class Astronauta extends Passageiro {
 ### Exercício 3: Mudar a aparência do mapa
 
 **Enunciado:** No método `desenharMapa`, altere os símbolos:
+
 - `N` para `@` (nave)
 - `A` para `#` (asteroide)
 
 **Passos:**
+
 1. Procure as linhas `symbol = 'N'` e `symbol = 'A'`
 2. Altere para `symbol = '@'` e `symbol = '#'`
 3. Recompile e teste
@@ -1050,15 +1069,18 @@ public class Astronauta extends Passageiro {
 ### Exercício 4: Adicionar pontuação bonus por tipo
 
 **Enunciado:** Diferenças de pontuação:
+
 - Professor: +10 pontos
 - Engenheiro: +15 pontos
 - Astronauta: +20 pontos
 
 **Passos:**
+
 1. Adicione um método em `Passageiro` que retorna pontos bonus (override em subclasses)
 2. Modifique `Main.java` para chamar esse método ao embarcar
 
 **Dica:**
+
 ```java
 // Em Passageiro.java
 public int getPontuacao() {
@@ -1085,11 +1107,13 @@ public int getPontuacao() {
 **Enunciado:** A nave tem 3 vidas. Cada colisão com asteroide custa 1 vida. Se chegar a 0, game over.
 
 **Passos:**
+
 1. Adicione um atributo `vidas` em `Nave`
-2. Adicione método `perderVida()` 
+2. Adicione método `perderVida()`
 3. Modifique o loop de jogo em `Main` para contar vidas
 
 **Dica:**
+
 ```java
 if (missao.verificaColisao()) {
     nave.perderVida();
@@ -1110,7 +1134,9 @@ if (missao.verificaColisao()) {
 **Enunciado:** Pergunte ao jogador o tamanho do mapa antes de começar.
 
 **Passos:**
+
 1. Adicione entrada antes do loop de jogo:
+
 ```java
 System.out.print("Tamanho do mapa (-X a +X): ");
 int tamanho = Integer.parseInt(scanner.nextLine());
@@ -1128,6 +1154,7 @@ int tamanho = Integer.parseInt(scanner.nextLine());
 **Enunciado:** Adicione "inimigos" que se movem aleatoriamente a cada turno.
 
 **Passos:**
+
 1. Crie classe `Inimigo` com posição
 2. Adicione lista de inimigos em `Missao`
 3. Adicione método `moverInimigos(Random r)`
@@ -1136,31 +1163,34 @@ int tamanho = Integer.parseInt(scanner.nextLine());
 
 ---
 
-### Exercício 8: Persistência com mais dados
-
-**Enunciado:** Salve não apenas nome e pontos, mas também:
-- Data e hora da partida
-- Número de passageiros coletados
-- Tipo de jogo (fácil/médio/difícil)
-
-**Passos:**
-1. Crie classe `RankingEntry` melhorada com esses campos
-2. Modifique `saveRanking()` para usar JSON mais complexo
-3. Modifique `loadRanking()` para parsear os novos campos
-
----
-
-### Exercício 9: Menu de dificuldade
+### Exercício8: Menu de dificuldade
 
 **Enunciado:** Ofereça 3 níveis de dificuldade:
+
 - **Fácil:** 5 asteroides, 30 pontos iniciais, 5 passageiros
 - **Normal:** 3 asteroides, 20 pontos iniciais, 3 passageiros
 - **Difícil:** 6 asteroides, 15 pontos iniciais, 4 passageiros
 
 **Passos:**
+
 1. Crie método `selecionarDificuldade()` que retorna enum
 2. Modifique `criarNovaMissao()` para aceitar dificuldade
 3. Ajuste quantidade de asteroides, pontos iniciais, passageiros
+
+---
+### Exercício 9: Persistência com mais dados
+
+**Enunciado:** Salve não apenas nome e pontos, mas também:
+
+- Data e hora da partida
+- Número de passageiros coletados
+- Tipo de jogo (fácil/médio/difícil)
+
+**Passos:**
+
+1. Crie classe `RankingEntry` melhorada com esses campos
+2. Modifique `saveRanking()` para usar JSON mais complexo
+3. Modifique `loadRanking()` para parsear os novos campos
 
 ---
 
@@ -1169,6 +1199,7 @@ int tamanho = Integer.parseInt(scanner.nextLine());
 ### Exercício 10: Mini-jogo completo com todas as features
 
 Implemente um jogo que combina:
+
 - ✅ Tipos diferentes de passageiros com pontos diferentes
 - ✅ Dificuldades múltiplas
 - ✅ Sistema de vidas
@@ -1178,6 +1209,7 @@ Implemente um jogo que combina:
 - ✅ Menu inicial com opções
 
 **Dicas:**
+
 - Use enums para dificuldade
 - Use `System.currentTimeMillis()` para cronometro
 - Organize Main em métodos menores (separe concerns)
@@ -1188,16 +1220,16 @@ Implemente um jogo que combina:
 
 ## Conceitos OO Revisados
 
-| Conceito | Definição | Exemplo |
-|----------|-----------|---------|
-| **Classe** | Molde para criar objetos | `class Nave { ... }` |
-| **Objeto** | Instância de uma classe | `new Nave("A-1", 3)` |
-| **Atributo** | Dado do objeto | `int x;` |
-| **Método** | Comportamento do objeto | `void moveUp() { y--; }` |
-| **Encapsulamento** | Esconder detalhes internos | `private int x;` |
-| **Herança** | Especializar uma classe | `class Professor extends Passageiro` |
-| **Polimorfismo** | Diferentes tipos, mesma interface | `List<Passageiro>` com Professor e Engenheiro |
-| **Composição** | Um objeto feito de outros | `Missao` contém `Nave` |
+| Conceito                 | Definição                       | Exemplo                                         |
+| ------------------------ | --------------------------------- | ----------------------------------------------- |
+| **Classe**         | Molde para criar objetos          | `class Nave { ... }`                          |
+| **Objeto**         | Instância de uma classe          | `new Nave("A-1", 3)`                          |
+| **Atributo**       | Dado do objeto                    | `int x;`                                      |
+| **Método**        | Comportamento do objeto           | `void moveUp() { y--; }`                      |
+| **Encapsulamento** | Esconder detalhes internos        | `private int x;`                              |
+| **Herança**       | Especializar uma classe           | `class Professor extends Passageiro`          |
+| **Polimorfismo**   | Diferentes tipos, mesma interface | `List<Passageiro>` com Professor e Engenheiro |
+| **Composição**   | Um objeto feito de outros         | `Missao` contém `Nave`                     |
 
 ## Palavras-chave Java
 
@@ -1235,30 +1267,25 @@ instanceof   // Verifica tipo
 ## Tópicos para Aprofundamento
 
 1. **Interfaces** (`implements`)
+
    - Contrato que uma classe deve cumprir
    - Múltiplas implementações da mesma interface
-
 2. **Classes Abstratas** (`abstract`)
+
    - Classe que não pode ser instanciada
    - Define métodos que subclasses devem implementar
-
 3. **Exceções** (`try/catch`)
+
    - Tratamento de erros
    - Criação de exceções customizadas
-
 4. **Genéricos** (`<T>`)
+
    - `List<String>`, `Map<String, Integer>`
    - Type-safety em coleções
-
 5. **Enumerações** (`enum`)
+
    - Conjunto fixo de valores
    - Melhor prática para constantes
-
-6. **Padrões de Design**
-   - Singleton
-   - Factory
-   - Observer
-   - Strategy
 
 ## Leitura Recomendada
 
