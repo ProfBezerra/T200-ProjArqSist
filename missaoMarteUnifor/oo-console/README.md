@@ -1,5 +1,5 @@
 Missão Marte — Exemplo OO (console)
-=================================
+=====================================
 
 Este é um exemplo minimalista para aplicar conceitos de Orientação a Objetos no projeto "Missão Marte Unifor".
 
