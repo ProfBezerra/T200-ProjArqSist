@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Java Referências - Produto</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Referências em Java (Java 21)</h2>
+
+<div class="memory">
+  <div class="area">
+    <h3>Referências (Stack)</h3>
+    <div id="a" class="ref hidden">a</div>
+    <div id="b" class="ref hidden">b</div>
+    <div id="c" class="ref hidden">c</div>
+    <div id="p" class="ref hidden">p (parâmetro)</div>
+  </div>
+
+  <div class="area heap">
+    <h3>Heap</h3>
+    <div id="obj1" class="object hidden">
+      Produto<br>🍌 Banana<br>preço: <span id="preco1">5.0</span>
+    </div>
+
+    <div id="obj2" class="object hidden">
+      Produto<br>🍌 Banana<br>preço: 5.0
+    </div>
+
+    <div id="obj3" class="object hidden">
+      Produto<br>🍇 Uva<br>preço: 8.0
+    </div>
+  </div>
+
+  <!-- Conectores visuais (setas) entre referências e objetos -->
+  <svg id="connectors" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" viewBox="0 0 10 10">
+        <path d="M0,0 L10,3 L0,6" fill="#555"></path>
+      </marker>
+    </defs>
+  </svg>
+</div>
+
+<button onclick="nextStep()">Próximo passo</button>
+
+<p id="info"></p>
+
+<!-- Painel de código (efeito debug) -->
+<div class="code-panel">
+  <h3>Código (Java)</h3>
+  <pre id="code"><code>
+<span data-line="1">Produto a = new Produto("Banana", 5.0);</span>
+<span data-line="2">Produto b = a;</span>
+<span data-line="3">System.out.println(a == b);</span>
+<span data-line="4">b.setPreco(6.0);</span>
+<span data-line="5">Produto c = new Produto("Banana", 5.0);</span>
+<span data-line="6">System.out.println(a == c);</span>
+<span data-line="7">ajustarPreco(a);</span>
+<span data-line="8">void ajustarPreco(Produto p) {</span>
+<span data-line="9">    p.setPreco(5.5);</span>
+<span data-line="10">    p = new Produto("Uva", 8.0);</span>
+<span data-line="11">}</span>
+  </code></pre>
+  <p class="code-hint">Linhas destacadas correspondem ao passo atual.</p>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>

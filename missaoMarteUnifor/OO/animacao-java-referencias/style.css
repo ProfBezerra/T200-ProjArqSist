@@ -1,0 +1,106 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.memory {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+  position: relative; /* para posicionar o SVG overlay */
+}
+
+.area {
+  width: 45%;
+  border: 2px solid #333;
+  padding: 15px;
+  min-height: 260px;
+}
+
+.heap {
+  background: #f4f4f4;
+}
+
+.ref {
+  background: #2196F3;
+  color: white;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 6px;
+}
+
+.object {
+  background: #4CAF50;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 6px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* SVG overlay de conectores */
+#connectors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* não captura cliques */
+  z-index: 10; /* garantir que fique acima das áreas */
+}
+
+.connector {
+  stroke: #555;
+  stroke-width: 2.5;
+  fill: none;
+  marker-end: url(#arrow);
+}
+
+.connector.reassign {
+  stroke: #FF9800; /* destaque para reatribuição */
+  stroke-dasharray: 6 4;
+}
+
+/* Destaque visual do objeto atualizado */
+@keyframes flashBg {
+  0%   { background-color: #4CAF50; }
+  50%  { background-color: #66BB6A; }
+  100% { background-color: #4CAF50; }
+}
+
+.flash {
+  animation: flashBg 0.8s ease-in-out 2;
+}
+
+/* Painel de código (efeito debug) */
+.code-panel {
+  width: 90%;
+  margin: 10px auto 20px;
+  text-align: left;
+  border: 2px solid #333;
+  padding: 10px;
+}
+
+#code {
+  background: #1e1e1e;
+  color: #ddd;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+#code span {
+  display: block;
+  white-space: pre;
+}
+
+.code-hl {
+  background: rgba(255, 235, 59, 0.25);
+}
+
+.code-hint {
+  font-size: 0.9em;
+  color: #666;
+}

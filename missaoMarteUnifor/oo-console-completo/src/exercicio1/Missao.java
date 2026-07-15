@@ -1,4 +1,4 @@
-package missao;
+package exercicio1;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,36 +17,27 @@ public class Missao {
         return nave;
     }
 
-    public List<Passageiro> getPassageiros() {
+    public java.util.List<Passageiro> getPassageiros() {
         return passageiros;
     }
 
-    public List<Asteroide> getAsteroides() {
+    public java.util.List<Asteroide> getAsteroides() {
         return asteroides;
     }
 
-    public void addPassageiro(Passageiro p) {
-        passageiros.add(p);
-    }
-
-    public void addAsteroide(Asteroide a) {
-        asteroides.add(a);
-    }
+    public void addPassageiro(Passageiro p) { passageiros.add(p); }
+    public void addAsteroide(Asteroide a) { asteroides.add(a); }
 
     public boolean verificaColisao() {
         for (Asteroide a : asteroides) {
-            if (a.colideCom(nave)) {
-                return true;
-            }
+            if (a.colideCom(nave)) return true;
         }
         return false;
     }
 
     public Passageiro passagemNaPosicao() {
         for (Passageiro p : passageiros) {
-            if (p.getX() == nave.getX() && p.getY() == nave.getY()) {
-                return p;
-            }
+            if (p.getX() == nave.getX() && p.getY() == nave.getY()) return p;
         }
         return null;
     }
@@ -57,16 +48,12 @@ public class Missao {
             Passageiro p = it.next();
             if (p.getX() == nave.getX() && p.getY() == nave.getY()) {
                 boolean ok = nave.embarcar(p);
-                if (ok) {
-                    it.remove();
-                }
+                if (ok) it.remove();
                 return ok;
             }
         }
         return false;
     }
 
-    public boolean todosEmbarcados() {
-        return passageiros.isEmpty();
-    }
+    public boolean todosEmbarcados() { return passageiros.isEmpty(); }
 }
