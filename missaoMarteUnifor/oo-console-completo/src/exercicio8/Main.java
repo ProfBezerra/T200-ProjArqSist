@@ -12,8 +12,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import exercicio8.*;
-
 /**
  * Solução do Exercício 8: Menu de dificuldade com base no Exercício 7
  *
@@ -84,12 +82,17 @@ public class Main {
         System.out.println(" - Cada colisão com asteroide ou inimigo custa 1 vida");
         System.out.println(" - Se vidas chegarem a 0: GAME OVER");
         System.out.println();
+        System.out.println("[DEBUG] Iniciando leitura da dificuldade...");
         String dificuldade = selecionarDificuldade(scanner);
+        System.out.println("[DEBUG] Dificuldade selecionada: " + dificuldade);
         System.out.println();
         int tamanhoMapa;
         try {
+            System.out.println("[DEBUG] Lendo tamanho do mapa...");
             tamanhoMapa = Integer.parseInt(lerLinha(scanner, "Tamanho do mapa (-X a +X): ", "5"));
+            System.out.println("[DEBUG] Tamanho do mapa lido: " + tamanhoMapa);
         } catch (NumberFormatException e) {
+            System.out.println("[DEBUG] Valor inválido para tamanho do mapa, usando 5.");
             tamanhoMapa = 5;
         }
         if (tamanhoMapa < 1) {
@@ -101,14 +104,12 @@ public class Main {
         int minY = -tamanhoMapa;
         int maxY = tamanhoMapa;
 
-        System.out.println("Pressione Enter para iniciar a missão...");
-        if (scanner.hasNextLine()) {
-            scanner.nextLine();
-        }
+        System.out.println("Iniciando missão...");
         System.out.println("================================================================");
 
         boolean playAgain = true;
         while (playAgain) {
+            System.out.println("[DEBUG] Criando nova missão...");
             Missao missao = criarNovaMissao(random, minX, maxX, minY, maxY, dificuldade);
             Nave nave = missao.getNave();
             int score = definirPontuacaoInicial(dificuldade);
@@ -119,10 +120,12 @@ public class Main {
                 System.out.printf("Nave em (%d,%d) | Pontos: %d | Vidas: %d | Passageiros a bordo: %d | Passageiros restantes: %d\n",
                         nave.getX(), nave.getY(), score, nave.getVidas(), nave.getPassageiros().size(), missao.todosEmbarcados() ? 0 : missao.getPassageiros().size());
 
+                System.out.println("[DEBUG] Aguardando comando do jogador...");
                 String line = lerLinha(scanner, "Para onde ir? ", "").toLowerCase();
+                System.out.println("[DEBUG] Comando lido: " + line);
                 if (line.isEmpty()) {
                     if (!scanner.hasNextLine()) {
-                        System.out.println("Entrada encerrada. Encerrando a missão.");
+                        System.out.println("[DEBUG] Entrada encerrada. Encerrando a missão.");
                         running = false;
                         break;
                     }
@@ -225,15 +228,15 @@ public class Main {
         
         Missao missao = new Missao(nave);
 
-        int qtdPassageiros = 5;
+        int qtdPassageiros = Math.min(5, nave.getCapacidade());
         int qtdAsteroides = 2;
         int qtdInimigos = 2;
         if (dificuldade.equals("facil")) {
-            qtdPassageiros = 4;
+            qtdPassageiros = Math.min(4, nave.getCapacidade());
             qtdAsteroides = 1;
             qtdInimigos = 1;
         } else if (dificuldade.equals("dificil")) {
-            qtdPassageiros = 6;
+            qtdPassageiros = Math.min(5, nave.getCapacidade());
             qtdAsteroides = 3;
             qtdInimigos = 3;
         }
@@ -244,24 +247,8 @@ public class Main {
             if (x == nave.getX() && y == nave.getY()) continue;
             if (posicaoOcupada(missao, x, y)) continue;
             
-            // Criar 5 passageiros diferentes
-            switch (missao.getPassageiros().size()) {
-                case 0:
-                    missao.addPassageiro(new Professor("Dr. Silva", x, y));
-                    break;
-                case 1:
-                    missao.addPassageiro(new Engenheiro("Eng. Rosa", x, y));
-                    break;
-                case 2:
-                    missao.addPassageiro(new Professor("Dr. Lima", x, y));
-                    break;
-                case 3:
-                    missao.addPassageiro(new Engenheiro("Eng. Carlos", x, y));
-                    break;
-                case 4:
-                    missao.addPassageiro(new Astronauta("Ast. Maria", x, y));
-                    break;
-            }
+            int indicePassageiro = missao.getPassageiros().size();
+            missao.addPassageiro(criarPassageiro(indicePassageiro, x, y));
         }
 
         while (missao.getAsteroides().size() < qtdAsteroides) {
@@ -281,6 +268,21 @@ public class Main {
         }
 
         return missao;
+    }
+
+    private static Passageiro criarPassageiro(int indice, int x, int y) {
+        switch (indice % 5) {
+            case 0:
+                return new Professor("Dr. Silva", x, y);
+            case 1:
+                return new Engenheiro("Eng. Rosa", x, y);
+            case 2:
+                return new Professor("Dr. Lima", x, y);
+            case 3:
+                return new Engenheiro("Eng. Carlos", x, y);
+            default:
+                return new Astronauta("Ast. Maria", x, y);
+        }
     }
 
     private static boolean posicaoOcupada(Missao missao, int x, int y) {
