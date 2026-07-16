@@ -1,0 +1,28 @@
+# Gabarito do Questionário de Programação Orientada a Objetos
+
+## Respostas
+
+1. A
+2. A
+3. A
+4. A
+5. A
+6. A
+7. A
+8. A
+9. A
+10. A
+11. A
+12. A
+13. A
+14. A
+15. A
+16. A
+17. A
+18. A
+19. A
+20. A
+
+## Observações
+- As respostas acima correspondem às alternativas corretas do questionário em Markdown.
+- Se quiser, posso converter esse material para um formato ainda mais próximo do Moodle, como GIFT ou em tabela para impressão.
