@@ -1197,9 +1197,37 @@ int tamanho = Integer.parseInt(scanner.nextLine());
 
 ## Nível 4: Desafio Final
 
-### Exercício 10: Mini-jogo completo com todas as features
+### Exercício 10: Mini-jogo Completo com Todas as Features (Estilo Pouso na Lua)
 
-Para encerrar mude a regra de finalizar a fase (o jogo) quando o piloto resgatar todas as pessoas e sair pelo ponto indicado quando todos as pessoas forem salva. Deve simular como se fosse o pouso na lua.
+**Enunciado:** 
+Chegou a hora de consolidar tudo o que você aprendeu. Crie uma versão final do jogo integrando todas as features anteriores em um código limpo, modular e estruturado. Além disso, você deve implementar um **novo fluxo de encerramento da fase inspirado no pouso na lua** (onde o piloto precisa pousar e depois decolar com segurança).
+
+#### Requisitos do Desafio:
+
+1.  **Regra de Pouso e Decolagem:**
+    *   O jogo **não deve** terminar imediatamente após salvar o último passageiro.
+    *   Uma vez que todos os passageiros estão a bordo, o piloto deve pilotar a nave de volta até a **Plataforma de Pouso** localizada na coordenada central `(0, 0)`.
+    *   O símbolo `L` deve ser desenhado na posição `(0, 0)` do mapa para indicar visualmente a plataforma de pouso (use a letra `L` de *Landing Pad*).
+    *   A vitória só é decretada quando a nave pousa com sucesso na plataforma `(0, 0)` com todos os passageiros salvos.
+    *   **Atenção:** Cada movimento de retorno consome 1 ponto de combustível. Se a pontuação zerar antes de alcançar a plataforma, o jogador perde a partida.
+2.  **Menu Inicial com Opções:**
+    *   Exibir um menu interativo antes do início da partida com as opções:
+        1. Iniciar Nova Missão
+        2. Visualizar Ranking Top 5
+        3. Resetar Histórico de Ranking
+        4. Sair do Jogo
+3.  **Enum para Dificuldades:**
+    *   Crie um Enum `Dificuldade` (`FACIL`, `MEDIO`, `DIFICIL`) para substituir o uso de strings soltas.
+4.  **Estatísticas e Recordes de Fim de Partida:**
+    *   Armazene o tempo de início e fim da partida usando `System.currentTimeMillis()` e exiba a duração da partida em segundos.
+    *   Mostre a quantidade de movimentos realizados no mapa marciano.
+    *   Ao final da partida, confira se a pontuação alcançada superou a maior pontuação persistida no ranking para parabenizar o piloto pelo recorde do servidor.
+5.  **Reset de Ranking:**
+    *   No menu, permita ao jogador apagar os dados do arquivo `ranking.json`.
+6.  **Refatoração do Código:**
+    *   Evite métodos excessivamente longos. Divida o loop principal e as verificações da classe `Main` em métodos menores e coesos (como `jogarPartida`, `resetarRanking` e `exibirEstatisticas`).
+
+---
 
 # Referências e Aprofundamento
 
