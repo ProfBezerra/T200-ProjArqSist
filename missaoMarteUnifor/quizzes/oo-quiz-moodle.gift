@@ -1,0 +1,155 @@
+$CATEGORY: OO_MISSAO_MARTE
+
+::OO_01:: Em programação orientada a objetos, uma classe é: {
+= Um molde para criar objetos.
+~ Um tipo de dado primitivo.
+~ Um comando de terminal.
+~ Um arquivo de configuração.
+}
+
+::OO_02:: Qual das alternativas descreve melhor um objeto? {
+= Uma instância de uma classe com estado e comportamento.
+~ Uma variável que armazena apenas números.
+~ Um método estático sem retorno.
+~ Um pacote Java sem classes.
+}
+
+::OO_03:: O principal objetivo do encapsulamento é: {
+= Ocultar detalhes internos de implementação e expor apenas o necessário.
+~ Aumentar o número de atributos por classe.
+~ Evitar o uso de métodos públicos.
+~ Substituir herança por composição.
+}
+
+::OO_04:: Em Java, qual modificador normalmente é usado para proteger atributos de acesso direto fora da classe? {
+= private
+~ public
+~ protected
+~ static
+}
+
+::OO_05:: O que é um construtor em Java? {
+= Um método especial usado para inicializar um objeto no momento da criação.
+~ Um método que sempre retorna um boolean.
+~ Um tipo de interface.
+~ Uma instrução para importar pacotes.
+}
+
+::OO_06:: Na implementação da nave, o método moveRight() representa: {
+= Uma operação de comportamento da classe Nave.
+~ Um atributo da classe Missao.
+~ Um tipo de passageiro.
+~ Um arquivo de texto do ranking.
+}
+
+::OO_07:: Em relação à herança, qual afirmação está correta? {
+= Uma classe filha herda características de uma classe pai.
+~ A herança elimina completamente a necessidade de polimorfismo.
+~ Uma classe filha não pode ter métodos próprios.
+~ Herança é usada apenas para interfaces.
+}
+
+::OO_08:: No tutorial, Professor e Engenheiro representam exemplos de: {
+= Classes especializadas que herdam de Passageiro.
+~ Objetos de nave.
+~ Tipos de asteroides.
+~ Métodos estáticos.
+}
+
+::OO_09:: O polimorfismo permite que: {
+= Objetos de tipos diferentes sejam tratados de forma uniforme quando compartilham uma interface ou classe base.
+~ Uma classe herde de múltiplas classes ao mesmo tempo.
+~ Métodos sejam privados.
+~ Pacotes sejam importados automaticamente.
+}
+
+::OO_10:: O uso de instanceof em Java serve para: {
+= Verificar se um objeto é uma instância de uma determinada classe.
+~ Criar um objeto novo.
+~ Definir um pacote.
+~ Substituir um construtor.
+}
+
+::OO_11:: A composição é um conceito em que: {
+= Uma classe é formada por outras classes, como uma Missao contendo uma Nave.
+~ Uma classe herda todos os atributos de outra.
+~ Uma classe não pode ter atributos.
+~ Um objeto é criado sem estado.
+}
+
+::OO_12:: No projeto da Missão Marte, a relação entre Missao e Passageiro é um exemplo de: {
+= Composição.
+~ Herança múltipla.
+~ Encapsulamento incorreto.
+~ Polimorfismo estático.
+}
+
+::OO_13:: Qual é o papel principal da classe Missao no jogo? {
+= Organizar e controlar a interação entre nave, passageiros e obstáculos.
+~ Definir apenas a aparência do mapa.
+~ Representar apenas uma lista de comandos.
+~ Guardar apenas dados de ranking.
+}
+
+::OO_14:: O método verificaColisao() na classe Missao tem como função principal: {
+= Detectar se a nave colidiu com asteroides ou inimigos.
+~ Gerar novos passageiros aleatoriamente.
+~ Salvar o ranking em arquivo.
+~ Ler dados do teclado.
+}
+
+::OO_15:: No jogo, o uso de List<Passageiro> indica que: {
+= A missão pode armazenar vários passageiros em uma coleção dinâmica.
+~ A nave pode ter apenas um passageiro.
+~ Os passageiros não podem ser embarcados.
+~ O jogo não precisa de herança.
+}
+
+::OO_16:: Qual alternativa descreve corretamente o papel dos getters em Java? {
+= Permitem acessar valores de atributos privados de forma controlada.
+~ Substituem a necessidade de construtores.
+~ Criam novos objetos automaticamente.
+~ Evitam o uso de listas.
+}
+
+::OO_17:: Em uma classe Java, o comando this.nome = nome indica que: {
+= O atributo da classe recebe o valor do parâmetro do construtor ou método.
+~ O método é estático.
+~ O objeto é destruído.
+~ A classe herda de outra.
+}
+
+::OO_18:: No tutorial, qual conceito é fundamental para que o jogador possa interagir com o jogo por meio do teclado? {
+= Uso de Scanner para leitura de entrada.
+~ Uso de arquivos XML.
+~ Uso de herança múltipla.
+~ Uso de interfaces sem implementação.
+}
+
+::OO_19:: Em relação ao ambiente Java, qual afirmação está correta? {
+= JDK contém ferramentas para desenvolvimento, enquanto JRE é usado para executar programas Java.
+~ JDK é usado apenas para executar programas.
+~ JRE contém o compilador javac.
+~ JDK e JRE são a mesma coisa.
+}
+
+::OO_20:: Em Java, o comando javac é usado para: {
+= Compilar arquivos fonte .java em bytecode executável pela JVM.
+~ Executar programas diretamente sem compilação.
+~ Criar arquivos de texto em Markdown.
+~ Gerar diagramas UML automaticamente.
+}
+
+::OO_21:: Em relação ao projeto, qual é a melhor justificativa para usar herança em classes como Professor e Engenheiro? {
+= Para reutilizar código comum e representar uma especialização do tipo Passageiro.
+~ Para impedir a criação de objetos.
+~ Para eliminar completamente o uso de métodos.
+~ Para trocar composição por encapsulamento.
+}
+
+::OO_22:: Considerando o tutorial, qual é o principal benefício de separar o código em classes como Nave, Passageiro e Missao? {
+= Melhor organização, manutenção e entendimento do sistema.
+~ Menor capacidade de reutilização.
+~ Eliminação de qualquer tipo de interação entre objetos.
+~ Redução do número de arquivos do projeto.
+}
