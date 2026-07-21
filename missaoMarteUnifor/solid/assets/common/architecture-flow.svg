@@ -15,16 +15,16 @@
   <rect class="box" x="280" y="60" width="220" height="80"/>
   <rect class="box" x="540" y="60" width="220" height="80"/>
   <rect class="box" x="800" y="60" width="120" height="80"/>
-  <text class="title" x="150" y="90" text-anchor="middle">Main / Controller</text>
-  <text class="caption" x="150" y="115" text-anchor="middle">Interface de texto ou HTTP</text>
-  <text class="title" x="390" y="90" text-anchor="middle">PedidoService</text>
-  <text class="caption" x="390" y="115" text-anchor="middle">Regras de negócio</text>
-  <text class="title" x="650" y="90" text-anchor="middle">PedidoRepository</text>
-  <text class="caption" x="650" y="115" text-anchor="middle">Contrato de persistência</text>
+  <text class="title" x="150" y="90" text-anchor="middle">Main / JogoService</text>
+  <text class="caption" x="150" y="115" text-anchor="middle">Entrada do jogador e fluxo da missão</text>
+  <text class="title" x="390" y="90" text-anchor="middle">Missão / Nave</text>
+  <text class="caption" x="390" y="115" text-anchor="middle">Regras do jogo e estado da missão</text>
+  <text class="title" x="650" y="90" text-anchor="middle">RankingRepository</text>
+  <text class="caption" x="650" y="115" text-anchor="middle">Persistência do ranking</text>
   <text class="title" x="860" y="90" text-anchor="middle">Domínio</text>
-  <text class="caption" x="860" y="115" text-anchor="middle">Pedido/Item/Produto</text>
+  <text class="caption" x="860" y="115" text-anchor="middle">Passageiros / Asteroides / Inimigos</text>
   <line class="arrow" x1="240" y1="100" x2="280" y2="100"/>
   <line class="arrow" x1="500" y1="100" x2="540" y2="100"/>
   <line class="arrow" x1="760" y1="100" x2="800" y2="100"/>
-  <text class="caption" x="480" y="200" text-anchor="middle">Fluxo: Interface → Serviço → Repositório → Domínio</text>
+  <text class="caption" x="480" y="200" text-anchor="middle">Fluxo: Entrada → Missão → Ranking → Domínio</text>
 </svg>

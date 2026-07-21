@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="180" viewBox="0 0 560 180">
   <rect width="560" height="180" fill="#F1F5F9"/>
   <rect x="60" y="50" width="160" height="80" rx="8" fill="#ffffff" stroke="#CBD5E1"/>
-  <text x="140" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">Produto</text>
+  <text x="140" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">Passageiro</text>
   <line x1="230" y1="90" x2="330" y2="90" stroke="#64748B" stroke-width="2" marker-end="url(#ah)"/>
   <rect x="340" y="50" width="160" height="80" rx="8" fill="#ffffff" stroke="#CBD5E1"/>
-  <text x="420" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">ProdutoOrganico</text>
+  <text x="420" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">PassageiroEspecial</text>
   <defs>
     <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>

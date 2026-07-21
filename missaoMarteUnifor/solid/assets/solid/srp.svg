@@ -4,5 +4,5 @@
   <text x="90" y="95" font-size="22" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Roboto">SRP</text>
   <rect x="180" y="40" width="340" height="100" rx="10" fill="#ffffff" stroke="#CBD5E1"/>
   <text x="350" y="80" font-size="18" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">Responsabilidade Única</text>
-  <text x="350" y="105" font-size="13" fill="#334155" text-anchor="middle" font-family="Segoe UI, Roboto">Uma classe, um motivo de mudança</text>
+  <text x="350" y="105" font-size="13" fill="#334155" text-anchor="middle" font-family="Segoe UI, Roboto">JogoService, MapaRenderer e RankingService têm papéis distintos</text>
 </svg>

@@ -11,11 +11,11 @@
     </marker>
   </defs>
   <rect class="box" x="60" y="70" width="180" height="70"/>
-  <text class="title" x="150" y="110" text-anchor="middle">PedidoService</text>
+  <text class="title" x="150" y="110" text-anchor="middle">JogoService</text>
   <rect class="box" x="320" y="30" width="180" height="70"/>
-  <text class="title" x="410" y="70" text-anchor="middle">PedidoRepository (interface)</text>
+  <text class="title" x="410" y="70" text-anchor="middle">RankingRepository (interface)</text>
   <rect class="box" x="320" y="120" width="180" height="70"/>
-  <text class="title" x="410" y="160" text-anchor="middle">Memória / Arquivo / JPA</text>
+  <text class="title" x="410" y="160" text-anchor="middle">Memória / Arquivo / Banco</text>
   <line class="arrow" x1="240" y1="105" x2="320" y2="65"/>
   <line class="arrow" x1="240" y1="105" x2="320" y2="155"/>
   <text x="280" y="190" font-size="13" fill="#334155" text-anchor="middle" font-family="Segoe UI, Roboto">Serviço depende da abstração; implementação é intercambiável</text>

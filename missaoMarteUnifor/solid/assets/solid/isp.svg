@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="180" viewBox="0 0 560 180">
   <rect width="560" height="180" fill="#F1F5F9"/>
   <rect x="60" y="60" width="180" height="70" rx="8" fill="#ffffff" stroke="#CBD5E1"/>
-  <text x="150" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">PedidoEscritaRepo</text>
+  <text x="150" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">RankingSalva</text>
   <rect x="320" y="60" width="180" height="70" rx="8" fill="#ffffff" stroke="#CBD5E1"/>
-  <text x="410" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">PedidoLeituraRepo</text>
+  <text x="410" y="95" font-size="16" fill="#0F172A" text-anchor="middle" font-family="Segoe UI, Roboto">RankingConsulta</text>
   <text x="280" y="160" font-size="13" fill="#334155" text-anchor="middle" font-family="Segoe UI, Roboto">Interfaces menores e focadas por caso de uso</text>
 </svg>
