@@ -7,26 +7,30 @@ import solidexercicio10.model.Passageiro;
 
 public class MapaRenderer {
     public void desenhar(Missao missao) {
-        desenhar(missao, 0, "Piloto");
+        desenhar(missao, 0, "Piloto", -2, 2, -2, 2);
     }
 
     public void desenhar(Missao missao, int score, String pilotoNome) {
+        desenhar(missao, score, pilotoNome, -2, 2, -2, 2);
+    }
+
+    public void desenhar(Missao missao, int score, String pilotoNome, int minX, int maxX, int minY, int maxY) {
         System.out.println();
         System.out.printf("Mapa da Missão | Pontos: %d | Piloto: %s%n", score, pilotoNome);
         System.out.print("    ");
-        for (int x = -2; x <= 2; x++) {
+        for (int x = minX; x <= maxX; x++) {
             System.out.printf(" %2d", x);
         }
         System.out.println();
         System.out.print("    ");
-        for (int x = -2; x <= 2; x++) {
+        for (int x = minX; x <= maxX; x++) {
             System.out.print(" __");
         }
         System.out.println();
 
-        for (int y = 2; y >= -2; y--) {
+        for (int y = maxY; y >= minY; y--) {
             System.out.printf("%3d|", y);
-            for (int x = -2; x <= 2; x++) {
+            for (int x = minX; x <= maxX; x++) {
                 char symbol = '.';
                 if (missao.getNave().getX() == x && missao.getNave().getY() == y) {
                     symbol = '@';

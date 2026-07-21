@@ -90,7 +90,7 @@ public class JogoService {
         long tempoInicio = System.currentTimeMillis();
 
         while (partidaAtiva) {
-            mapaRenderer.desenhar(missao, score, pilotoNome);
+            mapaRenderer.desenhar(missao, score, pilotoNome, minX, maxX, minY, maxY);
             System.out.printf("Nave em (%d,%d) | Pontos: %d | Vidas: %d | A bordo: %d/%d | Restantes: %d%n",
                     nave.getX(), nave.getY(), score, nave.getVidas(), nave.getPassageiros().size(), nave.getCapacidade(), missao.getPassageiros().size());
 
@@ -198,51 +198,69 @@ public class JogoService {
             qtdInimigos = 3;
         }
 
-        int indice = 0;
-        while (missao.getPassageiros().size() < qtdPassageiros) {
-            int x = (int) (Math.random() * (maxX - minX + 1)) + minX;
-            int y = (int) (Math.random() * (maxY - minY + 1)) + minY;
-            if (x == nave.getX() && y == nave.getY()) {
-                continue;
-            }
-            if (posicaoOcupada(missao, x, y)) {
-                continue;
-            }
-            if (indice % 3 == 0) {
-                missao.adicionarPassageiro(new Professor("Dr. Silva", x, y));
-            } else if (indice % 3 == 1) {
-                missao.adicionarPassageiro(new Engenheiro("Eng. Rosa", x, y));
-            } else {
-                missao.adicionarPassageiro(new Professor("Dr. Lima", x, y));
-            }
-            indice++;
-        }
+        posicionarPassageiros(missao, qtdPassageiros, minX, maxX, minY, maxY, nave);
 
-        while (missao.getAsteroides().size() < qtdAsteroides) {
-            int x = (int) (Math.random() * (maxX - minX + 1)) + minX;
-            int y = (int) (Math.random() * (maxY - minY + 1)) + minY;
-            if (x == nave.getX() && y == nave.getY()) {
-                continue;
-            }
-            if (posicaoOcupada(missao, x, y)) {
-                continue;
-            }
-            missao.adicionarAsteroide(new Asteroide(x, y));
-        }
-
-        while (missao.getInimigos().size() < qtdInimigos) {
-            int x = (int) (Math.random() * (maxX - minX + 1)) + minX;
-            int y = (int) (Math.random() * (maxY - minY + 1)) + minY;
-            if (x == nave.getX() && y == nave.getY()) {
-                continue;
-            }
-            if (posicaoOcupada(missao, x, y)) {
-                continue;
-            }
-            missao.adicionarInimigo(new Inimigo(x, y));
-        }
+        posicionarEntidades(missao, qtdAsteroides, minX, maxX, minY, maxY, nave, true);
+        posicionarEntidades(missao, qtdInimigos, minX, maxX, minY, maxY, nave, false);
 
         return missao;
+    }
+
+    private void posicionarPassageiros(Missao missao, int qtdPassageiros, int minX, int maxX, int minY, int maxY, Nave nave) {
+        int indice = 0;
+        for (int y = maxY; y >= minY; y--) {
+            for (int x = minX; x <= maxX; x++) {
+                if (missao.getPassageiros().size() >= qtdPassageiros) {
+                    return;
+                }
+                if (x == nave.getX() && y == nave.getY()) {
+                    continue;
+                }
+                if (posicaoOcupada(missao, x, y)) {
+                    continue;
+                }
+                if (indice % 3 == 0) {
+                    missao.adicionarPassageiro(new Professor("Dr. Silva", x, y));
+                } else if (indice % 3 == 1) {
+                    missao.adicionarPassageiro(new Engenheiro("Eng. Rosa", x, y));
+                } else {
+                    missao.adicionarPassageiro(new Professor("Dr. Lima", x, y));
+                }
+                indice++;
+            }
+        }
+
+        if (missao.getPassageiros().size() < qtdPassageiros) {
+            System.out.printf("Aviso: o mapa atual não suporta todos os passageiros da dificuldade escolhida (%d/%d).%n",
+                    missao.getPassageiros().size(), qtdPassageiros);
+        }
+    }
+
+    private void posicionarEntidades(Missao missao, int qtd, int minX, int maxX, int minY, int maxY, Nave nave, boolean asteroide) {
+        for (int y = maxY; y >= minY; y--) {
+            for (int x = minX; x <= maxX; x++) {
+                if (asteroide) {
+                    if (missao.getAsteroides().size() >= qtd) {
+                        return;
+                    }
+                } else {
+                    if (missao.getInimigos().size() >= qtd) {
+                        return;
+                    }
+                }
+                if (x == nave.getX() && y == nave.getY()) {
+                    continue;
+                }
+                if (posicaoOcupada(missao, x, y)) {
+                    continue;
+                }
+                if (asteroide) {
+                    missao.adicionarAsteroide(new Asteroide(x, y));
+                } else {
+                    missao.adicionarInimigo(new Inimigo(x, y));
+                }
+            }
+        }
     }
 
     private boolean posicaoOcupada(Missao missao, int x, int y) {
