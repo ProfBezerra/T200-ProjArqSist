@@ -6,6 +6,16 @@ Esta atividade propõe que o aluno transforme um código de jogo em console em u
 
 O aluno deve refatorar o código do Exercício 10, criando uma estrutura em pacotes e aplicando os princípios do SOLID, mantendo o comportamento básico do jogo original.
 
+## Como este tutorial destaca o SOLID
+
+Este exercício foi pensado para mostrar que os princípios do SOLID não são apenas teoria, mas uma forma prática de organizar o código.
+
+- SRP (Single Responsibility Principle): cada classe passa a ter uma responsabilidade bem definida, como representar o domínio, exibir o mapa ou salvar o ranking.
+- OCP (Open/Closed Principle): a estrutura com abstrações, como `Passageiro` e `RankingRepository`, permite acrescentar novos tipos sem precisar mudar o código já existente.
+- LSP (Liskov Substitution Principle): as subclasses como `Professor`, `Engenheiro` e `Astronauta` podem ser usadas no mesmo contexto de `Passageiro` sem quebrar o comportamento esperado.
+- ISP (Interface Segregation Principle): interfaces pequenas e específicas evitam que uma classe dependa de métodos que não usa.
+- DIP (Dependency Inversion Principle): `JogoService` depende de uma abstração (`RankingRepository`) e não diretamente de uma implementação concreta.
+
 ## Materiais
 
 - Ambiente com Java instalado;
@@ -62,6 +72,8 @@ Espaço para resposta do aluno:
 
 Crie o arquivo `service/JogoService.java` com este conteúdo:
 
+> Aqui o aluno deve perceber que a classe de serviço concentra a lógica do jogo e deixa a classe `Main` mais simples. Isso está ligado ao SRP, porque cada componente passa a ter uma responsabilidade clara.
+
 ```java
 package solidexercicio10.service;
 
@@ -88,6 +100,8 @@ Espaço para resposta do aluno:
 
 Crie o arquivo `presentation/MapaRenderer.java` com este conteúdo:
 
+> Essa etapa mostra o SRP e a separação de responsabilidades: a parte visual fica isolada da lógica do jogo.
+
 ```java
 package solidexercicio10.presentation;
 
@@ -104,6 +118,8 @@ Espaço para resposta do aluno:
 ### 6. Criar a abstração do ranking
 
 Crie o arquivo `repository/RankingRepository.java` com este conteúdo:
+
+> Esta etapa é um exemplo clássico de DIP: o serviço depende de uma abstração, não de uma implementação fixa.
 
 ```java
 package solidexercicio10.repository;
@@ -154,6 +170,8 @@ public enum Dificuldade {
 ### 9. Criar os passageiros como abstração
 
 Crie o arquivo `model/Passageiro.java` com este conteúdo:
+
+> Aqui o aluno pode observar o OCP e a LSP: novos tipos de passageiros podem ser adicionados sem mudar a estrutura geral, porque todos seguem o mesmo contrato.
 
 ```java
 package solidexercicio10.model;
@@ -532,6 +550,8 @@ public class Missao {
 ## Avaliação
 
 Use a checklist abaixo para avaliar se a atividade foi concluída corretamente.
+
+Além disso, peça ao aluno para justificar cada item com um princípio do SOLID.
 
 - [ ] Criou os pacotes `model`, `presentation`, `repository` e `service`.
 - [ ] Organizou a classe `Main` com fluxo simples e delegação de responsabilidades.
