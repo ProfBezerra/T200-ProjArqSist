@@ -7,38 +7,46 @@
 ## Conceito
 OCP (Open-Closed Principle) diz que módulos devem estar abertos para extensão e fechados para modificação.
 
-## Exemplo (Feira Livre)
-- `ProdutoOrganico` estende `Produto` e sobrescreve `getPreco()` — ver [feira-livre-java/src/feira/ProdutoOrganico.java](../feira-livre-java/src/feira/ProdutoOrganico.java).
+## Exemplo (Missão Marte Unifor)
+No tutorial, o conceito aparece na abstração `Passageiro`.
+- `Professor`, `Engenheiro` e `Astronauta` são subclasses diferentes.
+- O sistema pode tratar todos como `Passageiro` sem precisar mudar a lógica principal.
 
 ```java
-public class ProdutoOrganico extends Produto {
+public abstract class Passageiro {
+    public abstract int getPontuacao();
+}
+
+public class Professor extends Passageiro {
     @Override
-    public double getPreco() { return super.getPreco() * 0.9; }
+    public int getPontuacao() {
+        return 15;
+    }
+}
+
+public class Engenheiro extends Passageiro {
+    @Override
+    public int getPontuacao() {
+        return 20;
+    }
 }
 ```
 
 ## Extensões possíveis
-- `ProdutoPromocional`: aplica 20% de desconto.
-- `ProdutoComImposto`: aplica acréscimo de imposto.
-
-```java
-public class ProdutoPromocional extends Produto {
-    @Override
-    public double getPreco() { return super.getPreco() * 0.8; }
-}
-```
+- Criar um novo tipo de passageiro, como `Medico`, sem alterar a lógica do jogo.
+- Adicionar novas regras de pontuação por meio de subclasses.
 
 ## Exercícios
-- Crie `ProdutoComImposto` sem editar `Produto` e integre na `Main` pela escolha do usuário.
-- Garanta que `Produto` continue estável (fechado para modificação), e a variação venha por subclasses.
+- Crie um novo tipo de passageiro e faça com que ele seja reconhecido no fluxo do jogo.
+- Verifique se a lógica de embarque e pontuação continua funcionando sem alterar a classe base.
 
 ## Checklist
-- O código base (`Produto`) permanece intacto ao adicionar novas variações?
-- As novas regras são introduzidas por extensão (subclasses) ou composição (estratégias)?
+- A classe base `Passageiro` permaneceu estável ao adicionar novos tipos?
+- O sistema passou a aceitar novas variações por extensão?
 
 ## Como validar
-- Adicionar um novo tipo de produto não deve quebrar o build nem exigir alterações em classes estáveis.
+- Adicionar um novo passageiro não deve exigir reescrever a lógica de pontuação ou embarque.
 
 ## Referências
 - Apostila OO (Herança/Polimorfismo)
-- Projeto: `ProdutoOrganico.java`
+- Projeto do tutorial: src/tutorial-exercicio10

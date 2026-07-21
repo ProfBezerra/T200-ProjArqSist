@@ -7,29 +7,32 @@
 ## Conceito
 LSP (Liskov Substitution Principle) afirma que uma instância de subtipo deve funcionar onde se espera o tipo base.
 
-## Exemplo (Feira Livre)
-- `ProdutoOrganico` pode ser usado como `Produto` em toda a aplicação — ver [feira-livre-java/src/feira/Main.java](../feira-livre-java/src/feira/Main.java).
+## Exemplo (Missão Marte Unifor)
+No tutorial, qualquer `Passageiro` pode ser usado no mesmo contexto, independentemente do subtipo.
 
 ```java
-Produto p = new ProdutoOrganico("Tomate", 10.0); // tratado como Produto
-double preco = p.getPreco(); // comportamento válido do subtipo
+Passageiro passageiro = new Professor("Dr. Silva", 0, 0);
+int pontos = passageiro.getPontuacao();
+
+Passageiro outro = new Engenheiro("Eng. Rosa", 1, 1);
+int maisPontos = outro.getPontuacao();
 ```
 
 ## Cuidados
-- Respeite invariantes do tipo base (ex.: preço não negativo).
-- Não quebre expectativas de métodos públicos.
+- O subtipo deve respeitar a expectativa do tipo base.
+- O método `getPontuacao()` deve continuar fazendo sentido para qualquer passageiro.
 
 ## Exercícios
-- Crie um novo subtipo garantindo que não retorna preço negativo. Teste substituição em pontos que esperam `Produto`.
-- Valide que nenhum cliente precisa saber o tipo concreto para funcionar.
+- Crie um novo subtipo de `Passageiro` e teste se ele funciona no mesmo fluxo do jogo.
+- Valide que o código cliente não precisa conhecer o tipo concreto para usar o objeto.
 
 ## Checklist
-- Subtipos respeitam as pré/pós-condições do tipo base?
-- Não há throws inesperados ou efeitos colaterais não previstos?
+- `Professor`, `Engenheiro` e `Astronauta` podem ser tratados como `Passageiro`?
+- O comportamento esperado foi preservado?
 
 ## Como validar
-- Substitua `Produto` por seu subtipo em vários lugares (ex.: `PedidoItem`) e verifique se tudo continua correto.
+- Trocar um subtipo por outro no código não deve quebrar o funcionamento do embarque ou da pontuação.
 
 ## Referências
 - Apostila OO (Herança/Polimorfismo)
-- Projeto: `Main.java`, `ProdutoOrganico.java`
+- Projeto do tutorial: src/tutorial-exercicio10

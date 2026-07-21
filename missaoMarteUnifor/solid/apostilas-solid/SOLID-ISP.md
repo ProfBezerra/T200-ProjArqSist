@@ -7,29 +7,33 @@
 ## Conceito
 ISP (Interface Segregation Principle) sugere dividir interfaces para que implementadores não sejam forçados a métodos desnecessários.
 
-## Exemplo (Feira Livre)
-- `PedidoRepository` tem um contrato mínimo `salvar(Pedido)` — ver [feira-livre-java/src/feira/PedidoRepository.java](../feira-livre-java/src/feira/PedidoRepository.java).
+## Exemplo (Missão Marte Unifor)
+No tutorial, a abstração `RankingRepository` define apenas o que o sistema realmente precisa para manipular o ranking.
 
 ```java
-public interface PedidoRepository { void salvar(Pedido pedido); }
+public interface RankingRepository {
+    void salvar(String nome, int pontuacao);
+    List<RankingEntry> listar();
+    void limpar();
+}
 ```
 
 ## Extensões possíveis
-- Separar leitura/escrita:
-  - `PedidoEscritaRepository` — `salvar(Pedido)`
-  - `PedidoLeituraRepository` — `listar()`, `buscarPorId()`
+- Se o sistema futuramente precisar separar leitura e escrita, podemos criar interfaces menores, como:
+  - `RankingEscritaRepository`
+  - `RankingLeituraRepository`
 
 ## Exercícios
-- Crie `PedidoLeituraRepository` e uma implementação simples em memória que lista pedidos sem alterar quem escreve.
-- Mostre que `PedidoService` pode depender apenas da interface de escrita quando só precisa salvar.
+- Veja se a interface do tutorial é pequena e específica.
+- Pense em como seria dividir ainda mais a responsabilidade se o sistema crescesse.
 
 ## Checklist
-- Nenhuma implementação é obrigada a métodos que não usa.
-- Interfaces pequenas e focadas por caso de uso.
+- A interface não obriga implementações a métodos que não usam.
+- Os contratos são curtos e representam um caso de uso específico.
 
 ## Como validar
-- Adicionar uma operação de leitura não deve impactar implementações de escrita.
+- Se uma nova funcionalidade exigir apenas leitura, não é necessário obrigar a implementação a fornecer métodos de escrita.
 
 ## Referências
 - Apostila OO (Interfaces, Baixo acoplamento)
-- Projeto: `PedidoRepository.java`, `PedidoRepositoryMemoria.java`
+- Projeto do tutorial: src/tutorial-exercicio10

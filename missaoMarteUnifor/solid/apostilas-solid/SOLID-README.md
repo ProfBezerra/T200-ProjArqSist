@@ -1,6 +1,6 @@
-# Apostilas – SOLID (Feira Livre)
+# Apostilas – SOLID (Missão Marte Unifor)
 
-Este diretório contém apostilas independentes para cada princípio do SOLID, todas com exemplos do mini projeto de console Feira Livre.
+Este diretório contém apostilas independentes para cada princípio do SOLID, agora com exemplos alinhados ao projeto do tutorial de refatoração da Missão Marte Unifor.
 
 ![Arquitetura Conceitual](../assets/common/architecture-flow.svg)
 
@@ -10,7 +10,17 @@ Este diretório contém apostilas independentes para cada princípio do SOLID, t
 - ISP – Interface Segregation Principle: Segregação de Interface (arquivo: SOLID-ISP.md)
 - DIP – Dependency Inversion Principle: Inversão de Dependência (arquivo: SOLID-DIP.md)
 
-Referências úteis:
-- Projeto exemplo: feira-livre-java
+## Contexto usado nas apostilas
+
+As explicações abaixo usam o mesmo cenário do tutorial:
+- Main inicia a aplicação.
+- JogoService controla o fluxo da missão.
+- MapaRenderer exibe o mapa e os elementos visuais.
+- Passageiro representa os passageiros resgatados.
+- RankingRepository e RankingService tratam do armazenamento do ranking.
+
+## Referências úteis
+
+- Projeto exemplo do tutorial: src/tutorial-exercicio10
 - Apostila principal de OO: apostila_oo_java_projeto_arquitetura.md
 - UML e C4: UML-Cheat-Sheet.md, C4-guidelines.md

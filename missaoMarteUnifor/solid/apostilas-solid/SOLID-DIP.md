@@ -7,28 +7,37 @@
 ## Conceito
 DIP (Dependency Inversion Principle) afirma que módulos de alto nível não devem depender de módulos de baixo nível; ambos devem depender de abstrações.
 
-## Exemplo (Feira Livre)
-- `PedidoService` depende da interface `PedidoRepository` — ver [feira-livre-java/src/feira/PedidoService.java](../feira-livre-java/src/feira/PedidoService.java).
-- Implementação concreta: `PedidoRepositoryMemoria` — ver [feira-livre-java/src/feira/PedidoRepositoryMemoria.java](../feira-livre-java/src/feira/PedidoRepositoryMemoria.java).
+## Exemplo (Missão Marte Unifor)
+No tutorial, `JogoService` depende da abstração `RankingRepository`, e não da implementação concreta `RankingService`.
 
 ```java
-public class PedidoService {
-    private final PedidoRepository repository; // abstração
-    public PedidoService(PedidoRepository repository) { this.repository = repository; }
+public class Main {
+    public static void main(String[] args) {
+        RankingRepository repository = new RankingService("ranking.json");
+        JogoService jogoService = new JogoService(repository);
+    }
+}
+
+public class JogoService {
+    private final RankingRepository rankingRepository;
+
+    public JogoService(RankingRepository rankingRepository) {
+        this.rankingRepository = rankingRepository;
+    }
 }
 ```
 
 ## Exercícios
-- Adicione `PedidoRepositoryArquivo` (ou `PedidoRepositoryCSV`); troque a injeção na `Main` sem editar `PedidoService`.
-- Demonstre que trocar infraestrutura é local e não impacta regras de negócio.
+- Troque `RankingService` por outra implementação sem alterar `JogoService`.
+- Mostre que a regra de negócio do jogo não depende da forma como o ranking é armazenado.
 
 ## Checklist
-- Serviços dependem de interfaces?
-- Implementações podem ser trocadas com impacto mínimo?
+- O serviço depende de uma interface?
+- A implementação pode ser trocada com pouco impacto?
 
 ## Como validar
-- Substituir a implementação de repositório não deve exigir alteração no serviço.
+- Alterar o mecanismo de persistência não deve exigir alterações na lógica do jogo.
 
 ## Referências
 - Apostila OO (Interfaces, DIP)
-- Projeto: `PedidoService.java`, `PedidoRepository.java`
+- Projeto do tutorial: src/tutorial-exercicio10
