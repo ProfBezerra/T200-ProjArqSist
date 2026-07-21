@@ -3,6 +3,12 @@ package solidexercicio10.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa a nave do jogador.
+ *
+ * <p>Esta classe modela o estado da nave e suas ações básicas, sem misturar a
+ * lógica completa do jogo. Assim, ela mantém uma responsabilidade bem definida.</p>
+ */
 public class Nave extends EntidadeMapa implements Movel {
     private final String nome;
     private final List<Passageiro> passageiros;

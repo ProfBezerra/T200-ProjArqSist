@@ -51,6 +51,30 @@ src/
       JogoService.java
 ```
 
+## Dica para o tutorial: usar Javadoc
+
+Ao longo do projeto, os alunos podem começar a documentar as classes e os métodos com comentários em Javadoc. Isso ajuda a deixar o código mais compreensível e prepara o estudante para boas práticas de programação.
+
+Exemplo simples:
+
+```java
+/**
+ * Ponto de entrada da aplicação.
+ *
+ * <p>Esta classe inicia o jogo e delega o fluxo para o serviço principal.</p>
+ */
+public class Main {
+}
+```
+
+Nos comentários, vale destacar pontos importantes do SOLID, como:
+
+- SRP: a classe tem uma responsabilidade bem definida.
+- OCP: o código permite extensão sem alterar a estrutura principal.
+- LSP: subclasses podem ser usadas no lugar da classe base.
+- ISP: interfaces pequenas evitam dependências desnecessárias.
+- DIP: o código depende de abstrações, não de implementações concretas.
+
 ## Passo 1: criar a classe principal
 
 Crie o arquivo Main.java com o conteúdo abaixo:
@@ -1012,4 +1036,3 @@ java -cp missaoMarteUnifor\solid\src\tutorial-exercicio10\out solidexercicio10.M
 - Em que parte da refatoração você percebeu melhor a diferença entre um código acoplado e um código mais organizado?
 - O que você aprendeu sobre manutenção e evolução do software?
 - Se fosse adicionar uma nova funcionalidade, qual parte do código você alteraria com mais segurança?
-

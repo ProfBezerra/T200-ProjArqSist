@@ -1,5 +1,12 @@
 package solidexercicio10.model;
 
+/**
+ * Abstração comum para todos os tipos de passageiros.
+ *
+ * <p>Essa estrutura favorece o princípio aberto/fechado (OCP) e a substituição de
+ * Liskov (LSP), pois novos tipos de passageiros podem ser adicionados sem mudar o
+ * contrato básico usado pelo sistema.</p>
+ */
 public abstract class Passageiro extends EntidadeMapa {
     private final String nome;
     private final String tipo;

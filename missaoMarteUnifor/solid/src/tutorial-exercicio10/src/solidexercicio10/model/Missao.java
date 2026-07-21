@@ -3,6 +3,12 @@ package solidexercicio10.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Representa o estado e as regras de uma missão em andamento.
+ *
+ * <p>Esta classe agrupa os elementos da missão e suas regras principais, ajudando a
+ * separar o domínio do jogo em uma camada organizada e coerente.</p>
+ */
 public class Missao {
     private final Nave nave;
     private final List<Passageiro> passageiros;

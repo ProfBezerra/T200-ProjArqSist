@@ -1,5 +1,11 @@
 package solidexercicio10.model;
 
+/**
+ * Enumeração das dificuldades possíveis do jogo.
+ *
+ * <p>Usar um enum torna o código mais expressivo e evita valores mágicos, o que
+ * ajuda a manter a modelagem do domínio mais clara.</p>
+ */
 public enum Dificuldade {
     FACIL,
     MEDIO,

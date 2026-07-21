@@ -5,6 +5,13 @@ import solidexercicio10.model.Inimigo;
 import solidexercicio10.model.Missao;
 import solidexercicio10.model.Passageiro;
 
+/**
+ * Responsável por desenhar o mapa e exibir o estado visual do jogo.
+ *
+ * <p>A separação dessa responsabilidade em uma classe específica mostra o
+ * princípio de responsabilidade única (SRP), pois a lógica do jogo fica isolada
+ * da camada de apresentação.</p>
+ */
 public class MapaRenderer {
     public void desenhar(Missao missao) {
         desenhar(missao, 0, "Piloto", -2, 2, -2, 2);

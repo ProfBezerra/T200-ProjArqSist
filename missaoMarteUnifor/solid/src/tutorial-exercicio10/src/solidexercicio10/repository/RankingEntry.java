@@ -2,6 +2,12 @@ package solidexercicio10.repository;
 
 import solidexercicio10.model.Dificuldade;
 
+/**
+ * Representa uma entrada de ranking registrada ao final de uma partida.
+ *
+ * <p>Essa classe é um simples objeto de transferência de dados, sem regras de
+ * negócio, o que ajuda a manter a responsabilidade do domínio organizada.</p>
+ */
 public class RankingEntry {
     public final String name;
     public final int score;

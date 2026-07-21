@@ -14,6 +14,14 @@ import solidexercicio10.presentation.MapaRenderer;
 import solidexercicio10.repository.RankingEntry;
 import solidexercicio10.repository.RankingRepository;
 
+/**
+ * Responsável por controlar o fluxo principal do jogo.
+ *
+ * <p>Esta classe concentra a lógica do jogo, enquanto a renderização e o
+ * armazenamento do ranking ficam em componentes separados. Esse desenho ajuda a
+ * aplicar o princípio de responsabilidade única (SRP) e a manter o código mais
+ * organizado e fácil de evoluir.</p>
+ */
 public class JogoService {
     private final RankingRepository rankingRepository;
     private final MapaRenderer mapaRenderer;

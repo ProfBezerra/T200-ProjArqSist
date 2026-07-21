@@ -12,6 +12,13 @@ import java.util.Comparator;
 import java.util.List;
 import solidexercicio10.model.Dificuldade;
 
+/**
+ * Implementação concreta do repositório de ranking.
+ *
+ * <p>Esta classe representa a camada de persistência. Ela implementa a abstração
+ * definida por {@link RankingRepository}, o que reforça o princípio de inversão
+ * de dependência (DIP).</p>
+ */
 public class RankingService implements RankingRepository {
     private final Path arquivo;
 

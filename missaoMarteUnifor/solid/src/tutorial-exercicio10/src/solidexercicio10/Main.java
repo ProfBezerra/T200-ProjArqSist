@@ -5,6 +5,14 @@ import solidexercicio10.repository.RankingRepository;
 import solidexercicio10.repository.RankingService;
 import solidexercicio10.service.JogoService;
 
+/**
+ * Ponto de entrada da aplicação.
+ *
+ * <p>Esta classe apenas inicia o sistema e delega o fluxo para o serviço de jogo.
+ * O objetivo aqui é mostrar que a classe Main não precisa concentrar regras de
+ * negócio, o que reforça o princípio de responsabilidade única (SRP) e a inversão
+ * de dependência (DIP).</p>
+ */
 public class Main {
     public static void main(String[] args) {
         System.out.println("================================================================");
