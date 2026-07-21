@@ -6,6 +6,12 @@ Esta atividade propõe que o aluno transforme um código de jogo em console em u
 
 O aluno deve refatorar o código do Exercício 10, criando uma estrutura em pacotes e aplicando os princípios do SOLID, mantendo o comportamento básico do jogo original.
 
+## Introdução teórica curta
+
+Os princípios do SOLID ajudam a criar software mais organizado, flexível e fácil de manter. Em vez de concentrar muitas responsabilidades em uma única classe, o objetivo é separar preocupações, reduzir o acoplamento e facilitar futuras mudanças.
+
+Na prática, isso significa que o código fica mais legível, mais fácil de evoluir e menos propenso a erros quando novas funcionalidades forem adicionadas.
+
 ## Como este tutorial destaca o SOLID
 
 Este exercício foi pensado para mostrar que os princípios do SOLID não são apenas teoria, mas uma forma prática de organizar o código.
@@ -15,6 +21,16 @@ Este exercício foi pensado para mostrar que os princípios do SOLID não são a
 - LSP (Liskov Substitution Principle): as subclasses como `Professor`, `Engenheiro` e `Astronauta` podem ser usadas no mesmo contexto de `Passageiro` sem quebrar o comportamento esperado.
 - ISP (Interface Segregation Principle): interfaces pequenas e específicas evitam que uma classe dependa de métodos que não usa.
 - DIP (Dependency Inversion Principle): `JogoService` depende de uma abstração (`RankingRepository`) e não diretamente de uma implementação concreta.
+
+## Princípio → exemplo no código
+
+| Princípio | Exemplo no código |
+|---|---|
+| SRP | `JogoService` controla o fluxo do jogo, enquanto `MapaRenderer` cuida da apresentação e `RankingService` cuida do armazenamento. |
+| OCP | `Passageiro` pode ser estendido com novos tipos sem mudar a estrutura principal do sistema. |
+| LSP | `Professor`, `Engenheiro` e `Astronauta` podem ser tratados como `Passageiro` sem alterar o comportamento esperado. |
+| ISP | `RankingRepository` define apenas o comportamento necessário para salvar o ranking. |
+| DIP | `JogoService` depende da interface `RankingRepository`, e não de uma implementação concreta. |
 
 ## Materiais
 
@@ -563,7 +579,11 @@ Além disso, peça ao aluno para justificar cada item com um princípio do SOLID
 - [ ] O código ficou mais organizado e com menor acoplamento.
 - [ ] O projeto compilou e executou corretamente.
 
+## Reflexão final
+
 Espaço para resposta do aluno:
 - Qual princípio do SOLID você achou mais importante nesta atividade? _____________
-- O que você aprendeu com a refatoração? ______________________________________
+- Em que parte da refatoração você percebeu melhor a diferença entre um código acoplado e um código mais organizado? ______________________________________
+- O que você aprendeu com esta refatoração sobre manutenção e evolução do software? ______________________________________
+- Se fosse adicionar uma nova funcionalidade ao jogo, qual parte do código você conseguiria alterar com mais segurança? ______________________________________
 
