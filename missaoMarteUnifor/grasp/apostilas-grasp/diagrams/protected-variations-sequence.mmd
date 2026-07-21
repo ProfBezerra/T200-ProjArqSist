@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant ServicoPagamento
+
+  Usuario->>PedidoController: solicitarPagamento(pedidoId)
+  PedidoController->>PedidoService: processarPagamento(pedido, info)
+  activate PedidoService
+  PedidoService->>ServicoPagamento: processar(info)
+  activate ServicoPagamento
+  ServicoPagamento-->>PedidoService: ok
+  deactivate ServicoPagamento
+  PedidoService-->>PedidoController: confirmado
+  deactivate PedidoService
+  PedidoController-->>Usuario: resposta

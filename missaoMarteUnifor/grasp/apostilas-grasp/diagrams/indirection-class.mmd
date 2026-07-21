@@ -1,0 +1,13 @@
+classDiagram
+  class Pedido {
+    - id: String
+    - itens: List~PedidoItem~
+  }
+
+  interface PagamentoGateway
+  class FakePagamentoGateway
+  class PedidoService
+
+  PedidoService --> PagamentoGateway : usa
+  PagamentoGateway <|-- FakePagamentoGateway
+  Pedido "1" -- "*" PedidoItem

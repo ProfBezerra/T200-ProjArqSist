@@ -1,0 +1,24 @@
+classDiagram
+  class Produto {
+    - nome: String
+    - preco: double
+  }
+
+  interface Desconto
+  class DescontoClienteFiel
+  class DescontoPromocional
+
+  class Pedido {
+    - itens: List~PedidoItem~
+    - desconto: Desconto
+  }
+
+  class PedidoItem {
+    - produto: Produto
+    - quantidade: int
+  }
+
+  Desconto <|.. DescontoClienteFiel
+  Desconto <|.. DescontoPromocional
+  Pedido ..> Desconto : usa
+  Pedido "1" -- "*" PedidoItem

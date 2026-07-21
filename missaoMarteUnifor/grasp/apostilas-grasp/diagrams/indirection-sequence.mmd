@@ -1,0 +1,16 @@
+sequenceDiagram
+  participant Usuario
+  participant PedidoController
+  participant PedidoService
+  participant PagamentoGateway
+
+  Usuario->>PedidoController: solicitarPagamento(pedidoId)
+  PedidoController->>PedidoService: pagarPedido(pedido, info)
+  activate PedidoService
+  PedidoService->>PagamentoGateway: pagar(pedido, info)
+  activate PagamentoGateway
+  PagamentoGateway-->>PedidoService: pagamentoOk
+  deactivate PagamentoGateway
+  PedidoService-->>PedidoController: resultado
+  deactivate PedidoService
+  PedidoController-->>Usuario: confirmado

@@ -1,0 +1,30 @@
+classDiagram
+  class Produto {
+    - nome: String
+    - preco: double
+  }
+
+  class PedidoItem {
+    - produto: Produto
+    - quantidade: int
+  }
+
+  class Pedido {
+    - id: String
+    - itens: List~PedidoItem~
+    - desconto: Desconto
+  }
+
+  class PedidoService
+  class PedidoController
+
+  interface PagamentoGateway
+  class PagamentoInfo
+  class FakePagamentoGateway
+
+  Produto "1" -- "*" PedidoItem
+  Pedido "1" -- "*" PedidoItem
+  PedidoService --> Pedido
+  PedidoController --> PedidoService
+  PedidoService --> PagamentoGateway : usa
+  PagamentoGateway <|-- FakePagamentoGateway

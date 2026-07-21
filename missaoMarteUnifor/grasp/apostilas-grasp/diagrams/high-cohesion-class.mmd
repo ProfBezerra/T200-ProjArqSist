@@ -1,0 +1,31 @@
+classDiagram
+  class Produto {
+    - nome: String
+    - preco: double
+  }
+
+  class PedidoItem {
+    - produto: Produto
+    - quantidade: int
+  }
+
+  class Pedido {
+    - itens: List~PedidoItem~
+    + addItem(Produto, int)
+    + calcularTotal()
+  }
+
+  class PedidoService {
+    + processarPedido(Pedido)
+    + processarPagamento(Pedido)
+    + enviarNotificacao(Pedido)
+  }
+
+  class PagamentoGateway
+  class Notificador
+
+  Produto "1" -- "*" PedidoItem
+  Pedido "1" -- "*" PedidoItem
+  PedidoService --> Pedido
+  PedidoService ..> PagamentoGateway
+  PedidoService ..> Notificador
