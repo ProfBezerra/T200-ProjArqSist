@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260">
+  <rect width="960" height="260" fill="#F8FAFC"/>
+  <style>
+    .box { fill:#ffffff; stroke:#CBD5E1; stroke-width:2; rx:10; }
+    .title { font-family:Segoe UI, Roboto, Arial; font-size:18px; fill:#0F172A; }
+    .caption { font-family:Segoe UI, Roboto, Arial; font-size:13px; fill:#334155; }
+    .arrow { stroke:#64748B; stroke-width:2; marker-end:url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748B"/>
+    </marker>
+  </defs>
+  <rect class="box" x="60" y="60" width="180" height="80"/>
+  <rect class="box" x="280" y="60" width="220" height="80"/>
+  <rect class="box" x="540" y="60" width="220" height="80"/>
+  <rect class="box" x="800" y="60" width="120" height="80"/>
+  <text class="title" x="150" y="90" text-anchor="middle">Main / Controller</text>
+  <text class="caption" x="150" y="115" text-anchor="middle">Interface de texto ou HTTP</text>
+  <text class="title" x="390" y="90" text-anchor="middle">PedidoService</text>
+  <text class="caption" x="390" y="115" text-anchor="middle">Regras de negócio</text>
+  <text class="title" x="650" y="90" text-anchor="middle">PedidoRepository</text>
+  <text class="caption" x="650" y="115" text-anchor="middle">Contrato de persistência</text>
+  <text class="title" x="860" y="90" text-anchor="middle">Domínio</text>
+  <text class="caption" x="860" y="115" text-anchor="middle">Pedido/Item/Produto</text>
+  <line class="arrow" x1="240" y1="100" x2="280" y2="100"/>
+  <line class="arrow" x1="500" y1="100" x2="540" y2="100"/>
+  <line class="arrow" x1="760" y1="100" x2="800" y2="100"/>
+  <text class="caption" x="480" y="200" text-anchor="middle">Fluxo: Interface → Serviço → Repositório → Domínio</text>
+</svg>

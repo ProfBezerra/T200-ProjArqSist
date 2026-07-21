@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220">
+  <rect x="0" y="0" width="960" height="220" fill="#0EA5E9" rx="16"/>
+  <text x="480" y="95" font-size="40" fill="#ffffff" text-anchor="middle" font-family="Segoe UI, Roboto, Arial">UML Essencial</text>
+  <text x="480" y="140" font-size="20" fill="#E0F2FE" text-anchor="middle" font-family="Segoe UI, Roboto, Arial">Classes · Sequência · Casos de Uso · Notação · Mapeamento</text>
+</svg>
