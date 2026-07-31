@@ -1,6 +1,6 @@
 # Protected Variations
 
-**Definição**: proteger elementos de um sistema contra variações previstas, definindo pontos de estabilidade (interfaces, abstracções).
+**Definição**: proteger elementos de um sistema contra variações previstas, definindo pontos de estabilidade (interfaces, abstrações).
 
 **Problema**: Como proteger o sistema de instabilidades em elementos externos ou mutáveis?
 
@@ -11,125 +11,116 @@ Estratégia:
 - Encapsular variações atrás de interfaces
 - Usar indirection e pure fabrication para isolar mudanças
 
-Exemplo: definir uma interface `PagamentoGateway` para isolar diferentes implementações (Pix, Cartão, Boleto).
+Exemplo: definir `IRankingRepository` para isolar diferentes estratégias de persistência do ranking (arquivo JSON, banco de dados, memória).
 
 Relação com SOLID
 
 - **DIP:** proteger variações frequentemente é feito invertendo dependências e programando para abstrações.
 - **OCP:** encapsular variações atrás de interfaces permite estender comportamentos sem modificar código cliente.
 
-## Exemplo evolutivo (Feira Livre)
+## Exemplo evolutivo (Missão Marte)
 
-Ao aplicar `Protected Variations` no domínio da feira, definimos uma interface `PagamentoGateway` e implementações concretas para o provedor de pagamento. O `PedidoService` depende da abstração, protegendo-se de mudanças nas implementações.
+Ao aplicar `Protected Variations`, definimos `IRankingRepository` para isolar o `JogoService` de saber se o ranking é salvo em arquivo, banco ou memória.
 
 Trecho ilustrativo:
 
 ```java
-public interface PagamentoGateway { boolean pagar(Pedido pedido, PagamentoInfo info); }
-public class FakePagamentoGateway implements PagamentoGateway { /* ... */ }
+public interface IRankingRepository {
+    void salvar(RankingEntry entry);
+    List<RankingEntry> carregar();
+}
+public class RankingRepositoryEmMemoria implements IRankingRepository { /* ... */ }
+public class RankingRepositoryArquivo   implements IRankingRepository { /* ... */ }
 ```
 
-Referência: este padrão trabalha bem com `Indirection` e `Pure Fabrication`.
+Este padrão trabalha bem com `Indirection` e `Pure Fabrication`.
 
 Exemplos de código
 
-1) `PagamentoGateway` — interface estável para proteger variações:
+1) `IRankingRepository` — interface estável para proteger variações:
 
 ```java
-package feira.grasp.payment;
-
-import feira.grasp.payment.PagamentoInfo;
-import feira.grasp.Pedido;
-
-public interface PagamentoGateway {
-  boolean pagar(Pedido pedido, PagamentoInfo info);
+public interface IRankingRepository {
+    void salvar(RankingEntry entry);
+    List<RankingEntry> carregar();
+    void resetar();
+    boolean ehTopScore(List<RankingEntry> ranking, int pontos);
 }
 ```
 
-1) Implementação fake (exemplo simplificado para aula):
+2) Implementação em memória (para testes e aulas):
 
 ```java
-package feira.grasp.payment;
+public class RankingRepositoryEmMemoria implements IRankingRepository {
+    private final List<RankingEntry> dados = new ArrayList<>();
 
-import feira.grasp.Pedido;
-
-public class FakePagamentoGateway implements PagamentoGateway {
-  @Override
-  public boolean pagar(Pedido pedido, PagamentoInfo info) {
-    return pedido != null
-        && info != null
-        && info.getTipo() != null
-        && !info.getTipo().isBlank()
-        && info.getReferencia() != null
-        && !info.getReferencia().isBlank();
-  }
+    @Override public void salvar(RankingEntry entry) { dados.add(entry); }
+    @Override public List<RankingEntry> carregar()   { return new ArrayList<>(dados); }
+    @Override public void resetar()                  { dados.clear(); }
+    @Override public boolean ehTopScore(List<RankingEntry> r, int pts) {
+        return r.size() < 10 || r.stream().mapToInt(RankingEntry::getPontuacao).min().orElse(0) < pts;
+    }
 }
 ```
 
-1) Uso no `PedidoController` + `PagamentoFactory` — protegendo variações:
+3) Uso no `GameController` — protegendo variações:
 
 ```java
-// dentro de PedidoController
-public boolean pagar(Pedido pedido, FormaPagamento forma, PagamentoInfo info) {
-  PagamentoGateway gateway = PagamentoFactory.criar(forma);
-  return service.pagarPedido(pedido, gateway, info);
+// dentro de GameController
+public void encerrarPartida(String nomeJogador, int pontos) {
+    List<RankingEntry> ranking = rankingRepository.carregar();
+    if (rankingRepository.ehTopScore(ranking, pontos)) {
+        rankingRepository.salvar(new RankingEntry(nomeJogador, pontos));
+    }
 }
 ```
 
 Diagramas
 
-1) Diagrama de classes — `PagamentoGateway` e implementação:
+1) Diagrama de classes — `IRankingRepository` protege variações de persistência:
 
 ```mermaid
 classDiagram
-  class Pedido {
-    - id: String
-    - itens: List~PedidoItem~
+  class RankingEntry {
+    - nome: String
+    - pontuacao: int
   }
 
-  interface PagamentoGateway
-  class FakePagamentoGateway
-  class PedidoService
-  class PedidoController
-  class PagamentoFactory
+  class IRankingRepository {
+    <<interface>>
+    + salvar(entry)
+    + carregar() List
+  }
+  class RankingRepositoryEmMemoria
+  class RankingRepositoryArquivo
+  class JogoService
+  class GameController
 
-  PedidoController --> PagamentoFactory : seleciona
-  PedidoController --> PedidoService : delega
-  PedidoService --> PagamentoGateway : usa
-  PagamentoGateway <|-- FakePagamentoGateway
-  Pedido "1" -- "*" PedidoItem
+  GameController --> JogoService : delega
+  JogoService --> IRankingRepository : usa
+  IRankingRepository <|.. RankingRepositoryEmMemoria
+  IRankingRepository <|.. RankingRepositoryArquivo
+  IRankingRepository --> RankingEntry
 ```
 
-Arquivo externo para edição: `diagrams/protected-variations-class.mmd`.
-
-1) Diagrama de sequência — fluxo de processamento via `PagamentoGateway`:
+2) Diagrama de sequência — troca de implementação sem alterar `JogoService`:
 
 ```mermaid
 sequenceDiagram
-  participant Usuario
-  participant PedidoController
-  participant PedidoService
-  participant PagamentoFactory
-  participant PagamentoGateway
+  participant GameController
+  participant JogoService
+  participant IRankingRepository
+  participant RankingRepositoryArquivo
 
-  Usuario->>PedidoController: pagar(pedido, forma, info)
-  PedidoController->>PagamentoFactory: criar(forma)
-  PagamentoFactory-->>PedidoController: gateway
-  PedidoController->>PedidoService: pagarPedido(pedido, gateway, info)
-  activate PedidoService
-  PedidoService->>PagamentoGateway: pagar(pedido, info)
-  activate PagamentoGateway
-  PagamentoGateway-->>PedidoService: ok
-  deactivate PagamentoGateway
-  PedidoService-->>PedidoController: confirmado
-  deactivate PedidoService
-  PedidoController-->>Usuario: resposta
+  GameController->>JogoService: encerrarPartida(nome, pontos)
+  JogoService->>IRankingRepository: carregar()
+  IRankingRepository->>RankingRepositoryArquivo: lerArquivo()
+  RankingRepositoryArquivo-->>IRankingRepository: lista
+  IRankingRepository-->>JogoService: ranking
+  JogoService->>IRankingRepository: salvar(entry)
+  IRankingRepository->>RankingRepositoryArquivo: gravarArquivo()
+  RankingRepositoryArquivo-->>IRankingRepository: ok
+  IRankingRepository-->>JogoService: ok
+  JogoService-->>GameController: ok
 ```
 
-Arquivo externo para edição: `diagrams/protected-variations-sequence.mmd`.
-
-Notas pedagógicas
-
-- Mostre como trocar implementações de `PagamentoGateway` sem alterar `PedidoService`.
-- Explique que `PagamentoGateway` é um ponto de estabilidade (protected variation) que deve permanecer estável.
-- Destaque que `FormaPagamento` + `PagamentoFactory` concentram a variação fora da regra de negócio.

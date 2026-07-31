@@ -2,7 +2,7 @@
 
 **Definição**: uma classe A deve criar instâncias de classe B se A agrega, contém, usa ou tem informações necessárias para inicializar B.
 
-**Problema**: Quem deve ser responsável por criar uma nova instância de uma classe A?
+**Problema**: Quem deve ser responsável por criar uma nova instância de uma classe?
 
 **Solução**: Atribua à classe B a responsabilidade de criar A se B: (1) agrega ou contém A; (2) registra instâncias de A; (3) usa muito de perto objetos de A; ou (4) possui os dados de inicialização de A.
 
@@ -12,7 +12,7 @@ Regras comuns que justificam a criação:
 - A usa objetos do tipo B frequentemente
 - A tem dados necessários para construir B
 
-Exemplo: `PedidoService` pode criar `Pedido` quando processa uma nova requisição, pois é responsável pelo fluxo de criação.
+Exemplo: `FabricaMissao` cria `Missao` porque possui todas as informações necessárias (dificuldade, dimensões, número de perigos e passageiros).
 
 Dicas:
 
@@ -20,66 +20,61 @@ Dicas:
 
 Relação com SOLID
 
-- **SRP:** ao atribuir criação a uma classe específica (ex.: `PedidoService`), reduz-se a responsabilidade de outras classes.
+- **SRP:** ao atribuir criação a uma classe específica (ex.: `FabricaMissao`), reduz-se a responsabilidade de outras classes.
 - **DIP:** prefira depender de abstrações (fábricas ou interfaces) para criação quando a construção envolver dependências externas.
 - **OCP:** encapsular lógica de criação facilita alterar formas de criação sem modificar consumidores.
 
-## Exemplo evolutivo (Feira Livre)
+## Exemplo evolutivo (Missão Marte)
 
-Inicialmente `MainGrasp` pode criar `Pedido` diretamente. Ao aplicar `Creator`, movemos essa responsabilidade para `PedidoService`.
+Inicialmente `Main` criava `Missao` diretamente com vários parâmetros espalhados. Ao aplicar `Creator`, movemos essa responsabilidade para `FabricaMissao`.
+
 Trecho ilustrativo:
 
 ```java
-// antes: Pedido p = new Pedido(); // em MainGrasp
-// depois: PedidoService svc = new PedidoService();
-//         Pedido p = svc.criarPedido();
+// antes: Missao m = new Missao(20, 10, Dificuldade.MEDIO, ...); // em Main
+// depois: FabricaMissao fabrica = new FabricaMissao();
+//         Missao m = fabrica.criar(Dificuldade.MEDIO);
 ```
 
-
 Exemplo simples (preferível quando a criação é direta)
-Se a criação do `PedidoItem` é direta e ligada ao estado interno do pedido, o `Pedido` pode criar e adicionar o `PedidoItem` — segue a forma mais simples e recomendada inicialmente:
+
+Se a criação do `RankingEntry` é direta e ligada ao estado interno do ranking, `JogoService` pode criar e retornar a entrada — segue a forma mais simples e recomendada inicialmente:
 
 ```java
-public class Pedido {
-  private final List<PedidoItem> itens = new ArrayList<>();
+public class JogoService {
+    private final List<RankingEntry> ranking = new ArrayList<>();
 
-  public void addItem(Produto produto, int quantidade) {
-    PedidoItem item = new PedidoItem(produto, quantidade); // Pedido cria o item
-    itens.add(item);
-  }
+    public void registrarPontuacao(String nomeJogador, int pontos) {
+        RankingEntry entry = new RankingEntry(nomeJogador, pontos); // JogoService cria o entry
+        ranking.add(entry);
+    }
 }
 ```
 
-Motivo: `Pedido` agrega `PedidoItem` e conhece os dados necessários para construí-lo (Information Expert + Creator). Use `PedidoService` apenas se a criação envolver lógica externa ou validações mais complexas.
-Referência de código: `src/feira/grasp/PedidoService.java`.
+Motivo: `JogoService` agrega `RankingEntry` e conhece os dados necessários para construí-lo (Information Expert + Creator). Use `FabricaMissao` para criações mais complexas que envolvam lógica externa.
 
 ### Diagrama de sequência
 
-O diagrama abaixo mostra a interação típica quando o `PedidoService` cria um `Pedido` seguindo o princípio Creator. Há duas formas de usar: 1) blocos Mermaid embutidos neste arquivo (visíveis abaixo) e 2) arquivo externo `diagrams/creator.mmd` para edição/geração externa (recomendado para renderização com `mmdc`).
+O diagrama abaixo mostra a interação típica quando `FabricaMissao` cria uma `Missao` seguindo o princípio Creator.
 
 ```mermaid
 sequenceDiagram
-  participant Usuario
-  participant PedidoController
-  participant PedidoService
-  participant Pedido
+  participant Jogador
+  participant GameController
+  participant FabricaMissao
+  participant Missao
 
-  Usuario->>PedidoController: adicionarItem(produto, quantidade)
-  PedidoController->>PedidoService: adicionarItem(pedidoId, produto, quantidade)
-  activate PedidoService
-  PedidoService->>Pedido: addItem(produto, quantidade)
-  activate Pedido
-  Pedido->>PedidoItem: new PedidoItem(produto, quantidade)
-  activate PedidoItem
-  PedidoItem->>Produto: getPreco()
-  Produto-->>PedidoItem: preco
-  PedidoItem-->>Pedido: instanciaItem
-  Pedido->>Pedido: itens.add(instanciaItem)
-  deactivate PedidoItem
-  deactivate Pedido
-  PedidoService-->>PedidoController: ok
-  deactivate PedidoService
-  PedidoController-->>Usuario: confirmado
+  Jogador->>GameController: iniciarPartida(dificuldade)
+  GameController->>FabricaMissao: criar(dificuldade)
+  activate FabricaMissao
+  FabricaMissao->>Missao: new Missao(largura, altura, dificuldade)
+  activate Missao
+  FabricaMissao->>Missao: adicionarPerigos()
+  FabricaMissao->>Missao: adicionarPassageiros()
+  Missao-->>FabricaMissao: missaoPronta
+  deactivate Missao
+  FabricaMissao-->>GameController: missao
+  deactivate FabricaMissao
+  GameController-->>Jogador: partida iniciada
 ```
 
-Arquivo externo de edição: `diagrams/creator.mmd` (use `mmdc -i diagrams/creator.mmd -o diagrams/creator.png`).

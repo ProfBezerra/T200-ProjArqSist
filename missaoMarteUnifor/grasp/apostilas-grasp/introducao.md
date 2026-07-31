@@ -1,5 +1,7 @@
 # Guia Didático dos Princípios GRASP: Atribuição de Responsabilidades em Design de Software
 
+> Contexto: **Missão Marte Unifor** — jogo de console em Java onde o jogador pilota uma `Nave` numa grade 2D, resgata `Passageiros` e evita `Perigos`.
+
 Este guia destina-se a docentes e estudantes de Engenharia de Software, servindo como base para a transposição didática dos conceitos de Design Orientado a Objetos (OOD). O acrônimo GRASP significa General Responsibility Assignment Software Patterns (ou Princípios). É fundamental que o educador enfatize que o GRASP não é uma tecnologia, framework ou uma notação UML, mas sim um "conjunto de ferramentas mentais" e um auxílio à aprendizagem.
 
 Como afirma Craig Larman:
@@ -54,47 +56,61 @@ Cada princípio tem uma explicação, exemplos e dicas para aplicação prática
 
 ### Diagrama de classes (visão rápida)
 
-Mostramos aqui os diagramas de classes principais do domínio da Feira Livre. Para detalhes e evolução passo a passo, veja as seções "Exemplo evolutivo" em cada arquivo de padrão.
+Mostramos aqui os diagramas de classes principais do domínio da **Missão Marte**. Para detalhes e evolução passo a passo, veja as seções "Exemplo evolutivo" em cada arquivo de padrão.
 
 Versão 1 — modelo de domínio simples
 
 ```mermaid
 classDiagram
-  class Produto {
-    - nome: String
-    - preco: double
+  class Nave {
+    - x: int
+    - y: int
+    + mover(dx, dy)
   }
 
-  class PedidoItem {
-    - produto: Produto
-    - quantidade: int
+  class Missao {
+    - largura: int
+    - altura: int
+    - dificuldade: Dificuldade
+    - passageiros: List~Passageiro~
+    - perigos: List~Perigo~
   }
 
-  class Pedido {
-    - itens: List~PedidoItem~
+  class Passageiro {
+    <<abstract>>
+    + getPontosValor() int
   }
 
-  Produto "1" -- "*" PedidoItem
-  Pedido "1" -- "*" PedidoItem
+  class Perigo {
+    <<interface>>
+    + getPenalidadePontos() int
+  }
+
+  Missao "1" -- "*" Passageiro
+  Missao "1" -- "*" Perigo
 ```
 
 Arquivos externos para edição: `diagrams/class-v1-fixed.mmd`.
 
-Versão 2 — incluir fluxo de pagamento (indirection / protected variations)
+Versão 2 — incluir ranking e separação de camadas (indirection / protected variations)
 
 ```mermaid
 classDiagram
-  class PedidoService
-  class PedidoController
-  interface PagamentoGateway
-  class PagamentoInfo
-  class FakePagamentoGateway
+  class JogoService
+  class GameController
+  class IRankingRepository {
+    <<interface>>
+  }
+  class RankingEntry {
+    + nome: String
+    + pontuacao: int
+  }
+  class RankingRepositoryArquivo
 
-  PedidoService --> PagamentoGateway : usa
-  PagamentoGateway <|-- FakePagamentoGateway
+  JogoService --> IRankingRepository : usa
+  IRankingRepository <|.. RankingRepositoryArquivo
+  IRankingRepository --> RankingEntry
 ```
-
-Arquivo externo para edição: `diagrams/class-v2-payment.mmd`.
 
 ## Os 9 Princípios GRASP:
 
@@ -136,7 +152,7 @@ Sugestões de estudo prático
 - Ao analisar um caso de uso: comece pensando em `Controller` (quem orquestra), aplique `Information Expert` para localizar lógica (ex.: cálculo), e então verifique `Creator` para responsabilidades de criação.
 - Ao refatorar: use `Low Coupling` e `High Cohesion` como objetivos, e recorra a `Pure Fabrication` ou `Indirection` para isolar dependências.
 
-Referência rápida: ver `introducao.md` para o exemplo evolutivo da Feira Livre onde estes agrupamentos aparecem em prática.
+Referência rápida: ver `tutorial-grasp-missao-marte.md` para o exemplo evolutivo completo da Missão Marte onde estes agrupamentos aparecem em prática.
 
 Mapeamento rápido para SOLID
 

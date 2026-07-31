@@ -21,103 +21,102 @@ Relação com SOLID
 - **SRP:** alta coesão é alinhada ao princípio da responsabilidade única — cada classe foca em um conjunto coeso de responsabilidades.
 - **ISP:** coesão facilita criar interfaces específicas e evitar interfaces inchadas.
 
-## Exemplo evolutivo (Feira Livre)
+## Exemplo evolutivo (Missão Marte)
 
-Ao perceber que `Pedido` tem apenas cálculo e armazenamento dos itens, extraímos lógica de processamento (processar pagamento, enviar notificação) para `PedidoService` e adaptadores separados. Isso melhora a coesão de `Pedido`.
+Ao perceber que `Missao` tinha cálculo de pontos, renderização do mapa E lógica de loop de jogo, extraímos cada responsabilidade para sua classe dedicada. Isso melhora a coesão de `Missao`.
 
-Resumo prático: `Pedido` — coesão de domínio; `PedidoService` — coesão de operações/fluxos.
+Resumo prático: `Missao` — coesão de domínio (dados do mapa); `JogoService` — coesão de operações/fluxos; `MapaRenderer` — coesão de renderização.
 
 Trechos de código (exemplos simples)
 
-1) `Pedido` — mantém os atributos e responsabilidade de cálculo/armazenamento de itens:
+1) `Missao` — mantém apenas estado e dados do mapa:
 
 ```java
-public class Pedido {
-    private final List<PedidoItem> itens = new ArrayList<>();
+public class Missao {
+    private final int largura;
+    private final int altura;
+    private final List<Passageiro> passageiros = new ArrayList<>();
+    private final List<Perigo> perigos = new ArrayList<>();
 
-    public void addItem(Produto produto, int quantidade) {
-        PedidoItem item = new PedidoItem(produto, quantidade);
-        itens.add(item);
-    }
+    public void adicionarPassageiro(Passageiro p) { passageiros.add(p); }
+    public void adicionarPerigo(Perigo p)         { perigos.add(p); }
 
-    public double calcularTotal() {
-        return itens.stream().mapToDouble(PedidoItem::subtotal).sum();
+    public List<Passageiro> getPassageiros() { return Collections.unmodifiableList(passageiros); }
+    public List<Perigo> getPerigos()         { return Collections.unmodifiableList(perigos); }
+}
+```
+
+2) `JogoService` — coege operações de fluxo (movimentação, colisões, resgates):
+
+```java
+public class JogoService {
+    private final IRankingRepository rankingRepository;
+    private final MapaRenderer mapaRenderer;
+
+    public int executarPartida(Missao missao, Nave nave, Scanner scanner) {
+        int pontos = 0;
+        while (!missao.todosResgatados()) {
+            mapaRenderer.desenhar(missao, nave);
+            char tecla = scanner.next().charAt(0);
+            moverNave(nave, tecla);
+            pontos += verificarResgates(missao, nave);
+            pontos -= verificarColisoes(missao, nave);
+        }
+        return pontos;
     }
 }
 ```
 
-2) `PedidoService` — coage operações de fluxo (processamento, pagamento, notificação):
+3) `MapaRenderer` — coege renderização (Pure Fabrication / High Cohesion):
 
 ```java
-public class PedidoService {
-    private final PagamentoGateway pagamento;
-    private final Notificador notificador;
-
-    public PedidoService(PagamentoGateway pagamento, Notificador notificador) {
-        this.pagamento = pagamento;
-        this.notificador = notificador;
-    }
-
-    public void processarPedido(Pedido pedido) {
-        double total = pedido.calcularTotal();
-        boolean pago = pagamento.processar(pedido, total);
-        if (pago) {
-            notificador.enviarConfirmacao(pedido);
+public class MapaRenderer {
+    public void desenhar(Missao missao, Nave nave) {
+        // responsável apenas por renderizar a grade no console
+        for (int y = 0; y < missao.getAltura(); y++) {
+            for (int x = 0; x < missao.getLargura(); x++) {
+                System.out.print(simboloEm(missao, nave, x, y));
+            }
+            System.out.println();
         }
     }
 }
 ```
 
-3) Interfaces de abstração (Pure Fabrication / Indirection) — isolam variações e reduzem acoplamento:
-
-```java
-public interface PagamentoGateway {
-    boolean processar(Pedido pedido, double valor);
-}
-
-public interface Notificador {
-    void enviarConfirmacao(Pedido pedido);
-}
-```
-
-Esses trechos mostram como separar claramente responsabilidades: `Pedido` cuida do modelo e cálculo (alta coesão), enquanto `PedidoService` orquestra o fluxo e depende de abstrações para pagamento e notificação (baixo acoplamento).
-
 Diagramas (High Cohesion)
 
-1) Diagrama de classes — mostra a separação de responsabilidades: `Pedido` mantém atributos/itens e `PedidoService` concentra operações de fluxo (pagamento, notificação):
+1) Diagrama de classes — mostra a separação de responsabilidades:
 
 ```mermaid
 classDiagram
-  class Produto {
-    - nome: String
-    - preco: double
+  class Missao {
+    - largura: int
+    - altura: int
+    - passageiros: List
+    - perigos: List
+    + adicionarPassageiro(p)
+    + todosResgatados() boolean
   }
 
-  class PedidoItem {
-    - produto: Produto
-    - quantidade: int
+  class JogoService {
+    + executarPartida(missao, nave, scanner) int
+    + verificarColisoes(missao, nave) int
+    + verificarResgates(missao, nave) int
   }
 
-  class Pedido {
-    - itens: List~PedidoItem~
-    + addItem(Produto, int)
-    + calcularTotal()
+  class MapaRenderer {
+    + desenhar(missao, nave)
   }
 
-  class PedidoService {
-    + processarPedido(Pedido)
-    + processarPagamento(Pedido)
-    + enviarNotificacao(Pedido)
+  class IRankingRepository {
+    <<interface>>
   }
 
-  class PagamentoGateway
-  class Notificador
+  JogoService --> Missao
+  JogoService --> MapaRenderer
+  JogoService ..> IRankingRepository
+```
 
-  Produto "1" -- "*" PedidoItem
-  Pedido "1" -- "*" PedidoItem
-  PedidoService --> Pedido
-  PedidoService ..> PagamentoGateway
-  PedidoService ..> Notificador
 ```
 
 Arquivo externo para edição: `diagrams/high-cohesion-class.mmd`.

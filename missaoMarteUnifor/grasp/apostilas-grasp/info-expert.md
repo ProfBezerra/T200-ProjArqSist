@@ -10,7 +10,7 @@ Quando aplicar:
 - A classe já contém (ou pode acessar facilmente) os dados necessários.
 - Evitar mover dados entre classes apenas para cumprir uma responsabilidade.
 
-Exemplo: em um pedido, o cálculo do total é responsabilidade do `Pedido`, porque ele conhece seus itens.
+Exemplo: em uma missão, o cálculo de quantos passageiros faltam resgatar é responsabilidade de `Missao`, porque ela conhece a lista de passageiros.
 
 Dicas:
 
@@ -22,61 +22,54 @@ Relação com SOLID
 - **SRP (Single Responsibility):** colocar comportamento no `Information Expert` ajuda a manter responsabilidades únicas em classes.
 - **OCP (Open/Closed):** ao manter lógica relacionada aos dados na mesma classe, você facilita estender comportamento sem alterar outras classes.
 
-## Exemplo evolutivo (Feira Livre)
+## Exemplo evolutivo (Missão Marte)
 
-No nosso exemplo, o método `calcularTotal()` permanece em `Pedido` — um caso clássico de `Information Expert`. À medida que adicionamos lógica (ex.: desconto por item), comece mantendo o cálculo no `Pedido` e extraia políticas (por exemplo, estratégias de desconto) quando crescer a complexidade.
+No nosso exemplo, o método `passageirosRestantes()` permanece em `Missao` — um caso clássico de `Information Expert`. `Missao` sabe quais passageiros estão presentes e quais foram resgatados.
 
-Referência de código: `src/feira/grasp/Pedido.java` contém a responsabilidade de calcular o total.
+Referência de código: `Missao.java` contém a responsabilidade de calcular passageiros restantes.
 
 Diagramas (Information Expert)
 
-1) Diagrama de classes — mostra onde a responsabilidade de cálculo está localizada:
+1) Diagrama de classes — mostra onde a responsabilidade está localizada:
 
 ```mermaid
 classDiagram
-  class Produto {
-    +String nome
-    +double preco
-    +getNome()
-    +getPreco()
+  class Passageiro {
+    <<abstract>>
+    + String tipo
+    + int pontosValor
+    + getPontosValor() int
   }
 
-  class PedidoItem {
-    - Produto produto
-    - int quantidade
-    + subtotal()
+  class Missao {
+    - List~Passageiro~ passageiros
+    - List~Passageiro~ resgatados
+    + adicionarPassageiro(p)
+    + resgatar(p)
+    + passageirosRestantes() int
+    + todosResgatados() boolean
   }
 
-  class Pedido {
-    - List~PedidoItem~ itens
-    + addItem(PedidoItem)
-    + calcularTotal()
-  }
-
-  Produto "1" -- "*" PedidoItem : contem
-  Pedido "1" -- "*" PedidoItem : possui
+  Missao "1" -- "*" Passageiro : contém
 ```
 
-Arquivo externo para edição: `diagrams/info-expert-class.mmd`.
-
-2) Diagrama de sequência — fluxo do cálculo do total:
+2) Diagrama de sequência — fluxo do resgate e cálculo de restantes:
 
 ```mermaid
 sequenceDiagram
-  participant Usuario
-  participant Pedido
-  participant PedidoItem
-  participant Produto
+  participant JogoService
+  participant Missao
+  participant Passageiro
 
-  Usuario->>Pedido: calcularTotal()
-  loop para cada item
-    Pedido->>PedidoItem: subtotal()
-    PedidoItem->>Produto: getPreco()
-    Produto-->>PedidoItem: preco
-    PedidoItem-->>Pedido: subtotal(valor)
-  end
-  Pedido-->>Usuario: total
+  JogoService->>Missao: resgatar(passageiro)
+  activate Missao
+  Missao->>Passageiro: getPontosValor()
+  Passageiro-->>Missao: pontosValor
+  Missao->>Missao: resgatados.add(passageiro)
+  Missao-->>JogoService: pontosGanhos
+  deactivate Missao
+
+  JogoService->>Missao: passageirosRestantes()
+  Missao-->>JogoService: quantidade
 ```
-
-Arquivo externo para edição: `diagrams/info-expert-sequence.mmd`.
 

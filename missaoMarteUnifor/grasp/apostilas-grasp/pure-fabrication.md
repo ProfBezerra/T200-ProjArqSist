@@ -10,94 +10,104 @@ Uso:
 
 - Quando mover responsabilidade para fora das classes de domínio reduz acoplamento ou melhora a coesão.
 
-Exemplo: `PedidoRepository` pode ser uma Pure Fabrication para separar persistência do domínio.
+Exemplo: `MapaRenderer` é uma Pure Fabrication que separa a renderização do mapa (responsabilidade técnica) de `Missao` (entidade de domínio).
 
 Relação com SOLID
 
-- **SRP:** Pure Fabrication separa responsabilidades (persistência, integração) fora das entidades do domínio.
-- **DIP:** ao isolar a persistência em uma classe fabricada, clientes podem depender de interfaces e não de implementações concretas.
+- **SRP:** Pure Fabrication separa responsabilidades (renderização, persistência) fora das entidades do domínio.
+- **DIP:** ao isolar persistência em uma classe fabricada, clientes podem depender de interfaces e não de implementações concretas.
 
-## Exemplo evolutivo (Feira Livre)
+## Exemplo evolutivo (Missão Marte)
 
-`PedidoRepository` é um exemplo de Pure Fabrication: não é um conceito do domínio
+`MapaRenderer` e `IRankingRepository` são exemplos de Pure Fabrication: não representam conceitos do domínio do jogo (nave, missão, passageiro), mas são necessários para organizar responsabilidades técnicas.
 
 Exemplos de código
 
-1) `PedidoRepository` — interface e implementação em memória (Pure Fabrication)
+1) `IRankingRepository` — interface e implementação em memória (Pure Fabrication)
 
 ```java
-package feira.grasp.repository;
-
-import java.util.*;
-import feira.grasp.Pedido;
-
-public interface PedidoRepository {
-  void salvar(Pedido pedido);
-  Optional<Pedido> buscarPorId(String id);
-  List<Pedido> listarTodos();
+public interface IRankingRepository {
+    void salvar(RankingEntry entry);
+    List<RankingEntry> carregar();
+    void resetar();
 }
 ```
 
 ```java
-package feira.grasp.repository;
+public class RankingRepositoryEmMemoria implements IRankingRepository {
+    private final List<RankingEntry> dados = new ArrayList<>();
 
-import java.util.*;
-import feira.grasp.Pedido;
+    @Override
+    public void salvar(RankingEntry entry) { dados.add(entry); }
 
-public class PedidoRepositoryMemoria implements PedidoRepository {
-  private final Map<String, Pedido> storage = new HashMap<>();
+    @Override
+    public List<RankingEntry> carregar() { return new ArrayList<>(dados); }
 
-  @Override
-  public void salvar(Pedido pedido) {
-    storage.put(pedido.getId(), pedido);
-  }
-
-  @Override
-  public Optional<Pedido> buscarPorId(String id) {
-    return Optional.ofNullable(storage.get(id));
-  }
-
-  @Override
-  public List<Pedido> listarTodos() {
-    return new ArrayList<>(storage.values());
-  }
+    @Override
+    public void resetar() { dados.clear(); }
 }
 ```
 
-2) Uso (trecho em `PedidoService`) — separa persistência do domínio
+2) `MapaRenderer` — Pure Fabrication para renderização do mapa no console
 
 ```java
-// dentro de PedidoService
-private final PedidoRepository repository;
+public class MapaRenderer {
+    public void desenhar(Missao missao, Nave nave) {
+        for (int y = 0; y < missao.getAltura(); y++) {
+            for (int x = 0; x < missao.getLargura(); x++) {
+                System.out.print(simboloEm(missao, nave, x, y));
+            }
+            System.out.println();
+        }
+    }
 
-public PedidoService(PedidoRepository repository) {
-  this.repository = repository;
+    private char simboloEm(Missao missao, Nave nave, int x, int y) {
+        if (nave.getX() == x && nave.getY() == y)  return 'N';
+        if (missao.temPassageiroEm(x, y))           return 'P';
+        if (missao.temPerigoEm(x, y))               return 'X';
+        return '.';
+    }
 }
+```
 
-public void processar(Pedido pedido) {
-  // lógica de domínio aqui
-  repository.salvar(pedido);
+3) Uso em `JogoService` — depende das pure fabrications, não do domínio
+
+```java
+public class JogoService {
+    private final IRankingRepository rankingRepository;
+    private final MapaRenderer mapaRenderer;
+
+    public JogoService(IRankingRepository ranking, MapaRenderer renderer) {
+        this.rankingRepository = ranking;
+        this.mapaRenderer = renderer;
+    }
 }
 ```
 
 Diagramas
 
-1) Diagrama de classes — mostra a fábrica/padrao de Pure Fabrication e relação com `Pedido`:
+1) Diagrama de classes — mostra as Pure Fabrications `MapaRenderer` e `IRankingRepository`:
 
 ```mermaid
 classDiagram
-  class Pedido {
-  - id: String
-  - itens: List~PedidoItem~
+  class Missao {
+    - largura: int
+    - altura: int
   }
 
-  interface PedidoRepository
-  class PedidoRepositoryMemoria
-  class PedidoService
+  class IRankingRepository {
+    <<interface>>
+  }
+  class RankingRepositoryEmMemoria
+  class MapaRenderer
+  class JogoService
 
-  PedidoService --> PedidoRepository : usa
-  PedidoRepository <|-- PedidoRepositoryMemoria
-  Pedido "1" -- "*" PedidoItem
+  JogoService --> Missao
+  JogoService --> MapaRenderer : usa
+  JogoService --> IRankingRepository : usa
+  IRankingRepository <|.. RankingRepositoryEmMemoria
+```
+
 ```
 
 Arquivo externo para edição: `diagrams/pure-fabrication-class.mmd`.

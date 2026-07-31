@@ -23,20 +23,77 @@ Relação com SOLID
 - **ISP:** dividir interfaces grandes reduz acoplamento entre clientes e provedores.
 - **SRP:** clareza nas responsabilidades diminui dependências desnecessárias.
 
-Exemplo evolutivo (Feira Livre)
-Ao evoluir, extraímos `PedidoRepository` e programamos `PedidoService` para depender de uma interface `PedidoRepository` em vez de uma implementação concreta. Isto é `Low Coupling` aplicado:
+Exemplo evolutivo (Missão Marte)
+
+Ao evoluir, extraímos `IRankingRepository` e programamos `JogoService` para depender da interface em vez de uma implementação concreta. Isto é `Low Coupling` aplicado:
 
 ```java
-public interface PedidoRepository { void salvar(Pedido p); }
-public class PedidoRepositoryMemoria implements PedidoRepository { /* implementação */ }
+public interface IRankingRepository {
+    void salvar(RankingEntry entry);
+    List<RankingEntry> carregar();
+}
+public class RankingRepositoryArquivo implements IRankingRepository { /* implementação */ }
 
-public class PedidoService {
-  private final PedidoRepository repo;
-  public PedidoService(PedidoRepository repo) { this.repo = repo; }
+public class JogoService {
+    private final IRankingRepository ranking;
+    public JogoService(IRankingRepository ranking) { this.ranking = ranking; }
 }
 ```
 
-Referência: conceito de `PedidoRepository` em `diagrams/class-v2.mmd`.
+Diagramas (Low Coupling)
+
+1) Diagrama de classes — mostra como `JogoService` depende da abstração `IRankingRepository`:
+
+```mermaid
+classDiagram
+  class Nave {
+    - x: int
+    - y: int
+  }
+
+  class Missao {
+    - passageiros: List
+    - perigos: List
+  }
+
+  class JogoService {
+    - ranking: IRankingRepository
+    + executarPartida(missao, nave, scanner) int
+  }
+
+  class IRankingRepository {
+    <<interface>>
+  }
+  class RankingRepositoryArquivo
+
+  JogoService --> Missao
+  JogoService --> Nave
+  JogoService ..> IRankingRepository : depende de
+  IRankingRepository <|.. RankingRepositoryArquivo
+```
+
+2) Diagrama de sequência — `JogoService` delega persistência para a abstração `IRankingRepository`:
+
+```mermaid
+sequenceDiagram
+  participant GameController
+  participant JogoService
+  participant IRankingRepository
+  participant RankingRepositoryArquivo
+
+  GameController->>JogoService: executarPartida(missao, nave, scanner)
+  activate JogoService
+  JogoService->>JogoService: loop de jogo...
+  JogoService-->>GameController: pontuacaoFinal
+  deactivate JogoService
+
+  GameController->>IRankingRepository: salvar(entry)
+  activate IRankingRepository
+  IRankingRepository->>RankingRepositoryArquivo: persistir(entry)
+  RankingRepositoryArquivo-->>IRankingRepository: ok
+  deactivate IRankingRepository
+```
+
 
 Diagramas (Low Coupling)
 

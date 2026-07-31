@@ -15,7 +15,7 @@ Quando usar:
 
 - Para evitar que a camada de apresentação acesse diretamente várias classes do domínio.
 
-Exemplo: `PedidoController` recebe entrada do usuário, cria/executa operações no `PedidoService`.
+Exemplo: `GameController` recebe entrada do teclado (WASD), traduz para operações e delega para `JogoService`.
 
 Relação com SOLID
 
@@ -25,38 +25,57 @@ Relação com SOLID
 
 ## Diagrama de sequência
 
-O diagrama abaixo ilustra como um `PedidoController` coordena a criação e persistência de um `Pedido`. Há uma versão embutida (Mermaid) e um arquivo externo `diagrams/controller.mmd` para edição/geração de imagens.
+O diagrama abaixo ilustra como `GameController` coordena o fluxo da partida delegando para `JogoService` e `IRankingRepository`.
 
 ```mermaid
 sequenceDiagram
-  participant Usuario
-  participant PedidoController
-  participant PedidoService
-  participant PedidoRepository
-  participant Pedido
+  participant Jogador
+  participant GameController
+  participant JogoService
+  participant IRankingRepository
 
-  Usuario->>PedidoController: novoPedido(dados)
-  PedidoController->>PedidoService: criarPedido(dados)
-  activate PedidoService
-  PedidoService->>Pedido: new Pedido(dados)
-  activate Pedido
-  PedidoService->>PedidoRepository: salvar(pedido)
-  activate PedidoRepository
-  PedidoRepository-->>PedidoService: ok
-  deactivate PedidoRepository
-  PedidoService-->>PedidoController: pedidoCriado
-  deactivate PedidoService
-  PedidoController-->>Usuario: confirmarCriacao()
+  Jogador->>GameController: teclaWASD(direcao)
+  GameController->>JogoService: moverNave(nave, direcao)
+  activate JogoService
+  JogoService->>JogoService: verificarColisoes()
+  JogoService->>JogoService: verificarResgates()
+  JogoService-->>GameController: estadoAtualizado
+  deactivate JogoService
+  GameController-->>Jogador: mapaAtualizado
+
+  Jogador->>GameController: missaoEncerrada()
+  GameController->>JogoService: calcularPontuacaoFinal()
+  JogoService-->>GameController: pontos
+  GameController->>IRankingRepository: salvar(nomeJogador, pontos)
+  IRankingRepository-->>GameController: ok
+  GameController-->>Jogador: telaResultado()
 ```
 
 Exemplo evolutivo
-No exemplo evolutivo, introduzimos um `PedidoController` (ou similar) que atua como ponto de entrada da aplicação e delega ao `PedidoService` para lógica de negócio. Isso separa responsabilidades da camada de apresentação e facilita testes.
 
-Fluxo ilustrativo (em `MainGrasp` → `PedidoController` → `PedidoService`):
+No exemplo evolutivo, `GameController` atua como ponto de entrada da aplicação e delega ao `JogoService` para lógica de jogo. Isso separa responsabilidades da camada de apresentação e facilita testes.
+
+Fluxo ilustrativo:
 
 ```text
-Usuario -> PedidoController -> PedidoService -> PedidoRepository
+Jogador -> GameController -> JogoService -> IRankingRepository
 ```
 
-Referência: veja o diagrama de sequência em `diagrams/controller.mmd`.
-Arquivo externo de edição: `diagrams/controller.mmd` (use `mmdc -i diagrams/controller.mmd -o diagrams/controller.png`).
+Trecho de código:
+
+```java
+public class GameController {
+    private final JogoService jogoService;
+    private final FabricaMissao fabricaMissao;
+    private final IRankingRepository rankingRepository;
+    private final Scanner scanner;
+
+    public void iniciarPartida(Dificuldade dificuldade, String nomeJogador) {
+        Missao missao = fabricaMissao.criar(dificuldade);
+        Nave nave = new Nave(missao.getLargura() / 2, missao.getAltura() / 2);
+        int pontos = jogoService.executarPartida(missao, nave, scanner);
+        rankingRepository.salvar(new RankingEntry(nomeJogador, pontos));
+    }
+}
+```
+
