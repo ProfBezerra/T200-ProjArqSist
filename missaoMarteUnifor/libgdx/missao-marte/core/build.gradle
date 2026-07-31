@@ -1,0 +1,4 @@
+// Módulo core: lógica do jogo, independente de plataforma
+dependencies {
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+}

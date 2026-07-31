@@ -1,0 +1,7 @@
+# Pasta de assets do jogo
+#
+# Coloque aqui arquivos de imagem, som e fontes que o jogo precisar:
+#   nave.png, asteroide.png, background.png, sons/*.ogg etc.
+#
+# O código base usa apenas ShapeRenderer (sem imagens),
+# portanto esta pasta pode ficar vazia para o jogo funcionar.

@@ -1,0 +1,24 @@
+apply plugin: 'application'
+
+// Assets do core são empacotados junto com o desktop
+sourceSets.main.resources.srcDirs = ['../core/assets']
+
+dependencies {
+    implementation project(':core')
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
+
+application {
+    mainClass = 'br.unifor.missaomarte.Lwjgl3Launcher'
+}
+
+// Fat JAR executável: inclui todas as dependências
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn configurations.runtimeClasspath
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': application.mainClass
+    }
+}
