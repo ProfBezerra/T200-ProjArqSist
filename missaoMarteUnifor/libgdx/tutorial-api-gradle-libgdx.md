@@ -1,8 +1,9 @@
 # Tutorial: API, Gradle e libGDX
+
 ## Desenvolvendo um Jogo de Nave Espacial
 
-**Disciplina:** T200 – Projeto de Arquitetura de Sistemas  
-**Projeto:** Missão Marte Unifor  
+**Disciplina:** T200 – Projeto de Arquitetura de Sistemas
+**Projeto:** Missão Marte Unifor
 **Unidade VI – Semana 17**
 
 ---
@@ -16,7 +17,13 @@ Ao final deste tutorial o aluno será capaz de:
 - Compreender os **conceitos fundamentais** do Gradle: tasks, DAG, daemon, cache e wrapper.
 - Ler e escrever um arquivo **`build.gradle`** com plugins, repositórios e dependências.
 - Distinguir os **escopos de dependência** (`implementation`, `api`, `runtimeOnly`).
-- Configurar um projeto Java **multi-módulo** com Gradle.
+- Descrever a **história e características da libGDX** (criador, versões, plataformas, módulos).
+- Compreender o pipeline **Sprite** na libGDX: Pixmap → Texture → Sprite → SpriteBatch.
+- Implementar **efeitos sonoros** usando a API `Sound` do libGDX.
+- Construir um **HUD** com texto, barras de escudo e contadores.
+- Implementar **detecção de colisão** círculo×círculo com `Intersector`.
+- Compreender a **arquitetura multi-módulo** da libGDX (core + lwjgl3).
+- Configurar um projeto Java multi-módulo com **Gradle** no VS Code.
 - Criar um projeto **libGDX** e executá-lo no VS Code.
 - Implementar um jogo de nave básico com movimentação, colisões e pontuação.
 
@@ -30,20 +37,21 @@ Ao final deste tutorial o aluno será capaz de:
 
 Uma API é um **conjunto de classes, interfaces e métodos** que outra pessoa já escreveu e que você pode usar no seu programa sem precisar saber como foi implementado internamente.
 
-> Pense em uma API como o painel de controle de um carro.  
-> Você usa o volante, o acelerador e o freio **sem precisar entender** como o motor funciona por dentro.  
+> Pense em uma API como o painel de controle de um carro.
+> Você usa o volante, o acelerador e o freio **sem precisar entender** como o motor funciona por dentro.
 > A API expõe o que você precisa e esconde a complexidade.
 
 ## 1.2 APIs que você já usou
 
-| API | O que oferece |
-|-----|--------------|
-| `java.util.ArrayList` | Lista dinâmica de objetos |
-| `java.util.Scanner` | Leitura de dados do console |
-| `java.io.File` | Acesso ao sistema de arquivos |
-| `javax.swing.*` | Interface gráfica desktop |
-| **libGDX** | Engine de jogos 2D/3D |
-| **Spring Boot** | Backend REST em Java |
+
+| API                   | O que oferece                 |
+| ----------------------- | ------------------------------- |
+| `java.util.ArrayList` | Lista dinâmica de objetos    |
+| `java.util.Scanner`   | Leitura de dados do console   |
+| `java.io.File`        | Acesso ao sistema de arquivos |
+| `javax.swing.*`       | Interface gráfica desktop    |
+| **libGDX**            | Engine de jogos 2D/3D         |
+| **Spring Boot**       | Backend REST em Java          |
 
 ## 1.3 Por que APIs existem?
 
@@ -106,13 +114,14 @@ Em **2011**, foi fundada a empresa **Gradle Inc.** para sustentar o desenvolvime
 
 ### Repositório e licença
 
-| Item | Detalhe |
-|------|---------|
+
+| Item             | Detalhe                          |
+| ------------------ | ---------------------------------- |
 | **Repositório** | https://github.com/gradle/gradle |
-| **Licença** | Apache License 2.0 (open source) |
-| **Linguagem** | Java, Groovy, Kotlin |
-| **Website** | https://gradle.org |
-| **Empresa** | Gradle Inc. (San Francisco, EUA) |
+| **Licença**     | Apache License 2.0 (open source) |
+| **Linguagem**    | Java, Groovy, Kotlin             |
+| **Website**      | https://gradle.org               |
+| **Empresa**      | Gradle Inc. (San Francisco, EUA) |
 
 ### Linha do tempo
 
@@ -144,23 +153,24 @@ O Gradle segue **versionamento semântico** (major.minor.patch). As versões maj
 
 ### Versões Principais
 
-| Versão | Ano | Destaques |
-|--------|-----|-----------|
-| **1.0** | 2012 | Primeira versão estável. Suporte a Java, Groovy, Scala. |
-| **2.0** | 2014 | Daemon habilitado por padrão. Melhora de performance. |
-| **2.14** | 2016 | Build scan (diagnóstico visual do build). |
-| **3.0** | 2016 | Composite builds (projetos que dependem de outros projetos locais). |
-| **4.0** | 2017 | Nova API de Tasks com `Provider<T>` e `Property<T>` (lazy evaluation). |
-| **4.6** | 2018 | Suporte nativo a testes JUnit 5. |
-| **5.0** | 2018 | **Kotlin DSL estável.** Alinhamento de versões de dependências. Dependency constraints. |
-| **6.0** | 2019 | Verificação de checksum de dependências. Gradle Module Metadata. |
-| **6.8** | 2021 | Configuration cache (experimental). Suporte a Java 16. |
-| **7.0** | 2021 | Compilação incremental do Java aprimorada. Suporte a Java 16. |
-| **7.4** | 2022 | Toolchain Java estável. Builds reproduzíveis. |
-| **8.0** | 2023 | **Configuration Cache estável.** Isolamento de projetos. |
-| **8.4** | 2023 | Gradle Develocity integrado. |
-| **8.7** | 2024 | Melhorias de performance. Build toolchain aprimorado. |
-| **8.10** | 2024 | Suporte aprimorado a Java 21+. |
+
+| Versão  | Ano  | Destaques                                                                                  |
+| ---------- | ------ | -------------------------------------------------------------------------------------------- |
+| **1.0**  | 2012 | Primeira versão estável. Suporte a Java, Groovy, Scala.                                  |
+| **2.0**  | 2014 | Daemon habilitado por padrão. Melhora de performance.                                     |
+| **2.14** | 2016 | Build scan (diagnóstico visual do build).                                                 |
+| **3.0**  | 2016 | Composite builds (projetos que dependem de outros projetos locais).                        |
+| **4.0**  | 2017 | Nova API de Tasks com`Provider<T>` e `Property<T>` (lazy evaluation).                      |
+| **4.6**  | 2018 | Suporte nativo a testes JUnit 5.                                                           |
+| **5.0**  | 2018 | **Kotlin DSL estável.** Alinhamento de versões de dependências. Dependency constraints. |
+| **6.0**  | 2019 | Verificação de checksum de dependências. Gradle Module Metadata.                        |
+| **6.8**  | 2021 | Configuration cache (experimental). Suporte a Java 16.                                     |
+| **7.0**  | 2021 | Compilação incremental do Java aprimorada. Suporte a Java 16.                            |
+| **7.4**  | 2022 | Toolchain Java estável. Builds reproduzíveis.                                            |
+| **8.0**  | 2023 | **Configuration Cache estável.** Isolamento de projetos.                                  |
+| **8.4**  | 2023 | Gradle Develocity integrado.                                                               |
+| **8.7**  | 2024 | Melhorias de performance. Build toolchain aprimorado.                                      |
+| **8.10** | 2024 | Suporte aprimorado a Java 21+.                                                             |
 
 ### Como verificar a versão instalada
 
@@ -175,6 +185,7 @@ Ou com o wrapper do projeto:
 ```
 
 Saída esperada:
+
 ```
 ------------------------------------------------------------
 Gradle 8.7
@@ -193,6 +204,7 @@ OS:           Windows 11 10.0 amd64
 ### Qual versão usar?
 
 Para este projeto usamos **Gradle 8.7**, que é compatível com:
+
 - Java 17 (LTS) e Java 21 (LTS)
 - libGDX 1.12.1
 - Android Gradle Plugin 8.x
@@ -228,16 +240,17 @@ Gradle faz:     [1] Baixa libGDX do Maven Central
 
 ## 2.4 Gradle vs Maven
 
-| Característica | Maven | Gradle |
-|----------------|-------|--------|
-| Configuração | XML (`pom.xml`) — verboso | Groovy/Kotlin DSL — conciso |
-| Flexibilidade | Baixa (estrutura rígida) | Alta (lógica condicional, scripts) |
-| Performance | Mais lento | Mais rápido (cache incremental) |
-| Uso em Android | Não | **Padrão oficial** |
-| Uso em jogos | Raro | Padrão (libGDX) |
-| Curva de aprendizado | Moderada | Moderada |
-| Suporte a multi-módulo | Sim | Sim (mais flexível) |
-| Cache de build | Não | **Sim (Build Cache)** |
+
+| Característica         | Maven                      | Gradle                              |
+| ------------------------- | ---------------------------- | ------------------------------------- |
+| Configuração          | XML (`pom.xml`) — verboso | Groovy/Kotlin DSL — conciso        |
+| Flexibilidade           | Baixa (estrutura rígida)  | Alta (lógica condicional, scripts) |
+| Performance             | Mais lento                 | Mais rápido (cache incremental)    |
+| Uso em Android          | Não                       | **Padrão oficial**                 |
+| Uso em jogos            | Raro                       | Padrão (libGDX)                    |
+| Curva de aprendizado    | Moderada                   | Moderada                            |
+| Suporte a multi-módulo | Sim                        | Sim (mais flexível)                |
+| Cache de build          | Não                       | **Sim (Build Cache)**               |
 
 > A libGDX usa **Gradle** como padrão. Android também usa Gradle. Por isso aprenderemos Gradle aqui.
 
@@ -276,6 +289,7 @@ Exemplos de tasks:
 ```
 
 Cada task:
+
 - Tem **entradas** (inputs): código-fonte, configurações
 - Tem **saídas** (outputs): arquivos compilados, JARs
 - Pode **depender** de outras tasks
@@ -290,6 +304,7 @@ tasks.register('ola') {
 ```
 
 Execute com:
+
 ```bat
 .\gradlew.bat ola
 ```
@@ -347,6 +362,7 @@ Após editar Nave.java: compileJava → apenas Nave.java foi alterado → recomp
 ```
 
 Você vê isso na saída do Gradle:
+
 ```
 > Task :core:compileJava UP-TO-DATE
 > Task :lwjgl3:compileJava
@@ -366,14 +382,15 @@ Isso faz com que o Gradle nem precise ler e interpretar os arquivos `.gradle` na
 
 O arquivo `build.gradle` pode ser escrito em duas linguagens:
 
-| | Groovy DSL | Kotlin DSL |
-|--|------------|------------|
-| **Arquivo** | `build.gradle` | `build.gradle.kts` |
-| **Linguagem** | Groovy (dinâmica) | Kotlin (estática) |
-| **Autocompletar no VS Code** | Parcial | Completo |
-| **Velocidade de parse** | Mais rápido | Um pouco mais lento |
-| **Verificação em tempo real** | Não | Sim (erros detectados na edição) |
-| **Popularidade** | Padrão histórico | Crescente (tendência atual) |
+
+|                                 | Groovy DSL         | Kotlin DSL                         |
+| --------------------------------- | -------------------- | ------------------------------------ |
+| **Arquivo**                     | `build.gradle`     | `build.gradle.kts`                 |
+| **Linguagem**                   | Groovy (dinâmica) | Kotlin (estática)                 |
+| **Autocompletar no VS Code**    | Parcial            | Completo                           |
+| **Velocidade de parse**         | Mais rápido       | Um pouco mais lento                |
+| **Verificação em tempo real** | Não               | Sim (erros detectados na edição) |
+| **Popularidade**                | Padrão histórico | Crescente (tendência atual)       |
 
 **Neste tutorial usamos Groovy DSL** (`build.gradle`) por ser mais simples para iniciantes e mais comum nos exemplos da libGDX.
 
@@ -459,13 +476,14 @@ Para nosso projeto: `br.unifor.missaomarte:missao-marte:1.0`
 
 Quando você declara uma dependência, você escolhe um **escopo** que define *onde* ela será usada:
 
-| Escopo | Usado em | Exportado para quem depende? | Exemplo de uso |
-|--------|----------|------------------------------|----------------|
-| `implementation` | compilação + execução | ❌ Não | Dependências internas |
-| `api` | compilação + execução | ✅ Sim | Dependências expostas na API pública |
-| `runtimeOnly` | apenas execução | ❌ Não | Drivers JDBC, natives |
-| `testImplementation` | apenas testes | ❌ Não | JUnit, Mockito |
-| `compileOnly` | apenas compilação | ❌ Não | Annotations, Lombok |
+
+| Escopo               | Usado em                  | Exportado para quem depende? | Exemplo de uso                         |
+| ---------------------- | --------------------------- | ------------------------------ | ---------------------------------------- |
+| `implementation`     | compilação + execução | ❌ Não                      | Dependências internas                 |
+| `api`                | compilação + execução | ✅ Sim                       | Dependências expostas na API pública |
+| `runtimeOnly`        | apenas execução         | ❌ Não                      | Drivers JDBC, natives                  |
+| `testImplementation` | apenas testes             | ❌ Não                      | JUnit, Mockito                         |
+| `compileOnly`        | apenas compilação       | ❌ Não                      | Annotations, Lombok                    |
 
 **Exemplo no projeto missao-marte:**
 
@@ -484,7 +502,7 @@ dependencies {
 }
 ```
 
-> **Por que `runtimeOnly` para os natives?**  
+> **Por que `runtimeOnly` para os natives?**
 > As bibliotecas nativas (`.dll`, `.so`, `.dylib`) não são necessárias durante a compilação do Java — o código Java não referencia classes delas diretamente. Elas são carregadas dinamicamente em tempo de execução pela libGDX.
 
 ### Como o Gradle baixa as dependências
@@ -517,6 +535,7 @@ O **Gradle Wrapper** é um dos recursos mais importantes do Gradle para trabalho
 ### O problema que ele resolve
 
 Imagine que:
+
 - Aluno A tem Gradle 7.6 instalado na máquina.
 - Aluno B tem Gradle 8.7 instalado.
 - O projeto foi criado com Gradle 8.7.
@@ -526,6 +545,7 @@ Resultado: os builds serão diferentes, podendo gerar erros de incompatibilidade
 ### A solução: o Wrapper
 
 O Wrapper é um **script incluído no próprio projeto** que:
+
 1. Lê qual versão do Gradle o projeto precisa (em `gradle-wrapper.properties`).
 2. Verifica se essa versão já está no cache local (`~/.gradle/wrapper/dists/`).
 3. Se não estiver, **baixa automaticamente** a versão correta.
@@ -554,8 +574,8 @@ A linha `distributionUrl` aponta para **exatamente qual versão** do Gradle ser�
 
 ### Regra de ouro
 
-> Nunca use `gradle <task>` (instalação global).  
-> **Sempre use** `.\gradlew.bat <task>` (wrapper do projeto).  
+> Nunca use `gradle <task>` (instalação global).
+> **Sempre use** `.\gradlew.bat <task>` (wrapper do projeto).
 > Isso garante que todos na equipe usem a mesma versão do Gradle.
 
 ---
@@ -619,6 +639,7 @@ missao-marte/
 O módulo `core` contém **toda a lógica do jogo** e não conhece nenhuma plataforma. Os módulos `lwjgl3` e `android` apenas inicializam a plataforma e delegam ao `core`.
 
 **`settings.gradle` — registra os módulos:**
+
 ```groovy
 rootProject.name = 'missao-marte'
 include 'core'
@@ -626,6 +647,7 @@ include 'lwjgl3'
 ```
 
 **Dependência entre módulos:**
+
 ```groovy
 // lwjgl3/build.gradle
 dependencies {
@@ -697,11 +719,585 @@ BUILD SUCCESSFUL in 4s
 - **`executed`** = task foi executada (algo mudou)
 - **`up-to-date`** = task não foi executada (nada mudou — cache funcionando)
 
-> **Nota:** O `gradlew.bat` é o **Gradle Wrapper** — um script incluído no projeto que baixa automaticamente a versão correta do Gradle. Você **não precisa instalar o Gradle manualmente** para usar o wrapper. Veja a Parte 3 para configurar o ambiente completo.
+> **Nota:** O `gradlew.bat` é o **Gradle Wrapper** — um script incluído no projeto que baixa automaticamente a versão correta do Gradle. Você **não precisa instalar o Gradle manualmente** para usar o wrapper. Veja a Parte 4 para configurar o ambiente completo.
 
 ---
 
-# Parte 3 – Configurando o Ambiente no Visual Studio Code
+# Parte 3 – A API libGDX
+
+---
+
+## 3.1 História e Origem
+
+### Quem criou?
+
+A libGDX foi criada por **Mario Zechner**, um programador austríaco apaixonado por jogos. Em **2009**, enquanto trabalhava como desenvolvedor de software, Mario começou a desenvolver a biblioteca em seu tempo livre com um objetivo claro: criar jogos em Java que rodassem tanto no desktop quanto em **Android** — sem reescrever o código para cada plataforma.
+
+Em **2010**, Mario lançou a primeira versão pública da libGDX no Google Code e publicou o livro *"Beginning Android Games"* (Apress, 2011 e 2012), que se tornou a principal referência da biblioteca na época.
+
+A empresa **Bad Logic Games** foi fundada por Mario e seu sócio **Nate Robins** para sustentar e promover a libGDX. Embora a empresa seja pequena, o projeto é mantido hoje por uma comunidade ativa de contribuidores ao redor do mundo.
+
+
+| Item                     | Detalhe                                     |
+| -------------------------- | --------------------------------------------- |
+| **Criador**              | Mario Zechner                               |
+| **Empresa**              | Bad Logic Games                             |
+| **Primeiro lançamento** | 2010                                        |
+| **Repositório**         | https://github.com/libgdx/libgdx            |
+| **Licença**             | Apache License 2.0 (open source e gratuita) |
+| **Linguagem**            | Java + C/C++ (código nativo via JNI)       |
+| **Website**              | https://libgdx.com                          |
+
+> **Curiosidade:** Mario publicou um livro sobre desenvolvimento de jogos com Android que apresentava a libGDX ao grande público. Isso impulsionou a adoção da biblioteca e formou a comunidade inicial.
+
+### Linha do tempo
+
+```
+2009  Mario Zechner inicia o desenvolvimento pessoal
+2010  Primeiro lançamento público no Google Code
+2011  Livro "Beginning Android Games" (1ª ed.) — libGDX ganha visibilidade
+2012  Livro "Beginning Android Games" (2ª ed.) — comunidade cresce
+2013  Migração para GitHub — contribuições externas aceleram
+2014  libGDX 1.0 — primeira versão estável
+2015  Backend LWJGL3 introduzido (substituindo o LWJGL2)
+2019  libGDX.com relançado — novo site e fórum
+2020  Adoção ampla em game jams (itch.io, Ludum Dare)
+2021  libGDX 1.9.13 — suporte a Java 11+
+2022  libGDX 1.9.14 e 1.11.0 — refatorações internas
+2023  libGDX 1.12.0 — gdx-liftoff como gerador oficial de projetos
+2024  libGDX 1.12.1 — versão usada neste tutorial
+```
+
+---
+
+## 3.2 O que é a libGDX?
+
+A libGDX é um **framework de desenvolvimento de jogos** escrito em Java. Diferente de motores como Unity ou Godot, a libGDX **não tem editor visual** — você escreve todo o jogo em código. Isso a torna ideal para aprender programação orientada a objetos aplicada a jogos.
+
+### Posicionamento no mercado
+
+```
+Unity / Godot / Unreal    ← engines visuais (drag-and-drop, scripts)
+        ↑
+     libGDX                ← framework em código (Java)
+        ↑
+    LWJGL / OpenGL         ← bibliotecas de baixo nível (janela, GPU)
+        ↑
+  Sistema Operacional      ← Windows, Linux, macOS
+```
+
+A libGDX fica entre o código de baixo nível (OpenGL) e o desenvolvedor, fornecendo uma **API de alto nível** para criar jogos sem precisar conhecer OpenGL diretamente.
+
+---
+
+## 3.3 Características Principais
+
+### Multiplataforma (Write Once, Run Anywhere)
+
+A principal vantagem da libGDX é a capacidade de escrever o código **uma vez** e rodar em múltiplas plataformas:
+
+
+| Plataforma                      | Backend    | Descrição                            |
+| --------------------------------- | ------------ | ---------------------------------------- |
+| **Desktop** (Windows/Mac/Linux) | LWJGL3     | Usa Java e OpenGL via LWJGL            |
+| **Android**                     | Android    | Usa OpenGL ES nativo                   |
+| **iOS**                         | RoboVM/MOE | Compila Java para código nativo Apple |
+| **Web (HTML5)**                 | GWT        | Transpila Java para JavaScript + WebGL |
+
+O código do jogo fica no módulo `core` e é **100% compartilhado** entre todas as plataformas. Apenas o launcher (inicialização) muda.
+
+### Open Source e Gratuita
+
+A libGDX é completamente **gratuita** para uso **comercial e educacional**. Não há taxa de royalties, sem limitações de licença. Você pode publicar e vender seu jogo sem pagar nada à Bad Logic Games.
+
+### Baseada em Java
+
+Toda a API da libGDX é Java puro do lado do desenvolvedor. Internamente, a biblioteca usa **código nativo** (C/C++) via JNI para operações de alto desempenho como:
+
+- Renderização OpenGL/ES
+- Decodificação de áudio (OGG, WAV, MP3)
+- Físicas com Box2D
+- Leitura de arquivos nativos da plataforma
+
+### Módulos da libGDX
+
+A biblioteca é organizada em módulos acessíveis via a classe `Gdx`:
+
+```java
+Gdx.graphics   // resolução, delta time, renderização
+Gdx.input      // teclado, mouse, touch, giroscópio
+Gdx.audio      // sons, músicas
+Gdx.files      // leitura/escrita de arquivos
+Gdx.net        // requisições HTTP
+Gdx.app        // log, informações do dispositivo
+```
+
+### Principais Classes da API
+
+
+| Classe                 | Módulo  | Para que serve                                               |
+| ------------------------ | ---------- | -------------------------------------------------------------- |
+| `Game`                 | core     | Classe base do jogo; gerencia`Screen`s                       |
+| `Screen`               | core     | Interface para uma "tela" do jogo                            |
+| `SpriteBatch`          | graphics | Renderiza sprites/imagens em lote                            |
+| `ShapeRenderer`        | graphics | Desenha formas geométricas (círculos, linhas, retângulos) |
+| `Texture`              | graphics | Carrega e armazena uma imagem na GPU                         |
+| `TextureAtlas`         | graphics | Carrega múltiplas imagens empacotadas                       |
+| `BitmapFont`           | graphics | Renderiza texto usando uma textura de fonte                  |
+| `OrthographicCamera`   | graphics | Câmera 2D; controla o "ponto de vista"                      |
+| `SpriteBatch`          | graphics | Acumula chamadas de desenho para enviar à GPU em lote       |
+| `Circle` / `Rectangle` | math     | Representam formas para detecção de colisão               |
+| `Intersector`          | math     | Verifica sobreposição entre formas                         |
+| `MathUtils`            | math     | Funções matemáticas e gerador de números aleatórios     |
+| `Array<T>`             | utils    | Lista otimizada para jogos (sem alocação de lixo)          |
+| `Sound` / `Music`      | audio    | Sons curtos e músicas de fundo                              |
+| `Box2D`                | physics  | Motor de física 2D                                          |
+
+---
+
+## 3.4 Versões da libGDX
+
+### Histórico de Versões Principais
+
+
+| Versão    | Ano  | Destaques                                                                  |
+| ------------ | ------ | ---------------------------------------------------------------------------- |
+| **0.7**    | 2010 | Primeiro lançamento público. Desktop + Android.                          |
+| **0.9**    | 2011 | Melhorias no sistema de input e áudio.                                    |
+| **1.0**    | 2014 | Primeira versão**estável**. API madura.                                  |
+| **1.5**    | 2015 | Refatoração do sistema de câmeras.                                      |
+| **1.9.0**  | 2016 | Backend**LWJGL3** introduzido (substitui LWJGL2). Suporte a multi-janelas. |
+| **1.9.4**  | 2017 | Melhorias no suporte a iOS.                                                |
+| **1.9.9**  | 2019 | Novo site e fórum. Correções acumuladas.                                |
+| **1.9.10** | 2019 | Melhorias na API de`InputProcessor`.                                       |
+| **1.9.11** | 2020 | Suporte aprimorado a Android 10+.                                          |
+| **1.9.12** | 2021 | Estabilidade e correções de bugs.                                        |
+| **1.9.13** | 2021 | **Java 11+ suportado.** Internos modernizados.                             |
+| **1.9.14** | 2022 | Melhorias de performance no`SpriteBatch`.                                  |
+| **1.11.0** | 2022 | Refatoração de build (Gradle). GWT atualizado.                           |
+| **1.12.0** | 2023 | **gdx-liftoff** torna-se o gerador oficial de projetos.                    |
+| **1.12.1** | 2024 | Correções e melhorias.**← Versão usada neste tutorial**                |
+
+### Como verificar a versão usada no projeto
+
+No arquivo `build.gradle` raiz:
+
+```groovy
+ext {
+    gdxVersion = '1.12.1'  // ← versão da libGDX
+}
+```
+
+Essa variável é usada em todas as dependências:
+
+```groovy
+implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+```
+
+### Qual versão usar?
+
+Para novos projetos, use sempre a **versão mais recente estável** (atualmente 1.12.1). A libGDX mantém boa compatibilidade retroativa — código escrito para a 1.9.x geralmente compila na 1.12.x com pequenas adaptações.
+
+---
+
+## 3.5 Por que a libGDX usa Gradle?
+
+A libGDX adotou o Gradle como padrão porque:
+
+1. **Multi-plataforma exige multi-módulo:** O mesmo jogo precisa compilar para desktop, Android e web — cada um com dependências diferentes. O Gradle resolve isso com módulos.
+2. **Dependências nativas:** As bibliotecas nativas (`.dll`, `.so`, `.dylib`) para cada plataforma são gerenciadas automaticamente via `runtimeOnly natives-*`.
+3. **Android exige Gradle:** Se você quiser publicar para Android, o Android Studio usa Gradle obrigatoriamente.
+
+```groovy
+// Exemplo de multi-plataforma no build.gradle
+// O mesmo projeto core compila para todos:
+dependencies {
+    implementation project(':core')                     // lógica do jogo
+
+    // Desktop:
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    runtimeOnly    "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+    // Android (futuro):
+    // implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+}
+```
+
+---
+
+## 3.6 Alternativas à libGDX
+
+Para entender o posicionamento da libGDX, veja as principais alternativas:
+
+
+| Framework/Engine  | Linguagem      | Tipo                    | Plataformas                   | Gratuito?      |
+| ------------------- | ---------------- | ------------------------- | ------------------------------- | ---------------- |
+| **libGDX**        | Java/Kotlin    | Framework (código)     | Desktop, Android, iOS, Web    | ✅ Sim         |
+| **Unity**         | C#             | Engine visual           | Desktop, Mobile, Console, Web | ⚠️ Freemium  |
+| **Godot**         | GDScript/C#    | Engine visual           | Desktop, Mobile, Web          | ✅ Sim         |
+| **Unreal Engine** | C++/Blueprints | Engine visual           | Desktop, Console, Mobile      | ⚠️ Royalties |
+| **LWJGL**         | Java           | Biblioteca baixo nível | Desktop                       | ✅ Sim         |
+| **Defold**        | Lua            | Engine visual           | Desktop, Mobile, Web          | ✅ Sim         |
+| **MonoGame**      | C#             | Framework (código)     | Desktop, Console, Mobile      | ✅ Sim         |
+
+A libGDX é ideal para **aprendizado de programação** porque:
+
+- Você escreve **Java puro** (sem scripts proprietários)
+- Não há "magia" de editor — você vê **como tudo funciona**
+- Os conceitos (game loop, câmera, batch rendering) se aplicam a qualquer engine
+
+---
+
+## 3.7 Ecossistema da libGDX
+
+### Ferramentas oficiais
+
+
+| Ferramenta          | Descrição                                            | Link                                 |
+| --------------------- | -------------------------------------------------------- | -------------------------------------- |
+| **gdx-liftoff**     | Gerador de projetos libGDX (substitui o gdx-setup.jar) | github.com/libgdx/gdx-liftoff        |
+| **Texture Packer**  | Empacota imagens em um TextureAtlas                    | libgdx.com/wiki/tools/texture-packer |
+| **Hiero**           | Gera BitmapFont a partir de fontes TrueType            | Incluso no projeto                   |
+| **Particle Editor** | Editor visual de partículas                           | Incluso no projeto                   |
+
+### Extensões populares (não oficiais)
+
+
+| Extensão    | Para que serve                                        |
+| -------------- | ------------------------------------------------------- |
+| **Ashley**   | Entity-Component System (ECS) — para jogos complexos |
+| **Box2D**    | Motor de física 2D (incluso na libGDX)               |
+| **TiledMap** | Carrega mapas criados no editor Tiled                 |
+| **VisUI**    | Componentes de UI para menus                          |
+| **gdx-ai**   | Inteligência artificial (pathfinding, steering)      |
+
+### Comunidade
+
+- **Fórum oficial:** https://libgdx.com/community/
+- **Discord:** discord.gg/libgdx
+- **Subreddit:** reddit.com/r/libgdx
+- **Ludum Dare / itch.io:** centenas de jogos publicados com libGDX
+
+---
+
+## 3.8 Sprites e Texturas
+
+Um **sprite** é uma imagem 2D desenhada na tela para representar um objeto do jogo (nave, inimigo, projétil, item, etc.).
+
+### Pipeline de renderização
+
+```
+Arquivo PNG             →   Pixmap         →   Texture        →   Sprite
+(disco / assets)            (RAM / CPU)        (VRAM / GPU)       (posição + escala)
+Gdx.files.internal()        new Pixmap()       new Texture()      new Sprite(texture)
+                                                                   sprite.draw(batch)
+```
+
+### Pixmap — imagem na RAM
+
+Um `Pixmap` é um bitmap criado **em memória** (na CPU). Você pode desenhar nele com métodos como `fillCircle()`, `drawLine()`, `setColor()`. Útil para gerar texturas proceduralmente (sem arquivo de imagem):
+
+```java
+// Cria um bitmap 16×16 pixels na RAM
+Pixmap pixmap = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
+pixmap.setColor(0, 0, 0, 0);   // fundo transparente
+pixmap.fill();
+
+pixmap.setColor(Color.YELLOW);
+pixmap.fillCircle(8, 8, 7);    // círculo amarelo
+
+pixmap.setColor(Color.WHITE);
+pixmap.fillCircle(8, 8, 3);    // núcleo branco brilhante
+
+// Envia os pixels para a GPU → libera o Pixmap da RAM
+Texture texture = new Texture(pixmap);
+pixmap.dispose();
+```
+
+### Texture — imagem na GPU
+
+Uma `Texture` reside na **memória da GPU (VRAM)**. Carregar uma textura de arquivo:
+
+```java
+// A partir de um arquivo em assets/ (maneira mais comum)
+Texture texture = new Texture(Gdx.files.internal("nave.png"));
+```
+
+> **Regra:** cada `Texture` criada deve ser liberada com `texture.dispose()` quando não for mais usada — senão vaza memória de GPU.
+
+### Sprite — textura com transformações
+
+Um `Sprite` combina uma `Texture` com posição, tamanho, rotação e cor:
+
+```java
+Sprite sprite = new Sprite(texture);
+sprite.setSize(32, 32);        // largura e altura em pixels do mundo
+sprite.setOriginCenter();      // ponto de rotação no centro
+sprite.setPosition(x - 16, y - 16); // posiciona o canto inferior-esquerdo
+
+// Dentro de render():
+batch.begin();
+sprite.draw(batch);            // envia o sprite para o SpriteBatch
+batch.end();                   // flush: envia tudo para a GPU de uma vez
+```
+
+### SpriteBatch — renderização em lote
+
+O `SpriteBatch` **acumula** todas as chamadas `draw()` e as envia para a GPU em **uma única operação** (batch). Isso reduz drasticamente as chamadas à GPU (draw calls) e melhora a performance:
+
+```
+Sem batch:  100 sprites = 100 draw calls para a GPU  (lento)
+Com batch:  100 sprites = 1  draw call para a GPU    (rápido)
+```
+
+```java
+// Sempre use begin/end para delimitar o bloco de renderização
+batch.begin();
+  for (Sprite s : sprites) s.draw(batch); // acumula
+batch.end();                               // envia tudo de uma vez
+```
+
+### No projeto Missão Marte
+
+O arquivo `Projetil.java` demonstra o pipeline completo:
+
+```java
+// Cria textura com Pixmap (sem arquivo externo)
+Pixmap px = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
+px.setColor(Color.YELLOW);
+px.fillCircle(8, 8, 7);
+Texture t = new Texture(px);
+px.dispose();
+
+// Usa como Sprite
+Sprite sprite = new Sprite(t);
+sprite.setSize(RAIO * 2, RAIO * 2);
+sprite.setPosition(x - RAIO, y - RAIO);
+
+// Renderiza
+batch.begin();
+sprite.draw(batch);
+batch.end();
+```
+
+> **Dica de performance:** Texturas usadas por muitos objetos devem ser **estáticas** (criadas uma vez, compartilhadas por todas as instâncias). Em `Projetil.java`, a `Texture` é `static` — todos os projéteis compartilham a mesma textura na GPU.
+
+---
+
+## 3.9 Sons e Áudio
+
+A libGDX oferece duas formas de reproduzir áudio:
+
+
+|                              | `Sound`                          | `Music`                                  |
+| ------------------------------ | ---------------------------------- | ------------------------------------------ |
+| **Uso**                      | Efeitos curtos (tiro, explosão) | Músicas longas (trilha sonora)          |
+| **Carregamento**             | Inteiro na memória RAM          | Streaming (lê do disco em pedaços)     |
+| **Reprodução simultânea** | Vários sons ao mesmo tempo      | Uma instância por vez                   |
+| **Formato**                  | WAV, OGG, MP3                    | OGG, MP3                                 |
+| **API principal**            | `sound.play(volume)`             | `music.play()`, `music.setLooping(true)` |
+
+### Carregando e reproduzindo sons
+
+```java
+// Carregamento (em create() ou show())
+Sound somTiro = Gdx.audio.newSound(Gdx.files.internal("sounds/tiro.wav"));
+Music trilha  = Gdx.audio.newMusic(Gdx.files.internal("sounds/musica.ogg"));
+
+// Reprodução
+somTiro.play(0.8f);         // volume 0.0 a 1.0
+somTiro.play(1f, 1.2f, 0f); // volume, pitch, pan
+
+// Música em loop
+trilha.setLooping(true);
+trilha.setVolume(0.5f);
+trilha.play();
+
+// Liberação de memória (obrigatório em dispose())
+somTiro.dispose();
+trilha.dispose();
+```
+
+### Sons procedurais com PCM
+
+Para gerar sons sem arquivos externos (como no projeto Missão Marte), usa-se síntese PCM (Pulse-Code Modulation):
+
+```java
+// PCM: sequência de amostras numéricas que representam a onda sonora
+// 44100 amostras por segundo = qualidade CD
+short[] samples = new short[44100 / 10]; // 0.1 segundo de som
+
+for (int i = 0; i < samples.length; i++) {
+    double angulo = 2 * Math.PI * 880 /* Hz */ * i / 44100;
+    samples[i] = (short) (Math.sin(angulo) * Short.MAX_VALUE * 0.7f);
+}
+// → onda senoidal de 880 Hz (nota A5 — som de "bip" agudo)
+```
+
+### No projeto Missão Marte
+
+`GerenciadorSom.java` gera três sons proceduralmente e os carrega como `Sound`:
+
+- `tocarTiro()` — bip agudo (880 Hz, 80 ms)
+- `tocarExplosao()` — ruído branco com decaimento (200 ms)
+- `tocarGameOver()` — sequência descendente 440→330→220 Hz
+
+```java
+// Uso em GameScreen
+jogo.som.tocarTiro();      // ao disparar (tecla SPACE)
+jogo.som.tocarExplosao();  // quando projétil acerta asteroide
+jogo.som.tocarGameOver();  // ao perder todas as vidas
+```
+
+---
+
+## 3.10 HUD (Head-Up Display)
+
+O **HUD** é a camada de interface sobreposta ao jogo — pontuação, vidas, mini-mapa, barra de vida, munição. Ele é desenhado **depois** de todos os elementos do jogo para aparecer por cima.
+
+### Estrutura do HUD em libGDX
+
+```java
+private void desenhar() {
+    // 1. Limpa a tela
+    ScreenUtils.clear(0, 0, 0.1f, 1);
+
+    // 2. Elementos do jogo (fundo, entidades)
+    shapes.begin(ShapeRenderer.ShapeType.Filled);
+    desenharMundo();   // estrelas, naves, asteroides...
+    shapes.end();
+
+    // 3. HUD (sempre por cima)
+    batch.begin();
+    desenharHUD();     // texto, ícones, barras de vida
+    batch.end();
+}
+```
+
+### Componentes típicos do HUD
+
+
+| Componente                 | Implementação libGDX                                 |
+| ---------------------------- | -------------------------------------------------------- |
+| **Texto** (pontos, nível) | `BitmapFont.draw(batch, texto, x, y)`                  |
+| **Barra de vida/escudo**   | `ShapeRenderer.rect(x, y, largura, altura)`            |
+| **Ícones de vidas**       | Mini-triângulos desenhados com`shapes.triangle()`     |
+| **Mini-mapa**              | Retângulo no canto com pontos representando entidades |
+| **Contador**               | `BitmapFont.draw()` com valor atualizado a cada frame  |
+
+### No projeto Missão Marte
+
+O HUD inclui três camadas:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Pontos: 1850      Escudo: [██░] [░░░]   Nivel 3         │  ← linha 1
+│ Vidas: [■][■][□]  Destruidos: 12        Nivel           │  ← linha 2
+├─────────────────────────────────────────────────────────┤
+│                   ÁREA DO JOGO                          │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+│ [WASD] Mover  [SPACE] Tiro  [P] Pausa  [ESC] Menu       │  ← rodapé
+```
+
+**Barra de escudo** — representação visual das vidas restantes:
+
+```java
+for (int i = 0; i < VIDAS_INICIAIS; i++) {
+    float ratio = (float) vidas / VIDAS_INICIAIS;
+    if (i < vidas) {
+        shapes.setColor(1f - ratio, ratio, 0f, 1f); // verde→vermelho
+    } else {
+        shapes.setColor(0.15f, 0.15f, 0.15f, 1f);   // célula vazia
+    }
+    shapes.rect(startX + i * (cellW + gap), startY, cellW, cellH);
+}
+```
+
+---
+
+## 3.11 Detecção de Colisões
+
+**Colisão** é o momento em que dois objetos do jogo se sobrepõem. Detectar colisões com precisão é um dos desafios centrais do desenvolvimento de jogos.
+
+### Tipos de hitbox (bounding shape)
+
+
+| Tipo              | Forma              | Precisão | Performance     | Uso típico             |
+| ------------------- | -------------------- | ----------- | ----------------- | ------------------------- |
+| **Circle**        | Círculo           | Média    | ✅ Mais rápido | Personagens, projéteis |
+| **Rectangle**     | Retângulo         | Baixa     | ✅ Rápido      | Plataformas, paredes    |
+| **Polygon**       | Polígono          | Alta      | ❌ Lento        | Terreno complexo        |
+| **Pixel-perfect** | Máscara de pixels | Perfeita  | ❌ Muito lento  | Raramente usada         |
+
+> **Regra de ouro:** Use sempre a hitbox **mais simples possível**. Nenhum jogador consegue distinguir a diferença entre hitbox circular e poligonal a 60 fps — mas a performance importa.
+
+### Intersector — colisão na libGDX
+
+A classe `Intersector` oferece métodos estáticos para testar sobreposição:
+
+```java
+// Círculo × Círculo (usado no projeto Missão Marte)
+Circle nave  = new Circle(x, y, raio);
+Circle pedra = new Circle(px, py, praio);
+boolean colidiu = Intersector.overlaps(nave, pedra);
+
+// Retângulo × Retângulo
+Rectangle r1 = new Rectangle(x, y, w, h);
+Rectangle r2 = new Rectangle(px, py, pw, ph);
+boolean colidiu = Intersector.overlaps(r1, r2);
+
+// Círculo × Retângulo (híbrido)
+boolean colidiu = Intersector.overlaps(circle, rectangle);
+```
+
+### Hitbox vs visual
+
+Uma boa prática é deixar a hitbox **menor** que o visual — isso torna o jogo mais justo e satisfatório:
+
+```
+Visual do asteroide:  ●   (raio = 30px)
+Hitbox real:          •   (raio = 24px = 80% do visual)
+
+Visual da nave:     △   (raio = 22px)
+Hitbox real:        ▵   (raio = 15px = 70% do visual)
+```
+
+### No projeto Missão Marte
+
+Há dois tipos de colisão implementados em `GameScreen.verificarColisoes()`:
+
+```java
+// 1. Projétil (Circle 5px) × Asteroide (Circle 70-80% do visual)
+for (Projetil p : projeteis) {
+    for (Asteroide a : asteroides) {
+        if (Intersector.overlaps(p.getBounds(), a.getBounds())) {
+            // → destroi asteroide, +50 pontos, explosão, som
+        }
+    }
+}
+
+// 2. Nave (Circle 70% do visual) × Asteroide
+if (Intersector.overlaps(nave.getBounds(), asteroide.getBounds())) {
+    // → perde vida, 2s de invencibilidade, nave pisca
+}
+```
+
+### Efeito visual de explosão
+
+Quando uma colisão projétil×asteroide ocorre, um objeto `Explosao` é criado:
+
+```java
+// Explosao: círculo que cresce e muda de cor ao longo de 0.45 segundos
+explosoes.add(new Explosao(a.getX(), a.getY(), a.getRaio() * 1.8f));
+
+// Em cada frame (atualizar):
+float t = intensidade(); // 1.0 → 0.0
+shapes.setColor(t, t * 0.4f, 0f, 1f); // laranja → vermelho → apaga
+shapes.circle(x, y, raioAtual(), 14);
+```
+
+---
 
 ## 3.1 Visão Geral do Ambiente
 
@@ -750,6 +1346,7 @@ javac -version
 ```
 
 Saída esperada:
+
 ```
 openjdk version "17.x.x" ...
 javac 17.x.x
@@ -775,13 +1372,15 @@ Abra o VS Code e instale as seguintes extensões pelo painel de extensões (`Ctr
 
 ### Extension Pack for Java (obrigatório)
 
-| Campo | Valor |
-|-------|-------|
-| **Nome** | Extension Pack for Java |
-| **Publicador** | Microsoft |
-| **ID** | `vscjava.vscode-java-pack` |
+
+| Campo          | Valor                      |
+| ---------------- | ---------------------------- |
+| **Nome**       | Extension Pack for Java    |
+| **Publicador** | Microsoft                  |
+| **ID**         | `vscjava.vscode-java-pack` |
 
 Esta extensão instala automaticamente:
+
 - Language Support for Java (compilação, autocompletar)
 - Debugger for Java (depuração)
 - Test Runner for Java
@@ -790,11 +1389,12 @@ Esta extensão instala automaticamente:
 
 ### Gradle for Java (obrigatório)
 
-| Campo | Valor |
-|-------|-------|
-| **Nome** | Gradle for Java |
-| **Publicador** | Microsoft |
-| **ID** | `vscjava.vscode-gradle` |
+
+| Campo          | Valor                   |
+| ---------------- | ------------------------- |
+| **Nome**       | Gradle for Java         |
+| **Publicador** | Microsoft               |
+| **ID**         | `vscjava.vscode-gradle` |
 
 Permite ver e executar tarefas Gradle diretamente no VS Code, sem precisar usar o terminal.
 
@@ -809,7 +1409,7 @@ Permite ver e executar tarefas Gradle diretamente no VS Code, sem precisar usar 
 
 ## 3.5 Passo 4 – Instalar o Gradle (Opcional)
 
-> **Importante:** O projeto `missao-marte` já inclui o **Gradle Wrapper** (`gradlew.bat`), que baixa a versão correta do Gradle automaticamente na primeira execução.  
+> **Importante:** O projeto `missao-marte` já inclui o **Gradle Wrapper** (`gradlew.bat`), que baixa a versão correta do Gradle automaticamente na primeira execução.
 > **Você não precisa instalar o Gradle para usar este projeto.**
 >
 > Siga os passos abaixo apenas se quiser usar o comando `gradle` globalmente no sistema.
@@ -831,6 +1431,7 @@ gradle --version
 ```
 
 Saída esperada:
+
 ```
 Gradle 8.7
 ...
@@ -927,7 +1528,7 @@ missao-marte/
 
 ---
 
-# Parte 4 – Arquitetura do Jogo
+# Parte 5 – Arquitetura do Jogo
 
 ## 4.1 O Game Loop da libGDX
 
@@ -993,7 +1594,7 @@ MissaoMarteGame
 
 ---
 
-# Parte 5 – Implementação do Jogo
+# Parte 6 – Implementação do Jogo
 
 ## 5.1 Assets – Recursos Gráficos
 
@@ -1003,10 +1604,11 @@ Para este tutorial, usaremos imagens simples. Você pode criá-las no **Paint** 
 
 **Tamanhos recomendados:**
 
-| Arquivo | Tamanho | Descrição |
-|---------|---------|-----------|
-| `nave.png` | 64×64 px | Nave do jogador |
-| `asteroide.png` | 48×48 px | Obstáculo |
+
+| Arquivo          | Tamanho     | Descrição      |
+| ------------------ | ------------- | ------------------ |
+| `nave.png`       | 64×64 px   | Nave do jogador  |
+| `asteroide.png`  | 48×48 px   | Obstáculo       |
 | `background.png` | 800×600 px | Fundo do espaço |
 
 > **Dica:** Para testar sem imagens reais, a libGDX permite desenhar **formas geométricas** com `ShapeRenderer`. Veremos isso também.
@@ -1392,7 +1994,7 @@ public class Lwjgl3Launcher {
 
 ---
 
-# Parte 6 – Alternativa sem Imagens: ShapeRenderer
+# Parte 7 – Alternativa sem Imagens: ShapeRenderer
 
 Se você ainda não tem imagens, pode usar `ShapeRenderer` para desenhar formas geométricas:
 
@@ -1452,7 +2054,7 @@ public void dispose() {
 
 ---
 
-# Parte 7 – Configuração do build.gradle
+# Parte 8 – Configuração do build.gradle
 
 ## 7.1 settings.gradle (raiz)
 
@@ -1525,7 +2127,7 @@ sourceSets.main.resources.srcDirs = ['../core/assets']
 
 ---
 
-# Parte 8 – Executando e Testando
+# Parte 9 – Executando e Testando
 
 ## 8.1 Executar via Terminal Integrado do VS Code
 
@@ -1555,20 +2157,21 @@ Na primeira execução o Gradle faz o download das dependências (~50 MB). Aguar
 
 ## 8.4 Controles do Jogo
 
-| Tecla | Ação |
-|-------|------|
-| `←` ou `A` | Mover esquerda |
-| `→` ou `D` | Mover direita |
-| `↑` ou `W` | Mover para cima |
-| `↓` ou `S` | Mover para baixo |
-| `P` | Pausar / Retomar |
-| `ESC` | Voltar ao menu |
-| `ENTER` | Confirmar / Jogar novamente |
-| `M` | Menu principal (na tela de Game Over) |
+
+| Tecla       | Ação                                |
+| ------------- | --------------------------------------- |
+| `←` ou `A` | Mover esquerda                        |
+| `→` ou `D` | Mover direita                         |
+| `↑` ou `W` | Mover para cima                       |
+| `↓` ou `S` | Mover para baixo                      |
+| `P`         | Pausar / Retomar                      |
+| `ESC`       | Voltar ao menu                        |
+| `ENTER`     | Confirmar / Jogar novamente           |
+| `M`         | Menu principal (na tela de Game Over) |
 
 ---
 
-# Parte 9 – Exercícios de Fixação
+# Parte 10 – Exercícios de Fixação
 
 ## Exercício 1 – API na Prática ⭐
 

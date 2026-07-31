@@ -62,4 +62,7 @@ public class Asteroide {
     }
 
     public Circle getBounds() { return bounds; }
+    public float  getX()      { return x; }
+    public float  getY()      { return y; }
+    public float  getRaio()   { return raio; }
 }
