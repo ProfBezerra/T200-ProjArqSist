@@ -672,7 +672,7 @@ O que é Orientação a Objetos?
 
 A) Um paradigma baseado apenas em funções.
 
-**B) Um paradigma baseado em objetos que possuem estado e comportamento.**
+B) Um paradigma baseado em objetos que possuem estado e comportamento.
 
 C) Um framework de desenvolvimento.
 
@@ -688,7 +688,7 @@ A) Classe é um objeto abstrato.
 
 B) Objeto é um molde.
 
-**C) Classe é um molde e objeto é uma instância.**
+C) Classe é um molde e objeto é uma instância.
 
 D) Não existe diferença.
 
@@ -700,7 +700,7 @@ O que é encapsulamento?
 
 A) Herança de atributos.
 
-**B) Ocultar detalhes internos e expor apenas o necessário.**
+B) Ocultar detalhes internos e expor apenas o necessário.
 
 C) Criar muitas classes.
 
@@ -716,7 +716,7 @@ A) Relação "tem um".
 
 B) Relação "usa um".
 
-**C) Relação "é um".**
+C) Relação "é um".
 
 D) Relação "depende de".
 
@@ -728,7 +728,7 @@ O que é polimorfismo?
 
 A) Capacidade de uma classe ter muitos atributos.
 
-**B) Capacidade de diferentes objetos responderem à mesma mensagem.**
+B) Capacidade de diferentes objetos responderem à mesma mensagem.
 
 C) Capacidade de esconder dados.
 
@@ -744,7 +744,7 @@ A) Muitas dependências entre classes.
 
 B) Classes altamente dependentes.
 
-**C) Poucas dependências e maior independência.**
+C) Poucas dependências e maior independência.
 
 D) Uso excessivo de herança.
 
@@ -756,7 +756,7 @@ O que caracteriza **alta coesão**?
 
 A) Classe com muitas responsabilidades.
 
-**B) Classe com responsabilidades bem definidas e relacionadas.**
+B) Classe com responsabilidades bem definidas e relacionadas.
 
 C) Classe que depende de muitas outras.
 
@@ -774,7 +774,7 @@ B) Baixo acoplamento e baixa coesão.
 
 C) Alto acoplamento e baixa coesão.
 
-**D) Baixo acoplamento e alta coesão.**
+D) Baixo acoplamento e alta coesão.
 
 ---
 
@@ -786,7 +786,7 @@ A) Depender de classes concretas.
 
 B) Usar variáveis globais.
 
-**C) Programar contra interfaces.**
+C) Programar contra interfaces.
 
 D) Concentrar lógica em uma única classe.
 
@@ -800,7 +800,7 @@ A) Porque melhoram a performance.
 
 B) Porque reduzem o número de linhas de código.
 
-**C) Porque facilitam manutenção, testes e evolução do sistema.**
+C) Porque facilitam manutenção, testes e evolução do sistema.
 
 D) Porque eliminam a necessidade de documentação.
 
@@ -863,4 +863,3 @@ O código é propositalmente simples para servir como ponto de partida para refa
 - Implementem testes unitários simples
 - Refatorarem usando interfaces para dependências
 - Adicionem logging (POA) e persistência mínima quando trabalharem em Spring Boot
-
