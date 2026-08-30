@@ -1,0 +1,15 @@
+# Compilação Java
+out/
+*.class
+
+# Arquivos gerados pelo jogo
+ranking.json
+
+# IDEs e editores
+.idea/
+.vscode/
+*.iml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
