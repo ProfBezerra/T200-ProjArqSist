@@ -5,12 +5,14 @@
 **Objetivo:** Permitir extensão de comportamento sem modificar código estável.
 
 ## Conceito
-OCP (Open-Closed Principle) diz que módulos devem estar abertos para extensão e fechados para modificação.
 
-## Exemplo (Missão Marte Unifor)
-No tutorial, o conceito aparece na abstração `Passageiro`.
-- `Professor`, `Engenheiro` e `Astronauta` são subclasses diferentes.
-- O sistema pode tratar todos como `Passageiro` sem precisar mudar a lógica principal.
+OCP (Open-Closed Principle) diz que um módulo deve estar aberto para extensão e fechado para modificação.
+
+Em outras palavras, quando surge uma nova regra ou um novo tipo de entidade, o sistema deve aceitar essa variação sem exigir reescrever o que já funciona. O ideal é adicionar comportamento por extensão, não por alteração do código base.
+
+## Exemplo com Passageiro no tutorial
+
+No jogo, o tipo base `Passageiro` representa o contrato principal. Subclasses como `Professor`, `Engenheiro` ou `Astronauta` representam variações específicas.
 
 ```java
 public abstract class Passageiro {
@@ -32,21 +34,60 @@ public class Engenheiro extends Passageiro {
 }
 ```
 
-## Extensões possíveis
-- Criar um novo tipo de passageiro, como `Medico`, sem alterar a lógica do jogo.
-- Adicionar novas regras de pontuação por meio de subclasses.
+A lógica do sistema pode tratar qualquer passageiro da mesma forma:
+
+```java
+public class Missao {
+    public int calcularTotalBonus(List<Passageiro> passageiros) {
+        int total = 0;
+        for (Passageiro p : passageiros) {
+            total += p.getPontuacao();
+        }
+        return total;
+    }
+}
+```
+
+Se surgir um novo tipo de passageiro, como `Medico`, basta criar uma nova subclasse. O restante do código continua funcionando.
+
+## Anti-exemplo a evitar
+
+```java
+public class Passageiro {
+    private String tipo;
+
+    public int getPontuacao() {
+        if (tipo.equals("professor")) return 15;
+        if (tipo.equals("engenheiro")) return 20;
+        return 0;
+    }
+}
+```
+
+Esse código quebra OCP porque qualquer nova categoria exige mexer no método de cálculo principal.
+
+## Por que isso importa?
+
+O OCP reduz riscos de regressão. Quando a regra muda, você não precisa mexer em todo o sistema antigo. Em vez disso, cria uma especialização que adiciona comportamento novo sem quebrar o contrato anterior.
 
 ## Exercícios
-- Crie um novo tipo de passageiro e faça com que ele seja reconhecido no fluxo do jogo.
-- Verifique se a lógica de embarque e pontuação continua funcionando sem alterar a classe base.
+
+1. Crie um novo tipo de passageiro e veja como ele pode ser incluído sem alterar a lógica principal.
+2. Verifique se a lógica de embarque e pontuação continua funcionando sem mexer na classe base.
+3. Observe que a base `Passageiro` continua estável e o sistema se expande por extensão.
 
 ## Checklist
-- A classe base `Passageiro` permaneceu estável ao adicionar novos tipos?
+
+- A classe base permaneceu estável ao adicionar novos tipos?
 - O sistema passou a aceitar novas variações por extensão?
+- As regras específicas ficaram em subclasses, e não em um código central sempre alterado?
 
 ## Como validar
+
 - Adicionar um novo passageiro não deve exigir reescrever a lógica de pontuação ou embarque.
+- Se isso acontece, o código ainda está preso a uma implementação rígida.
 
 ## Referências
+
 - Apostila OO (Herança/Polimorfismo)
 - Projeto do tutorial: src/tutorial-exercicio10

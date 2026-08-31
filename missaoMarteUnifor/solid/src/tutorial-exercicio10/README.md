@@ -22,6 +22,18 @@ Este material foi reorganizado para mostrar uma versão incremental e, ao mesmo 
 - ISP: interfaces pequenas deixam o código mais enxuto.
 - DIP: o serviço depende de abstrações, não de implementações concretas.
 
+## Como o tutorial explora o SOLID em cada etapa
+
+Este tutorial não é apenas uma reorganização de pastas. A intenção é mostrar como a refatoração transforma um código funcional em um código mais sustentável, com responsabilidades bem separadas e com menor acoplamento.
+
+- Etapa 1: a classe Main atua como ponto de entrada e composição, deixando o fluxo principal em uma camada de serviço.
+- Etapa 2: JogoService orquestra a lógica do jogo, mas não conhece detalhes do armazenamento de dados.
+- Etapa 3: MapaRenderer cuida apenas da apresentação do mapa, sem mexer na regra de negócio.
+- Etapa 4: RankingRepository define uma abstração para persistência, permitindo trocar a implementação sem alterar o serviço.
+- Etapa 5: o modelo encapsula entidades do domínio, com hierarquias e interfaces que favorecem extensão e substituição.
+
+A ideia central é: cada classe deve ter um motivo para mudar e o código deve ser fácil de ampliar sem quebrar o comportamento existente.
+
 ## Estrutura final do projeto
 
 ```text
@@ -77,6 +89,12 @@ Nos comentários, vale destacar pontos importantes do SOLID, como:
 
 ## Passo 1: criar a classe principal
 
+Neste primeiro passo, o foco é o conceito de arquitetura de composição e o princípio de responsabilidade. A classe Main não deve conter regras de negócio nem lógica do jogo; ela apenas inicia a aplicação e conecta as dependências necessárias.
+
+- SRP: a classe Main tem uma responsabilidade bem definida: iniciar a aplicação.
+- DIP: o código depende da abstração RankingRepository, e não da implementação concreta RankingService.
+- O objetivo é manter o ponto de entrada simples e deixar a lógica em camadas mais especializadas.
+
 Crie o arquivo Main.java com o conteúdo abaixo:
 
 ```java
@@ -105,7 +123,19 @@ public class Main {
 }
 ```
 
+### Reflexão do passo 1
+
+- O que aconteceria se `Main` também fosse responsável por salvar o ranking?
+- Por que a classe de entrada da aplicação deve ficar mais simples e delegar a execução?
+- Como esse desenho ajuda o princípio de responsabilidade única?
+
 ## Passo 2: criar a camada de serviço
+
+Aqui a refatoração deixa clara a separação entre regra de negócio e infraestrutura. O serviço centraliza a lógica do jogo, mas não decide como o ranking será salvo; isso fica abstraído por meio da interface RankingRepository.
+
+- SRP: JogoService cuida do fluxo do jogo, do menu e da coordenação das regras.
+- DIP: ele depende de uma abstração (RankingRepository), e não de uma classe concreta de persistência.
+- O código fica mais fácil de testar e evoluir, porque a parte de armazenamento pode ser trocada sem mexer na lógica do jogo.
 
 Crie o arquivo service/JogoService.java com o conteúdo abaixo:
 
@@ -429,7 +459,19 @@ public class JogoService {
 }
 ```
 
+### Reflexão do passo 2
+
+- Por que o jogo não deve conhecer como o ranking é salvo em arquivo?
+- Qual parte do código ficaria mais difícil de manter se `JogoService` tratasse de persistência diretamente?
+- Como essa separação ajuda na testabilidade do sistema?
+
 ## Passo 3: criar a camada de apresentação
+
+A ideia desta etapa é separar completamente a representação visual do jogo da lógica do domínio. O mapa é apenas uma forma de exibir o estado da missão; ele não deve saber como as regras de pontuação ou de embarque são calculadas.
+
+- SRP: MapaRenderer tem responsabilidade exclusiva de renderizar o estado do jogo.
+- DIP: a apresentação depende do modelo da missão, mas não altera a regra de negócio.
+- Essa separação reduz acoplamento e facilita mudanças na interface, como trocar o console por uma UI gráfica em outro momento.
 
 Crie o arquivo presentation/MapaRenderer.java com o conteúdo abaixo:
 
@@ -511,7 +553,19 @@ public class MapaRenderer {
 }
 ```
 
+### Reflexão do passo 3
+
+- Por que a camada de apresentação não deve decidir regras de pontuação ou embarque?
+- O que acontece se a interface do jogo for trocada para uma GUI em vez do terminal?
+- Como a separação de responsabilidades facilita a manutenção da aplicação?
+
 ## Passo 4: criar a abstração do ranking
+
+Este é um exemplo clássico de inverção de dependência. Em vez de o jogo depender diretamente de um arquivo ou de uma classe concreta de persistência, ele depende de uma interface que define o contrato do ranking.
+
+- DIP: o serviço depende da abstração RankingRepository e não da implementação RankingService.
+- SRP: a interface deixa explícita a responsabilidade de persistência, enquanto a implementação cuida do acesso ao arquivo.
+- OCP: se no futuro o código usar banco de dados, API ou cache, basta criar outra implementação sem alterar a lógica do jogo.
 
 Crie o arquivo repository/RankingRepository.java com o conteúdo abaixo:
 
@@ -641,7 +695,20 @@ public class RankingEntry {
 }
 ```
 
+### Reflexão do passo 4
+
+- Qual seria o impacto se o jogo dependesse diretamente de um arquivo em vez de uma interface?
+- Por que a abstração do ranking aumenta a flexibilidade do sistema?
+- Como isso exemplifica a inversão de dependência do SOLID?
+
 ## Passo 5: criar o modelo do domínio
+
+Nesta etapa, o código passa a modelar corretamente o domínio do problema. As entidades representam objetos do jogo, como nave, passageiros, asteroides e inimigos, com responsabilidades bem definidas.
+
+- SRP: cada classe do modelo representa uma entidade ou conceito específico do jogo.
+- OCP: novas categorias de passageiros podem ser criadas herdando de Passageiro sem alterar as regras existentes.
+- LSP: todo passageiro pode ser tratado como Passageiro, independentemente do tipo concreto.
+- ISP: interfaces como Movel e Posicionavel deixam o código mais enxuto e mais coerente.
 
 Crie o arquivo model/EntidadeMapa.java com o conteúdo abaixo:
 
@@ -668,6 +735,12 @@ public abstract class EntidadeMapa implements Posicionavel {
     public abstract String getSimbolo();
 }
 ```
+
+### Reflexão do passo 5
+
+- Como a herança de `Passageiro` permite a criação de novos tipos sem mudar a lógica principal?
+- Por que a interface `Movel` é melhor do que criar métodos específicos em cada classe?
+- Qual parte do modelo mostra melhor o princípio de substituição de Liskov?
 
 Crie o arquivo model/Posicionavel.java com o conteúdo abaixo:
 
