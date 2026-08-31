@@ -22,6 +22,18 @@
 > GRASP define *onde* colocar cada responsabilidade.  
 > Aplicar GRASP geralmente satisfaz SOLID automaticamente.
 
+### Relação com a Missão Marte
+
+No contexto do projeto da Missão Marte, a pergunta do GRASP ganha um sentido bem concreto:
+
+- `JogoService` deve ficar em `service` porque ele orquestra a lógica da partida.
+- `MapaRenderer` deve ficar em `presentation` porque ele apenas desenha o estado do jogo.
+- `Missao`, `Nave`, `Passageiro` e `Dificuldade` ficam em `model` porque representam o domínio.
+- `RankingRepository`/`RankingService` ficam em `repository` porque cuidam da persistência do ranking, não da regra de negócio.
+- `GameController` fica em `controller` porque recebe eventos do usuário e delega o processamento.
+
+Em outras palavras, GRASP responde: **“qual classe deve possuir esta responsabilidade?”** enquanto SOLID responde: **“como essa classe deve ser organizada para manter o sistema estável?”**.
+
 | # | Padrão | Pergunta |
 |---|---|---|
 | 1 | **Information Expert** | Quem tem os dados necessários para realizar esta operação? |
@@ -96,6 +108,20 @@ Inimigo.java              →    model/Inimigo.java      (implements Perigo)
 Nave.java                 →    model/Nave.java
                           →    model/Perigo.java       (NOVA — interface)
 ```
+
+### Regra importante de arquitetura
+
+A estrutura acima não é apenas estética. Ela mostra a regra de responsabilidade aplicada ao projeto:
+
+- `service` concentra a lógica do jogo.
+- `repository` concentra a persistência do ranking.
+- `presentation` exibe o mapa e os menus.
+- `controller` coordena a interação com o usuário.
+- `model` guarda o estado e o comportamento do domínio.
+
+> **Importante:** `RankingService` não deve ficar em `service` quando o seu papel principal é persistence/JSON. Em um desenho arquitetural coerente, ele fica em `repository`, porque implementa a infraestrutura de armazenamento, enquanto `JogoService` permanece em `service` porque coordena a regra de negócio do jogo.
+
+Essa escolha é um bom exemplo de como GRASP e SOLID se complementam: GRASP orienta a divisão de responsabilidades; SOLID orienta a organização e o baixo acoplamento dessas responsabilidades.
 
 ---
 

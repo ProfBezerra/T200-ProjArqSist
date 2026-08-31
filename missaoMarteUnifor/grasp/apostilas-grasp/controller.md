@@ -1,81 +1,102 @@
 # Controller
 
-**Definição**: um objeto que atua como intermediário entre a UI (ou camada de entrada) e o domínio, coordenando operações de uso do caso.
+**Definição**: um controlador é um objeto que coordena a interação entre a entrada do usuário e o domínio do sistema.
 
-**Problema**: Quem deve tratar um evento de entrada do sistema gerado na interface do usuário?
+**Problema**: quem deve receber o comando do jogador e encaminhar a operação para as classes certas?
 
-**Solução**: Atribua a responsabilidade a uma classe que não seja de interface (non-UI), representando o sistema global, um dispositivo ou o cenário do caso de uso.
+**Solução**: criar uma classe responsável por orquestrar o caso de uso, sem misturar essa responsabilidade com a lógica de negócios nem com a renderização.
 
-Tipos comuns de controller:
+## No contexto da Missão Marte
 
-- `Facade Controller`: um controlador que representa um caso de uso de alto nível.
-- `Session Controller`: gerencia uma sessão ou transação.
+Em vez de colocar toda a lógica no `Main`, o sistema pode ter um componente de controle que:
 
-Quando usar:
+- lê a opção do menu,
+- inicia uma missão,
+- delega o jogo para `JogoService`,
+- chama a persistência do ranking quando necessário.
 
-- Para evitar que a camada de apresentação acesse diretamente várias classes do domínio.
+Isso deixa o código organizado e mais fácil de evoluir.
 
-Exemplo: `GameController` recebe entrada do teclado (WASD), traduz para operações e delega para `JogoService`.
+## Quando o Controller faz sentido?
 
-Relação com SOLID
+Use um controller quando:
 
-- **SRP:** o `Controller` tem a responsabilidade única de orquestrar o caso de uso, evitando que a UI contenha lógica de negócio.
-- **DIP:** controllers costumam depender de interfaces de serviços (injetadas) em vez de implementações concretas.
-- **ISP:** mantenha interfaces do controlador enxutas para não forçar dependentes a implementar métodos desnecessários.
+- a entrada do usuário precisa ser tratada,
+- existe uma sequência de ações para um caso de uso,
+- a camada de apresentação deve ficar simples,
+- o domínio precisa receber comandos sem depender de console diretamente.
+
+## Exemplo prático
+
+Imagine uma classe `JogoController` que coordena o fluxo da partida:
+
+```java
+public class JogoController {
+    private final JogoService jogoService;
+    private final Scanner scanner;
+
+    public JogoController(JogoService jogoService, Scanner scanner) {
+        this.jogoService = jogoService;
+        this.scanner = scanner;
+    }
+
+    public void iniciarAplicacao() {
+        boolean executando = true;
+        while (executando) {
+            System.out.println("1. Iniciar missão");
+            System.out.println("2. Ver ranking");
+            System.out.println("3. Sair");
+
+            String opcao = scanner.nextLine();
+            switch (opcao) {
+                case "1":
+                    jogoService.executarLoop(scanner);
+                    break;
+                case "2":
+                    jogoService.listarRanking();
+                    break;
+                case "3":
+                    executando = false;
+                    break;
+            }
+        }
+    }
+}
+```
+
+## Relação com GRASP
+
+- **Controller**: a classe `JogoController` usa o padrão para orquestrar fluxos.
+- **Information Expert**: a classe que conhece melhor o jogo é `JogoService`.
+- **Low Coupling**: o controller não precisa conhecer detalhes de persistência; ele delega.
+- **High Cohesion**: cada componente gerencia uma parte do fluxo sem misturar preocupações.
 
 ## Diagrama de sequência
-
-O diagrama abaixo ilustra como `GameController` coordena o fluxo da partida delegando para `JogoService` e `IRankingRepository`.
 
 ```mermaid
 sequenceDiagram
   participant Jogador
-  participant GameController
+  participant JogoController
   participant JogoService
-  participant IRankingRepository
+  participant RankingRepository
 
-  Jogador->>GameController: teclaWASD(direcao)
-  GameController->>JogoService: moverNave(nave, direcao)
-  activate JogoService
-  JogoService->>JogoService: verificarColisoes()
-  JogoService->>JogoService: verificarResgates()
-  JogoService-->>GameController: estadoAtualizado
-  deactivate JogoService
-  GameController-->>Jogador: mapaAtualizado
-
-  Jogador->>GameController: missaoEncerrada()
-  GameController->>JogoService: calcularPontuacaoFinal()
-  JogoService-->>GameController: pontos
-  GameController->>IRankingRepository: salvar(nomeJogador, pontos)
-  IRankingRepository-->>GameController: ok
-  GameController-->>Jogador: telaResultado()
+  Jogador->>JogoController: escolhe opção do menu
+  JogoController->>JogoService: executarLoop(scanner)
+  JogoService->>JogoService: criar missão e movimentar nave
+  JogoService->>RankingRepository: salvar pontuação final
+  RankingRepository-->>JogoService: confirmação
+  JogoService-->>JogoController: estado da partida
+  JogoController-->>Jogador: exibe resultado
 ```
 
-Exemplo evolutivo
+## Observação importante
 
-No exemplo evolutivo, `GameController` atua como ponto de entrada da aplicação e delega ao `JogoService` para lógica de jogo. Isso separa responsabilidades da camada de apresentação e facilita testes.
+O controlador não substitui o `JogoService`.
 
-Fluxo ilustrativo:
+O papel dele é coordenar o caso de uso; o papel do serviço é executar a lógica do jogo. Essa separação é um exemplo clássico de GRASP em ação.
 
-```text
-Jogador -> GameController -> JogoService -> IRankingRepository
-```
+## Conclusão
 
-Trecho de código:
+Na Missão Marte, o `Controller` ajuda a manter a entrada do usuário, a lógica do jogo e a persistência separadas. Isso reduz confusão, facilita manutenção e deixa o fluxo mais previsível.
 
-```java
-public class GameController {
-    private final JogoService jogoService;
-    private final FabricaMissao fabricaMissao;
-    private final IRankingRepository rankingRepository;
-    private final Scanner scanner;
-
-    public void iniciarPartida(Dificuldade dificuldade, String nomeJogador) {
-        Missao missao = fabricaMissao.criar(dificuldade);
-        Nave nave = new Nave(missao.getLargura() / 2, missao.getAltura() / 2);
-        int pontos = jogoService.executarPartida(missao, nave, scanner);
-        rankingRepository.salvar(new RankingEntry(nomeJogador, pontos));
-    }
-}
-```
 

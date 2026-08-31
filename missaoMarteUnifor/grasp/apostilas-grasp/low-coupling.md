@@ -1,163 +1,105 @@
 # Low Coupling (Baixo Acoplamento)
 
-**Definição**: projetar classes de modo a minimizar dependências entre elas, reduzindo impacto de mudanças.
+**Definição**: o design de um sistema deve minimizar as dependências entre classes para reduzir o impacto de mudanças.
 
-**Problema**: Como minimizar o impacto de mudanças e promover a reutilização?
+**Problema**: o que acontece quando uma classe conhece detalhes de implementação de muitas outras?
 
-**Solução**: Atribua responsabilidades para manter as dependências entre classes o mais baixas possível.
+**Solução**: atribuir responsabilidades de forma que cada componente dependa menos de outro e mais de abstrações ou interfaces.
 
-Vantagens:
+## No contexto da Missão Marte
 
-- Facilita manutenção e evolução
-- Melhora testabilidade
-
-Estratégias:
-
-- Separar responsabilidades claras
-- Usar interfaces/abstrações
-- Aplicar Indirection quando apropriado
-
-Relação com SOLID
-
-- **DIP:** reduzir acoplamento frequentemente exige dependência de abstrações ao invés de classes concretas.
-- **ISP:** dividir interfaces grandes reduz acoplamento entre clientes e provedores.
-- **SRP:** clareza nas responsabilidades diminui dependências desnecessárias.
-
-Exemplo evolutivo (Missão Marte)
-
-Ao evoluir, extraímos `IRankingRepository` e programamos `JogoService` para depender da interface em vez de uma implementação concreta. Isto é `Low Coupling` aplicado:
+Uma boa arquitetura não faz `JogoService` depender diretamente da implementação concreta de armazenamento do ranking. Em vez disso, o serviço depende de uma abstração.
 
 ```java
-public interface IRankingRepository {
-    void salvar(RankingEntry entry);
-    List<RankingEntry> carregar();
+public interface RankingRepository {
+    void salvar(String nome, int pontuacao);
+    List<RankingEntry> listar();
 }
-public class RankingRepositoryArquivo implements IRankingRepository { /* implementação */ }
 
+public class RankingService implements RankingRepository {
+    // implementação concreta de arquivo/JSON
+}
+```
+
+Agora o `JogoService` pode funcionar sem saber como o ranking é persistido.
+
+## Exemplo prático
+
+```java
 public class JogoService {
-    private final IRankingRepository ranking;
-    public JogoService(IRankingRepository ranking) { this.ranking = ranking; }
+    private final RankingRepository rankingRepository;
+
+    public JogoService(RankingRepository rankingRepository) {
+        this.rankingRepository = rankingRepository;
+    }
+
+    public void registrarPontuacao(String nome, int pontos) {
+        rankingRepository.salvar(nome, pontos);
+    }
 }
 ```
 
-Diagramas (Low Coupling)
+Esse exemplo mostra baixo acoplamento porque:
 
-1) Diagrama de classes — mostra como `JogoService` depende da abstração `IRankingRepository`:
+- `JogoService` depende de uma abstração,
+- a implementação concreta pode mudar,
+- o serviço continua funcionando.
+
+## Benefícios
+
+- facilidade de manutenção;
+- menos efeitos colaterais em mudanças;
+- maior testabilidade;
+- capacidade de trocar implementações sem quebrar o restante do sistema.
+
+## Relação com GRASP
+
+- **Low Coupling**: reduz dependências entre classes.
+- **Indirection**: introduz uma camada de abstração para mediar a comunicação.
+- **Protected Variations**: isola partes do sistema que podem mudar, como o mecanismo de persistência.
+
+## Diagrama de classes
 
 ```mermaid
 classDiagram
-  class Nave {
-    - x: int
-    - y: int
-  }
-
-  class Missao {
-    - passageiros: List
-    - perigos: List
-  }
-
   class JogoService {
-    - ranking: IRankingRepository
-    + executarPartida(missao, nave, scanner) int
+    - rankingRepository: RankingRepository
+    + registrarPontuacao(nome, pontos)
   }
 
-  class IRankingRepository {
+  class RankingRepository {
     <<interface>>
+    + salvar(nome, pontuacao)
+    + listar()
   }
-  class RankingRepositoryArquivo
 
-  JogoService --> Missao
-  JogoService --> Nave
-  JogoService ..> IRankingRepository : depende de
-  IRankingRepository <|.. RankingRepositoryArquivo
+  class RankingService {
+    + salvar(nome, pontuacao)
+    + listar()
+  }
+
+  JogoService ..> RankingRepository
+  RankingRepository <|.. RankingService
 ```
 
-2) Diagrama de sequência — `JogoService` delega persistência para a abstração `IRankingRepository`:
+## Diagrama de sequência
 
 ```mermaid
 sequenceDiagram
-  participant GameController
+  participant Jogador
   participant JogoService
-  participant IRankingRepository
-  participant RankingRepositoryArquivo
+  participant RankingRepository
+  participant RankingService
 
-  GameController->>JogoService: executarPartida(missao, nave, scanner)
-  activate JogoService
-  JogoService->>JogoService: loop de jogo...
-  JogoService-->>GameController: pontuacaoFinal
-  deactivate JogoService
-
-  GameController->>IRankingRepository: salvar(entry)
-  activate IRankingRepository
-  IRankingRepository->>RankingRepositoryArquivo: persistir(entry)
-  RankingRepositoryArquivo-->>IRankingRepository: ok
-  deactivate IRankingRepository
+  Jogador->>JogoService: finaliza partida
+  JogoService->>RankingRepository: salvar(nome, pontos)
+  RankingRepository->>RankingService: persistir valor
+  RankingService-->>RankingRepository: ok
+  RankingRepository-->>JogoService: confirmação
+  JogoService-->>Jogador: exibe resultado
 ```
 
+## Conclusão
 
-Diagramas (Low Coupling)
-
-1) Diagrama de classes — mostra como `PedidoService` depende da abstração `PedidoRepository`, que pode ter uma implementação `PedidoRepositoryMemoria`:
-
-```mermaid
-%% Diagrama de classes (versão simplificada)
-classDiagram
-  class Produto {
-    - nome: String
-    - preco: double
-  }
-
-  class PedidoItem {
-    - produto: Produto
-    - quantidade: int
-  }
-
-  class Pedido {
-    - itens: List~PedidoItem~
-  }
-
-  class PedidoService {
-    - repo: PedidoRepository
-  }
-
-  class PedidoRepository
-  class PedidoRepositoryMemoria
-
-  Produto "1" -- "*" PedidoItem
-  Pedido "1" -- "*" PedidoItem
-  PedidoService --> Pedido
-  PedidoService ..> PedidoRepository : depende de
-  PedidoRepository <|-- PedidoRepositoryMemoria
-```
-
-Arquivo externo para edição: `diagrams/low-coupling-class.mmd`.
-
-2) Diagrama de sequência — fluxo típico quando o `PedidoService` delega persistência para a abstração `PedidoRepository`, que por sua vez é implementada por `PedidoRepositoryMemoria`:
-
-```mermaid
-sequenceDiagram
-  participant Usuario
-  participant PedidoController
-  participant PedidoService
-  participant Pedido
-  participant PedidoRepository
-  participant PedidoRepositoryMemoria
-
-  Usuario->>PedidoController: novoPedido(dados)
-  PedidoController->>PedidoService: criarPedido(dados)
-  activate PedidoService
-  PedidoService->>Pedido: new Pedido(dados)
-  activate Pedido
-  PedidoService->>PedidoRepository: salvar(pedido)
-  activate PedidoRepository
-  PedidoRepository->>PedidoRepositoryMemoria: armazenar(pedido)
-  PedidoRepositoryMemoria-->>PedidoRepository: ok
-  deactivate PedidoRepository
-  PedidoService-->>PedidoController: pedidoCriado
-  deactivate PedidoService
-  PedidoController-->>Usuario: confirmarCriacao()
-
-```
-
-Arquivo externo para edição: `diagrams/low-coupling-sequence.mmd`.
+`Low Coupling` é importante porque a Missão Marte pode evoluir com novas formas de armazenamento, novos tipos de missão ou uma interface gráfica diferente. O sistema continua estável se as classes dependerem menos de detalhes concretos e mais de contratos bem definidos.
 
